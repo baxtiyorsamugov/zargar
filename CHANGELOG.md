@@ -10,4 +10,6 @@
 - Шаблоны Issues (задача, баг, ADR) и Pull Request.
 - Каркас: Django + DRF (backend), Next.js (frontend), Celery, PostgreSQL, Redis в Docker Compose.
 - CI на GitHub Actions: линтеры, тесты, сборка.
-- Модели каталога и заказов, админ-панель, API каталога.
+- Модели каталога и заказов, админ-панель, API каталога с фильтрами.
+- Витрина на Next.js: главная, каталог с ЧПУ категорий, карточка товара, hreflang, Schema.org Product, sitemap.xml, robots.txt.
+- Команда `seed_demo` — 12 демо-изделий на трёх языках.

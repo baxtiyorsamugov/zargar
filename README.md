@@ -57,7 +57,8 @@ backend/          Django-проект
   apps/accounts/  пользователи (вход по телефону)
   apps/catalog/   категории, коллекции, товары, варианты, вставки, фото
   apps/orders/    заказы и позиции
-frontend/         Next.js
+  tests/          pytest
+frontend/         Next.js (src/app/[locale]/…, src/lib/api.ts)
 docs/             HLD, LLD, ADR, документы для заказчика
 .github/          CI, шаблоны Issues и PR
 ```
