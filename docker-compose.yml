@@ -1,0 +1,67 @@
+# Локальная разработка (ADR-0005). Запуск: cp .env.example .env && docker compose up --build
+
+x-backend: &backend
+  build:
+    context: ./backend
+    args:
+      DEV: "true"
+  env_file: .env
+  volumes:
+    - ./backend:/app
+    - media:/app/media
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-sofizar}
+      POSTGRES_USER: ${POSTGRES_USER:-sofizar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sofizar}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
+
+  backend:
+    <<: *backend
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+
+  worker:
+    <<: *backend
+    command: celery -A config worker -B -l info
+
+  frontend:
+    build:
+      context: ./frontend
+      target: dev
+    env_file: .env
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  media:
