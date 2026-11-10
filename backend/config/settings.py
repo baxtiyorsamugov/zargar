@@ -11,7 +11,7 @@ env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, ["localhost", "127.0.0.1"]),
     CORS_ALLOWED_ORIGINS=(list, ["http://localhost:3000"]),
-    CSRF_TRUSTED_ORIGINS=(list, []),
+    CSRF_TRUSTED_ORIGINS=(list, ["http://localhost:3000"]),
 )
 environ.Env.read_env(BASE_DIR.parent / ".env", overwrite=False)
 
@@ -116,7 +116,21 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 24,
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
+    # Сессии Django через общий с сайтом домен (ADR-0010)
+    "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework.authentication.SessionAuthentication"],
+    "DEFAULT_THROTTLE_CLASSES": ["rest_framework.throttling.ScopedRateThrottle"],
+    "DEFAULT_THROTTLE_RATES": {
+        "otp": env("THROTTLE_OTP", default="10/hour"),
+        "otp_verify": env("THROTTLE_OTP_VERIFY", default="30/hour"),
+        "checkout": env("THROTTLE_CHECKOUT", default="20/hour"),
+    },
 }
+
+# --- Вход по SMS-коду (ADR-0010) ---
+SMS_BACKEND = env("SMS_BACKEND", default="apps.accounts.sms.ConsoleSmsBackend")
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Lax"
 CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS")
 
 # --- Celery (ADR-0003) ---

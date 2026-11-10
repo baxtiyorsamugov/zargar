@@ -17,6 +17,7 @@ class ProductFilter(df.FilterSet):
     price_max = df.NumberFilter(field_name="price_from", lookup_expr="lte")
     in_stock = df.BooleanFilter(method="filter_in_stock")
     is_new = df.BooleanFilter()
+    slugs = df.BaseInFilter(field_name="slug", label="список slug через запятую (избранное)")
 
     class Meta:
         model = Product
