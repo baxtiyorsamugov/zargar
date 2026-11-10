@@ -32,3 +32,6 @@ export function formatPriceFrom(
   if (!price) return "";
   return locale === "uz" ? `${price}${t.product.from}` : `${t.product.from} ${price}`;
 }
+
+/** Личные страницы (корзина, кабинет…) не индексируются. */
+export const PRIVATE_PAGE = { robots: { index: false, follow: false } } as const;

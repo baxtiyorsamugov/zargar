@@ -325,3 +325,388 @@ h3 {
     padding: 64px 0;
   }
 }
+
+/* ===== Этап 03: шапка, покупка, корзина, оформление, кабинет ===== */
+.search {
+  flex: 1;
+  max-width: 260px;
+}
+.search input,
+.field input,
+.field textarea,
+.filters input,
+.filters select {
+  width: 100%;
+  font: inherit;
+  font-size: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+}
+.search input:focus,
+.field input:focus,
+.field textarea:focus,
+.filters input:focus,
+.filters select:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: -1px;
+}
+.actions {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+.actions a {
+  position: relative;
+}
+.count {
+  display: inline-block;
+  min-width: 18px;
+  margin-left: 4px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: var(--gold-dark);
+  color: #fff;
+  font-size: 11px;
+  text-align: center;
+}
+
+.btn.small {
+  padding: 10px 18px;
+}
+.btn.wide {
+  width: 100%;
+}
+.btn-ghost {
+  display: inline-block;
+  padding: 14px 22px;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  color: var(--ink);
+}
+.btn-ghost.on {
+  border-color: var(--gold-dark);
+  color: var(--gold-dark);
+}
+.link {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 13px;
+  color: var(--gold-dark);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.err {
+  color: #a3361f;
+  font-size: 13px;
+}
+.note {
+  min-height: 20px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.note a {
+  color: var(--gold-dark);
+}
+.right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* покупка */
+.buy {
+  margin-top: 18px;
+}
+.buy-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+button.size {
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--ink);
+}
+button.size.on {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #fff;
+}
+button.size:disabled {
+  cursor: not-allowed;
+}
+
+/* фильтры каталога */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  align-items: flex-end;
+  margin: -8px 0 28px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.filters label {
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.filters input[name^="price"] {
+  width: 120px;
+}
+.filters .check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 10px;
+  color: var(--ink);
+}
+.filters .check input {
+  width: auto;
+}
+.pager {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 36px;
+  font-size: 14px;
+}
+
+/* корзина */
+.lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.line {
+  display: grid;
+  grid-template-columns: 72px 1fr auto auto auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.line.bad .info a {
+  color: var(--muted);
+}
+.thumb {
+  position: relative;
+  width: 72px;
+  aspect-ratio: 4 / 5;
+  background: var(--sand);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.thumb img {
+  object-fit: cover;
+}
+.thumb .placeholder {
+  font-size: 14px;
+}
+.qty {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.qty button {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+.qty button:disabled {
+  color: #c8c8c8;
+}
+.qty span {
+  min-width: 24px;
+  text-align: center;
+}
+.sum {
+  font-weight: 700;
+  white-space: nowrap;
+}
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 20px 0;
+  font-size: 18px;
+}
+.empty-state .btn {
+  margin-top: -24px;
+}
+
+/* оформление */
+.checkout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.checkout fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0 0 28px;
+}
+.checkout legend,
+.summary h2,
+.cabinet h2,
+.login h2 {
+  font-family: var(--serif);
+  font-size: 26px;
+  margin-bottom: 14px;
+}
+.field {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.field.has-error input,
+.field.has-error textarea {
+  border-color: #a3361f;
+}
+.radio {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+.radio.off {
+  color: #a9a29b;
+}
+.summary {
+  position: sticky;
+  top: 88px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.summary .line {
+  grid-template-columns: 56px 1fr auto auto;
+}
+.summary .thumb {
+  width: 56px;
+}
+
+/* кабинет */
+.login {
+  max-width: 400px;
+}
+.login-links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+.cabinet {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 56px;
+  align-items: start;
+}
+.orders {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.orders > li {
+  border-bottom: 1px solid var(--line);
+}
+.orders summary {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 16px;
+  padding: 14px 0;
+  cursor: pointer;
+  align-items: baseline;
+}
+.status {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--sand);
+}
+.order-items {
+  list-style: none;
+  padding: 0 0 14px;
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+.order-items li {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+.success p {
+  font-size: 17px;
+  margin: 18px 0 28px;
+}
+
+@media (max-width: 960px) {
+  .search {
+    display: none;
+  }
+}
+@media (max-width: 820px) {
+  .checkout,
+  .cabinet {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .summary {
+    position: static;
+  }
+  .line {
+    grid-template-columns: 60px 1fr auto;
+  }
+  .line .thumb {
+    width: 60px;
+    grid-row: span 2;
+  }
+  .header .wrap {
+    gap: 14px;
+  }
+  .actions {
+    gap: 12px;
+    font-size: 12px;
+  }
+  .header .wrap {
+    height: auto;
+    min-height: 60px;
+    flex-wrap: wrap;
+    row-gap: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .logo {
+    font-size: 20px;
+  }
+}
+.actions a {
+  white-space: nowrap;
+}

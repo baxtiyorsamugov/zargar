@@ -15,6 +15,15 @@ function detectLocale(request: NextRequest): Locale {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Один адрес на страницу: /ru/catalog/ → /ru/catalog (для SEO)
+  if (pathname.length > 1 && pathname.endsWith("/")) {
+    // new URL, а не nextUrl.clone(): NextURL сам дописывает слеш обратно
+    const url = new URL(request.url);
+    url.pathname = pathname.replace(/\/+$/, "");
+    return NextResponse.redirect(url, 308);
+  }
+
   const first = pathname.split("/")[1];
   if (isLocale(first)) return NextResponse.next();
 
@@ -24,6 +33,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // пропускаем служебные пути, файлы и медиа
+  // пропускаем API, служебные пути, файлы и медиа
   matcher: ["/((?!_next|api|media|favicon.ico|robots.txt|sitemap.xml|.*\\..*).*)"],
 };
