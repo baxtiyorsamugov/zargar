@@ -1,0 +1,32 @@
+name: Задача
+description: Новая функциональность или работа по этапу
+title: "[Задача] "
+labels: ["task"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Что нужно сделать
+      description: Коротко — какой результат ожидаем.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Критерии приёмки
+      description: По каким пунктам поймём, что задача готова.
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Область
+      multiple: true
+      options: [backend, frontend, 1c, bitrix, uzqr, seo, infra, docs]
+  - type: textarea
+    id: notes
+    attributes:
+      label: Заметки, ссылки, макеты

@@ -1,0 +1,26 @@
+name: Решение (ADR)
+description: Архитектурный вопрос, по которому нужно принять и зафиксировать решение
+title: "[ADR] "
+labels: ["adr", "docs"]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Контекст
+      description: Какой вопрос решаем и почему сейчас.
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Варианты
+      description: Минимум два варианта с плюсами и минусами.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Предложение
+  - type: markdown
+    attributes:
+      value: После решения оформить файл в `docs/adr/` по шаблону `docs/adr/template.md`.
