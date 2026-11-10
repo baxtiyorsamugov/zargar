@@ -49,6 +49,8 @@ npm run lint && npm run typecheck && npm run build
 
 То же самое запускает CI на каждый push и PR.
 
+Сквозной сценарий покупки в браузере (нужен Playwright): `node scripts/e2e-smoke.cjs` — подробности в начале файла.
+
 ## Структура
 
 ```

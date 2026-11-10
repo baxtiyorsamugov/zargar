@@ -56,7 +56,7 @@ flowchart TB
 
 | Контейнер | Технология | Ответственность |
 |---|---|---|
-| `frontend` | Next.js (App Router, TypeScript) | Все публичные страницы, SSR/ISR, SEO-метаданные, sitemap, hreflang |
+| `frontend` | Next.js (App Router, TypeScript) | Все публичные страницы, SSR/ISR, SEO-метаданные, sitemap, hreflang. Проксирует `/api` и `/media` на backend — сайт и API на одном домене (ADR-0010) |
 | `backend` | Django + Django REST Framework | Модель данных, REST API, Django Admin, приём webhook от UZQR |
 | `worker` | Celery | Обмен с 1С, отправка в Bitrix24, уведомления — всё, что не должно тормозить запрос покупателя |
 | `db` | PostgreSQL | Основное хранилище |
