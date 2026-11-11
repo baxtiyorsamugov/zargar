@@ -1,6 +1,6 @@
 // SOFIZAR — корзина. Оформление сохраняет заказ в браузере (демо); позже — POST в API → 1С/Битрикс.
 (() => {
-  const { t, PRODUCTS, byId, state, store, money, grams, sizeLabel, esc, $, $$, toast, saveCart, cartCount, productCard, onChange } = SZ;
+  const { t, PRODUCTS, byId, state, store, money, grams, sizeLabel, spec, href, esc, $, $$, toast, saveCart, cartCount, productCard, onChange } = SZ;
   const root = $('main[data-page="cart"]'); if (!root) return;
 
   const COURIER_FEE = 30000;
@@ -24,10 +24,10 @@
       </label>` : "";
     return `
     <li class="cart-line">
-      <a class="cl-img" data-href="new"><img src="assets/img/${p.img}" alt="${esc(t(p.key))}"></a>
+      <a class="cl-img metal-${p.metal}" href="${href("product-" + p.id)}"><img src="assets/img/${p.img}" alt="${esc(t(p.key))}"></a>
       <div class="cl-info">
-        <b>${t(p.key)}</b>
-        <span class="p-meta">${t("gold")}, ${grams(p.w)}</span>
+        <a class="cl-name" href="${href("product-" + p.id)}">${t(p.key)}</a>
+        <span class="p-meta">${spec(p)}</span>
         <div class="cl-controls">
           ${sizes}
           <div class="stepper" role="group" aria-label="${esc(t("qty"))}">
@@ -66,7 +66,7 @@
     $("#bonusEarn", root).textContent = t("bonusEarn", s.bonus.toLocaleString("ru-RU").replace(/\s/g, " "));
 
     const inCart = new Set(state.cart.map((l) => l.id));
-    const recs = PRODUCTS.filter((p) => !inCart.has(p.id));
+    const recs = PRODUCTS.filter((p) => !inCart.has(p.id)).sort((a, b) => b.pop - a.pop);
     $(".recs", root).hidden = recs.length === 0;
     $("#recs", root).innerHTML = recs.slice(0, 3).map((p) => productCard(p, { noTag: true })).join("");
   }

@@ -22,12 +22,12 @@
         <h1 data-i18n="heroTitle">Sifat, zamonaviy ijroda namoyon</h1>
         <p class="hero-sub" data-i18n="heroSub">Oltin 585 va kumush 925 dan zargarlik buyumlari. Har biri o'z zavodimizda yaratilgan.</p>
         <div class="hero-actions">
-          <a class="btn btn-dark" href="#collections" data-i18n="ctaCollection">Kolleksiyani ko'rish</a>
-          <a class="btn btn-light" href="#footer" data-i18n="ctaStore">Do'konni topish</a>
+          <a class="btn btn-dark" data-href="catalog" data-i18n="ctaCollection">Kolleksiyani ko'rish</a>
+          <a class="btn btn-light" data-href="stores" data-i18n="ctaStore">Do'konni topish</a>
         </div>
       </div>
       <div class="hero-dots" aria-hidden="true"><span></span><span></span><span></span></div>
-      <a class="hero-badge" href="#new">
+      <a class="hero-badge" data-href="product-1">
         <img src="assets/img/gold-ring.webp" alt="">
         <span><b data-i18n="p1">Burama uzuk</b><small class="price">8 450 000 so'm</small></span>
       </a>
@@ -37,7 +37,7 @@
   <section class="section wrap" id="categories">
     <div class="section-head">
       <h2 data-i18n="popularCats">Mashhur kategoriyalar</h2>
-      <a class="link-more" href="#new" data-i18n="viewAll">Barchasini ko'rish</a>
+      <a class="link-more" data-href="catalog" data-i18n="viewAll">Barchasini ko'rish</a>
     </div>
     <div class="cats" id="cats"></div>
   </section>
@@ -52,19 +52,20 @@
       </div>
     </div>
     <div class="products" id="products"></div>
+    <div class="more-row"><a class="btn btn-light" id="tabsMore"><span data-i18n="viewAll">Barchasini ko'rish</span><svg class="ico"><use href="#i-arrow"/></svg></a></div>
   </section>
 
   <section class="section wrap" id="collections">
     <div class="section-head">
       <h2 data-i18n="collections">Kolleksiyalar</h2>
-      <a class="link-more" href="#new" data-i18n="viewAll">Barchasini ko'rish</a>
+      <a class="link-more" data-href="catalog" data-i18n="viewAll">Barchasini ko'rish</a>
     </div>
     <div class="collection">
       <img src="assets/img/campaign-hands.webp" alt="" loading="lazy">
       <div class="collection-copy">
         <h3 data-i18n="collTitle">Oltin uyg'unlik</h3>
         <p data-i18n="collText">Har kuni taqish uchun yumshoq shakllar: uzuklar, bilaguzuklar va zanjirlar bitta uslubda.</p>
-        <a class="btn btn-dark" href="#new"><span data-i18n="ctaCollection">Kolleksiyani ko'rish</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-dark" data-href="catalog-new"><span data-i18n="ctaCollection">Kolleksiyani ko'rish</span><svg class="ico"><use href="#i-arrow"/></svg></a>
       </div>
     </div>
   </section>
@@ -83,7 +84,7 @@
           <div><b>585 / 925</b><small data-i18n="statProbe">oltin va kumush proba</small></div>
           <div><b>100%</b><small data-i18n="statCert">sertifikatlangan</small></div>
         </div>
-        <a class="btn btn-light" href="#factory" data-i18n="aboutFactory">Zavod haqida</a>
+        <a class="btn btn-light" data-href="about" data-i18n="aboutFactory">Zavod haqida</a>
       </div>
       <div class="factory-img"><img src="assets/img/atelier.webp" alt="Zargar ustaxonada uzukka ishlov bermoqda" loading="lazy"></div>
     </div>

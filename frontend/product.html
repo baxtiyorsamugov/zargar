@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mahsulot — SOFIZAR</title>
+  <link rel="preload" href="assets/fonts/gilroy-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/gilroy-black.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body data-page="product">
+<!--BODY-->
+<div id="chrome-top"></div>
+<main data-page="product">
+  <section class="wrap page-top">
+    <nav class="crumbs" aria-label="breadcrumbs" id="pCrumbs"></nav>
+  </section>
+
+  <section class="wrap pd-layout">
+    <div class="gallery">
+      <div class="g-main" id="gMain"></div>
+      <div class="g-thumbs" id="gThumbs" role="tablist"></div>
+    </div>
+
+    <div class="pd-info">
+      <div class="pd-head">
+        <div class="pd-tags" id="pdTags"></div>
+        <h1 id="pdName"></h1>
+        <p class="pd-sku" id="pdSku"></p>
+      </div>
+
+      <div class="pd-price" id="pdPrice"></div>
+
+      <div class="pd-block">
+        <div class="pd-label"><span><span data-i18n="fMetal">Metall</span>: <b id="pdMetalName"></b></span></div>
+        <div class="metal-swatches" id="pdMetals"></div>
+      </div>
+
+      <div class="pd-block" id="pdSizeBlock">
+        <div class="pd-label">
+          <span id="pdSizeLabel"></span>
+          <button class="btn-text" id="sizeGuideBtn"><svg class="ico"><use href="#i-ruler"/></svg><span data-i18n="sizeGuide">Razmerni qanday bilish</span></button>
+        </div>
+        <div class="size-chips" id="pdSizes" role="radiogroup"></div>
+        <p class="hint err" id="pdSizeErr" hidden></p>
+      </div>
+
+      <div class="pd-actions">
+        <button class="btn btn-dark pd-add" id="pdAdd"><svg class="ico"><use href="#i-bag"/></svg><span data-i18n="addToCart">Savatga qo'shish</span></button>
+        <button class="pd-fav" id="pdFav" data-fav="" aria-pressed="false" aria-label="favorites"><svg class="ico"><use href="#i-heart"/></svg></button>
+      </div>
+
+      <ul class="pd-perks">
+        <li><svg class="ico"><use href="#i-store"/></svg><span data-i18n="perkPickup"></span></li>
+        <li><svg class="ico"><use href="#i-truck"/></svg><span data-i18n="perkCourier"></span></li>
+        <li><svg class="ico"><use href="#i-shield"/></svg><span data-i18n="perkCert"></span></li>
+        <li><svg class="ico"><use href="#i-star"/></svg><span id="pdBonus"></span></li>
+      </ul>
+
+      <div class="pd-tabs">
+        <details class="acc" open>
+          <summary data-i18n="descTitle">Tavsif</summary>
+          <p id="pdDesc"></p>
+        </details>
+        <details class="acc" open>
+          <summary data-i18n="specTitle">Xususiyatlar</summary>
+          <dl class="spec" id="pdSpec"></dl>
+        </details>
+        <details class="acc">
+          <summary data-i18n="careTitle">Parvarish</summary>
+          <p data-i18n="careText"></p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="section-head">
+      <h2 data-i18n="related">O'xshash mahsulotlar</h2>
+      <a class="link-more" id="relMore" data-i18n="viewAll">Barchasini ko'rish</a>
+    </div>
+    <div class="products" id="pdRelated"></div>
+  </section>
+
+  <dialog class="modal" id="sizeGuide" aria-labelledby="sgTitle">
+    <div class="modal-body"><div>
+      <h2 id="sgTitle" data-i18n="sizeGuide">Razmerni qanday bilish</h2>
+      <p class="modal-sub" id="sgText"></p>
+      <div class="table-wrap"><table class="size-table" id="sgTable"></table></div>
+      <button class="btn btn-dark" id="sgClose" data-i18n="gotIt">Tushunarli</button>
+    </div></div>
+  </dialog>
+</main>
+<div id="chrome-bottom"></div>
+<!--/BODY-->
+<script src="assets/js/core.js"></script>
+<script src="assets/js/product.js"></script>
+<script>SZ.start()</script>
+</body>
+</html>

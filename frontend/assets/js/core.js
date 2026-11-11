@@ -33,6 +33,17 @@
     <symbol id="i-logout" viewBox="0 0 24 24"><path d="M14 4.5H6v15h8M10.5 12H20M16.5 8.5 20 12l-3.5 3.5"/></symbol>
     <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3.5 12.5V4.5h8l9 9-8 8z"/><circle cx="8" cy="9" r="1.5"/></symbol>
     <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3.5 15.5 15.5 3.5l5 5-12 12z"/><path d="m7 12 2 2M10 9l2 2M13 6l2 2"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-cash" viewBox="0 0 24 24"><rect x="3" y="6.5" width="18" height="11" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6.5 9.5v5M17.5 9.5v5"/></symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2v2M14 18h2v2h4v-4"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3.5 13.8 10l6.7 2-6.7 2L12 20.5 10.2 14l-6.7-2 6.7-2z"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="m14 7 3 3"/></symbol>
+    <symbol id="i-cube" viewBox="0 0 24 24"><path d="M12 3.5 20 8v8l-8 4.5L4 16V8z"/><path d="M4 8l8 4.5L20 8M12 12.5v8"/></symbol>
+    <symbol id="i-fire" viewBox="0 0 24 24"><path d="M12 21c-4 0-6.5-2.6-6.5-6 0-4 3.5-5.5 4-10 3 1.5 4.5 4 4.5 6 1-1 1.5-2 1.5-3 2 1.5 3 4.2 3 6.8 0 3.6-2.5 6.2-6.5 6.2Z"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24"><path d="M8 12V6.5a1.5 1.5 0 0 1 3 0V11M11 10V5a1.5 1.5 0 0 1 3 0v6M14 10.5V7a1.5 1.5 0 0 1 3 0v6.5c0 4-2.5 7-6.5 7-2.5 0-4-1.2-5.5-3.5L3.5 13a1.6 1.6 0 0 1 2.6-1.8L8 13.5"/></symbol>
   </defs></svg>`;
 
   /* ---------- Переводы ---------- */
@@ -49,6 +60,8 @@
       p1: "Burama uzuk", p2: "Tomchi sirg'alar", p3: "Tomchi marjonli zanjir", p4: "Zanjir bilaguzuk",
       gold: "Oltin 585", items: "ta", sum: "so'm", size: "Razmer",
       addFav: "Sevimlilarga qo'shildi", delFav: "Sevimlilardan olib tashlandi", addCart: "Savatga qo'shildi", goCart: "Savatga o'tish",
+      m_yellow: "Sariq oltin", m_white: "Oq oltin", m_rose: "Qizil oltin", m_silver: "Kumush",
+      fMetal: "Metall", forBuyers: "Xaridorlarga", faq: "Savol-javob", aboutNav: "Zavod haqida", newShort: "Yangi", pending: "",
       months: ["yanvar","fevral","mart","aprel","may","iyun","iyul","avgust","sentabr","oktabr","noyabr","dekabr"],
       // главная
       kicker: "Yangi kolleksiya 2026", heroTitle: "Sifat, zamonaviy ijroda namoyon",
@@ -109,6 +122,8 @@
       p1: "Кольцо-переплетение", p2: "Серьги-капли", p3: "Цепь с подвеской-каплей", p4: "Браслет-цепь",
       gold: "Золото 585", items: "шт.", sum: "сум", size: "Размер",
       addFav: "Добавлено в избранное", delFav: "Убрано из избранного", addCart: "Добавлено в корзину", goCart: "Перейти в корзину",
+      m_yellow: "Жёлтое золото", m_white: "Белое золото", m_rose: "Красное золото", m_silver: "Серебро",
+      fMetal: "Металл", forBuyers: "Покупателям", faq: "Вопросы и ответы", aboutNav: "О заводе", newShort: "Новинки", pending: "",
       months: ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"],
       kicker: "Новая коллекция 2026", heroTitle: "Качество в современном исполнении",
       heroSub: "Украшения из золота 585 и серебра 925. Каждое создано на нашем собственном заводе.",
@@ -166,6 +181,8 @@
       p1: "Twist ring", p2: "Drop hoop earrings", p3: "Drop pendant necklace", p4: "Chain bracelet",
       gold: "585 gold", items: "items", sum: "UZS", size: "Size",
       addFav: "Added to favorites", delFav: "Removed from favorites", addCart: "Added to bag", goCart: "Go to bag",
+      m_yellow: "Yellow gold", m_white: "White gold", m_rose: "Rose gold", m_silver: "Silver",
+      fMetal: "Metal", forBuyers: "Customer info", faq: "FAQ", aboutNav: "About the factory", newShort: "New in", pending: "",
       months: ["January","February","March","April","May","June","July","August","September","October","November","December"],
       kicker: "New collection 2026", heroTitle: "Quality in a modern form",
       heroSub: "Jewelry in 585 gold and 925 silver. Every piece is made at our own factory.",
@@ -214,12 +231,33 @@
   };
 
   /* ---------- Товары (пример, позже — из 1С) ---------- */
+  // model: p1 кольцо, p2 серьги, p3 цепь с подвеской, p4 браслет. Один дизайн в разных металлах — отдельные артикулы.
+  const MODELS = {
+    p1: { cat: "rings", img: "gold-ring.webp", life: "category-rings.webp", sizes: [16, 16.5, 17, 17.5, 18, 18.5, 19] },
+    p2: { cat: "earrings", img: "gold-earrings.webp", life: "category-earrings.webp" },
+    p3: { cat: "chains", img: "gold-necklace.webp", life: "category-necklaces.webp", sizes: [40, 45, 50], unit: "cm" },
+    p4: { cat: "bracelets", img: "gold-bracelet.webp", life: "campaign-hands.webp", sizes: [16, 17, 18, 19], unit: "cm" },
+  };
+  const P = (id, key, metal, w, price, extra = {}) => ({ id, key, metal, probe: metal === "silver" ? 925 : 585, w, price, tabs: [], ...MODELS[key], ...extra });
   const PRODUCTS = [
-    { id: 1, key: "p1", img: "gold-ring.webp",     w: 6.2, price: 8450000, tabs: ["new", "popular"], sizes: [16, 16.5, 17, 17.5, 18, 18.5] },
-    { id: 2, key: "p2", img: "gold-earrings.webp", w: 5.4, price: 7990000, tabs: ["new", "sale"], old: 8890000 },
-    { id: 3, key: "p3", img: "gold-necklace.webp", w: 2.1, price: 5480000, tabs: ["new", "popular"], sizes: [42, 45, 50] },
-    { id: 4, key: "p4", img: "gold-bracelet.webp", w: 3.6, price: 6230000, tabs: ["new"], sizes: [17, 18, 19] },
+    P(1, "p1", "yellow", 6.2, 8450000, { tabs: ["new", "popular"], pop: 98 }),
+    P(2, "p2", "yellow", 5.4, 7990000, { tabs: ["new", "sale"], old: 8890000, pop: 91 }),
+    P(3, "p3", "yellow", 2.1, 5480000, { tabs: ["new", "popular"], pop: 88 }),
+    P(4, "p4", "yellow", 3.6, 6230000, { tabs: ["new"], pop: 70 }),
+    P(5, "p1", "white", 6.0, 8690000, { tabs: ["popular"], pop: 84 }),
+    P(6, "p1", "rose", 6.1, 8450000, { tabs: ["new"], pop: 66 }),
+    P(7, "p2", "white", 5.5, 8190000, { tabs: ["popular"], pop: 80 }),
+    P(8, "p2", "rose", 5.3, 7590000, { tabs: ["sale"], old: 8450000, pop: 62 }),
+    P(9, "p3", "rose", 2.1, 5290000, { tabs: ["sale"], old: 5880000, pop: 58 }),
+    P(10, "p4", "white", 3.7, 6490000, { pop: 55 }),
+    P(11, "p1", "silver", 5.8, 790000, { tabs: ["new", "popular"], pop: 93 }),
+    P(12, "p2", "silver", 5.1, 690000, { tabs: ["popular"], pop: 86 }),
+    P(13, "p3", "silver", 2.0, 450000, { tabs: ["sale"], old: 520000, pop: 74 }),
+    P(14, "p4", "silver", 3.4, 560000, { tabs: ["new"], pop: 60 }),
   ];
+  PRODUCTS.forEach((p) => { p.sku = `SZ-${({ rings: "R", earrings: "E", chains: "N", bracelets: "B" })[p.cat]}${String(p.id).padStart(4, "0")}`; });
+  const CATS = ["rings", "earrings", "bracelets", "chains"];
+  const METALS = ["yellow", "white", "rose", "silver"];
   const byId = (id) => PRODUCTS.find((p) => p.id === +id);
 
   /* ---------- Хранилище ---------- */
@@ -237,22 +275,51 @@
   const t = (k, ...a) => { const v = T[state.lang][k]; return typeof v === "function" ? v(...a) : v; };
   const money = (n) => Math.round(n).toLocaleString("ru-RU").replace(/\s/g, " ") + " " + t("sum");
   const grams = (n) => n.toFixed(1).replace(".", state.lang === "en" ? "." : ",") + (state.lang === "ru" ? " г" : " g");
-  const sizeLabel = (p, s) => (p.id === 3 ? `${s} cm` : s);
+  const sizeLabel = (p, s) => (p.unit ? `${s} ${state.lang === "ru" ? "см" : "cm"}` : String(s).replace(".", state.lang === "en" ? "." : ","));
+  const spec = (p) => `${t("m_" + p.metal)} ${p.probe}, ${grams(p.w)}`;
+  const catName = (c) => t("c_" + c);
   const date = (iso) => { const d = new Date(iso); return state.lang === "en" ? `${t("months")[d.getMonth()]} ${d.getDate()}` : `${d.getDate()} ${t("months")[d.getMonth()]}`; };
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  /* ---------- Ссылки между страницами ---------- */
+  /* ---------- Ссылки между страницами ----------
+     Маршрут — короткое имя: home, new, cart, orders, catalog, catalog-rings, product-5, about, delivery...
+     На сайте это обычные страницы (catalog.html#rings, product.html#5), в превью — #имя в одном файле. */
   const HOME_ANCHORS = ["new", "categories", "collections", "benefits", "factory", "footer"];
   const ACCOUNT_TABS = ["account", "orders", "favorites", "bonus", "addresses", "profile"];
+  const INFO = ["info", "delivery", "payment", "warranty", "stores", "faq"];
   const page = document.body.dataset.page;
+  const pageOf = (r) => r === "cart" ? "cart" : ACCOUNT_TABS.includes(r) ? "account" : r.startsWith("catalog") ? "catalog"
+    : r.startsWith("product-") ? "product" : r === "about" ? "about" : INFO.includes(r) ? "info" : "home";
   function href(r) {
     if (SPA) return "#" + r;
-    if (r === "home") return "index.html";
-    if (HOME_ANCHORS.includes(r)) return page === "home" ? "#" + r : "index.html#" + r;
-    if (r === "cart") return "cart.html";
-    if (ACCOUNT_TABS.includes(r)) return r === "account" ? "account.html" : "account.html#" + r;
-    return "#" + r;
+    switch (pageOf(r)) {
+      case "cart": return "cart.html";
+      case "account": return r === "account" ? "account.html" : "account.html#" + r;
+      case "catalog": return r === "catalog" ? "catalog.html" : "catalog.html#" + r.slice(8);
+      case "product": return "product.html#" + r.slice(8);
+      case "about": return "about.html";
+      case "info": return r === "info" ? "info.html" : "info.html#" + r;
+      default: return r === "home" ? "index.html" : page === "home" ? "#" + r : "index.html#" + r;
+    }
   }
+  function currentRoute() {
+    const h = decodeURIComponent(location.hash.slice(1));
+    if (SPA) return h || "home";
+    if (page === "catalog") return h ? "catalog-" + h : "catalog";
+    if (page === "product") return "product-" + (h || "1");
+    if (page === "account") return h || "account";
+    if (page === "info") return h || "info";
+    return h || page;
+  }
+  const routeFns = [];
+  function onRoute(fn) { routeFns.push(fn); }
+  function runRoute() { const r = currentRoute(); routeFns.forEach((fn) => fn(r)); markNav(r); }
+  function markNav(r) {
+    const pg = pageOf(r);
+    $$(".actions .action").forEach((a) => a.classList.toggle("is-current", a.dataset.nav === (pg === "account" ? (r === "favorites" ? "favorites" : "account") : pg)));
+    $$("[data-route]").forEach((a) => a.classList.toggle("is-current", a.dataset.route === r || (a.dataset.route === "catalog" && r === "catalog")));
+  }
+  const extend = (dict) => Object.keys(dict).forEach((l) => Object.assign(T[l], dict[l]));
 
   /* ---------- Шапка и подвал ---------- */
   function chromeTop() {
@@ -260,9 +327,9 @@
     <div class="topbar"><div class="wrap">
       <span class="city"><svg class="ico"><use href="#i-pin"/></svg><span data-i18n="city"></span></span>
       <nav aria-label="Info">
-        <a href="${href("footer")}" data-i18n="stores"></a><a href="${href("benefits")}" data-i18n="delivery"></a>
-        <a href="${href("benefits")}" data-i18n="payment"></a><a href="${href("benefits")}" data-i18n="warranty"></a>
-        <a href="${href("factory")}" data-i18n="about"></a><a href="${href("footer")}" data-i18n="contact"></a>
+        <a href="${href("stores")}" data-i18n="stores"></a><a href="${href("delivery")}" data-i18n="delivery"></a>
+        <a href="${href("payment")}" data-i18n="payment"></a><a href="${href("warranty")}" data-i18n="warranty"></a>
+        <a href="${href("about")}" data-i18n="about"></a><a href="${href("faq")}" data-i18n="faq"></a>
       </nav>
       <div class="topbar-end">
         <span class="phone"><svg class="ico"><use href="#i-phone"/></svg><span>+998 55 500-00-00</span></span>
@@ -285,11 +352,11 @@
         </nav>
       </div>
       <nav class="catnav" aria-label="Catalog"><div class="wrap">
-        <a class="catalog-btn" href="${href("new")}"><svg class="ico"><use href="#i-menu"/></svg><span data-i18n="catalog"></span></a>
-        <a href="${href("categories")}" data-i18n="c_rings"></a><a href="${href("categories")}" data-i18n="c_earrings"></a>
-        <a href="${href("categories")}" data-i18n="c_bracelets"></a><a href="${href("categories")}" data-i18n="c_chains"></a>
-        <a href="${href("categories")}" data-i18n="c_pendants"></a><a href="${href("categories")}" data-i18n="c_sets"></a>
-        <a href="${href("new")}" data-i18n="newItems"></a><a class="sale" href="${href("new")}" data-i18n="sales"></a>
+        <a class="catalog-btn" data-route="catalog" href="${href("catalog")}"><svg class="ico"><use href="#i-menu"/></svg><span data-i18n="catalog"></span></a>
+        ${CATS.map((c) => `<a data-route="catalog-${c}" href="${href("catalog-" + c)}" data-i18n="c_${c}"></a>`).join("")}
+        <a data-route="catalog-new" href="${href("catalog-new")}" data-i18n="newShort"></a>
+        <a data-route="about" href="${href("about")}" data-i18n="aboutNav"></a>
+        <a class="sale" data-route="catalog-sale" href="${href("catalog-sale")}" data-i18n="sales"></a>
       </div></nav>
     </header>`;
   }
@@ -299,12 +366,16 @@
       <div class="footer-grid">
         <div><span class="logo" aria-label="SOFIZAR"></span><p data-i18n="footerAbout"></p></div>
         <div><h3 data-i18n="catalog"></h3><ul>
-          <li><a href="${href("categories")}" data-i18n="c_rings"></a></li><li><a href="${href("categories")}" data-i18n="c_earrings"></a></li>
-          <li><a href="${href("categories")}" data-i18n="c_bracelets"></a></li><li><a href="${href("new")}" data-i18n="newItems"></a></li></ul></div>
+          ${CATS.map((c) => `<li><a href="${href("catalog-" + c)}" data-i18n="c_${c}"></a></li>`).join("")}
+          <li><a href="${href("catalog-sale")}" data-i18n="sales"></a></li></ul></div>
+        <div><h3 data-i18n="forBuyers"></h3><ul>
+          <li><a href="${href("about")}" data-i18n="aboutNav"></a></li><li><a href="${href("delivery")}" data-i18n="delivery"></a></li>
+          <li><a href="${href("payment")}" data-i18n="payment"></a></li><li><a href="${href("warranty")}" data-i18n="warranty"></a></li>
+          <li><a href="${href("faq")}" data-i18n="faq"></a></li></ul></div>
         <div><h3 data-i18n="account"></h3><ul>
           <li><a href="${href("orders")}" data-i18n="orders"></a></li><li><a href="${href("favorites")}" data-i18n="favs"></a></li>
           <li><a href="${href("bonus")}" data-i18n="bonus"></a></li><li><a href="${href("cart")}" data-i18n="cart"></a></li></ul></div>
-        <div><h3 data-i18n="contact"></h3><ul><li>+998 55 500-00-00</li><li>sofizar.uz</li><li data-i18n="city"></li></ul></div>
+        <div><h3 data-i18n="contact"></h3><ul><li>+998 55 500-00-00</li><li>sofizar.uz</li><li><a href="${href("stores")}" data-i18n="stores"></a></li></ul></div>
       </div>
       <div class="fineprint"><span>© 2026 SOFIZAR</span><span data-i18n="demo"></span></div>
     </div></footer>
@@ -350,13 +421,13 @@
     return `
     <article class="product">
       <div class="p-img">
-        <img src="assets/img/${p.img}" alt="${esc(t(p.key))}" loading="lazy">
+        <a class="p-link metal-${p.metal}" href="${href("product-" + p.id)}" tabindex="-1" aria-hidden="true"><img src="assets/img/${p.img}" alt="" loading="lazy"></a>
         ${p.old ? `<span class="tag sale">−${Math.round((1 - p.price / p.old) * 100)}%</span>` : opts.noTag ? "" : `<span class="tag">${t("tagNew")}</span>`}
         <button class="fav" data-fav="${p.id}" aria-pressed="${state.favs.has(p.id)}" aria-label="${esc(t("favs"))}: ${esc(t(p.key))}"><svg class="ico"><use href="#i-heart"/></svg></button>
       </div>
       <div class="p-info">
-        <span class="p-name">${t(p.key)}</span>
-        <span class="p-meta">${t("gold")}, ${grams(p.w)}</span>
+        <a class="p-name" href="${href("product-" + p.id)}">${t(p.key)}</a>
+        <span class="p-meta">${spec(p)}</span>
         <div class="p-row">
           <span class="p-price">${p.old ? `<s>${money(p.old)}</s>` : ""}${money(p.price)}</span>
           <button class="bag" data-add="${p.id}" aria-label="${esc(t("cart"))}: ${esc(t(p.key))}"><svg class="ico"><use href="#i-bag"/></svg></button>
@@ -382,14 +453,13 @@
 
   /* ---------- Маршрутизация в превью (все страницы в одном файле) ---------- */
   function route() {
-    const r = (location.hash || "#home").slice(1);
-    const pg = r === "cart" ? "cart" : ACCOUNT_TABS.includes(r) ? "account" : "home";
+    const r = currentRoute(), pg = pageOf(r);
     $$("main[data-page]").forEach((m) => (m.hidden = m.dataset.page !== pg));
     document.body.dataset.page = pg;
-    $$(".actions .action").forEach((a) => a.classList.toggle("is-current", a.dataset.nav === (pg === "account" ? (r === "favorites" ? "favorites" : "account") : pg)));
-    const target = pg === "home" && r !== "home" && document.getElementById(r);
-    if (target) target.scrollIntoView(); else scrollTo(0, 0);
     window.dispatchEvent(new CustomEvent("sz:route", { detail: r }));
+    runRoute();
+    const target = (pg === "home" || pg === "info") && r !== "home" && r !== "info" && document.getElementById(r);
+    if (target) target.scrollIntoView(); else scrollTo(0, 0);
   }
 
   /* ---------- Монтирование ---------- */
@@ -398,7 +468,6 @@
     $("#chrome-top").outerHTML = chromeTop();
     $("#chrome-bottom").outerHTML = chromeBottom();
     $$("[data-href]").forEach((el) => { el.href = href(el.dataset.href); });
-    if (!SPA) { const cur = page === "account" && location.hash === "#favorites" ? "favorites" : page; $$(".actions .action").forEach((a) => a.classList.toggle("is-current", a.dataset.nav === cur)); }
 
     $(".lang").addEventListener("click", (e) => {
       const b = e.target.closest("button"); if (!b) return;
@@ -410,16 +479,16 @@
     addEventListener("keydown", (e) => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); $("#search").focus(); } });
     $("#search").addEventListener("keydown", (e) => {
       if (e.key !== "Enter") return;
-      if (document.body.dataset.page !== "home") { sessionStorage.setItem("sz-q", $("#search").value); location.href = href("new"); }
+      if (document.body.dataset.page !== "catalog") { sessionStorage.setItem("sz-q", $("#search").value); location.href = href("catalog"); }
     });
     syncBadges(false);
   }
 
-  window.SZ = { SPA, T, t, PRODUCTS, byId, state, store, money, grams, sizeLabel, date, esc, href, $, $$, toast,
+  window.SZ = { SPA, T, t, PRODUCTS, MODELS, CATS, METALS, byId, state, store, money, grams, sizeLabel, spec, catName, date, esc, href, pageOf, onRoute, extend, $, $$, toast,
     addToCart, toggleFav, saveCart, cartCount, syncBadges, productCard, onChange: (fn) => listeners.push(fn), applyLang, route };
 
   mount();
-  if (SPA) addEventListener("hashchange", route);
+  addEventListener("hashchange", SPA ? route : runRoute);
   // страницы подключаются после core.js и вызывают SZ.applyLang() сами (см. SZ.start)
-  window.SZ.start = () => { applyLang(); if (SPA) route(); };
+  window.SZ.start = () => { applyLang(); SPA ? route() : runRoute(); };
 })();
