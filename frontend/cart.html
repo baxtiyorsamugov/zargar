@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Savat — SOFIZAR</title>
+  <meta name="robots" content="noindex">
+  <link rel="preload" href="assets/fonts/gilroy-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/gilroy-black.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body data-page="cart">
+<!--BODY-->
+<div id="chrome-top"></div>
+<main data-page="cart">
+  <section class="wrap page-top">
+    <div class="page-band">
+      <div>
+        <h1 data-i18n="cartTitle">Savat</h1>
+        <p id="cartSub"></p>
+      </div>
+      <a class="btn btn-band" data-href="new"><svg class="ico"><use href="#i-back"/></svg><span data-i18n="continueShop">Xaridni davom ettirish</span></a>
+    </div>
+  </section>
+
+  <section class="wrap cart-layout" id="cartFull">
+    <div class="cart-main">
+      <div class="panel">
+        <ul class="cart-lines" id="cartLines"></ul>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel-title" data-i18n="receive">Qabul qilish usuli</h2>
+        <div class="choice" role="radiogroup" id="receive">
+          <label class="choice-item">
+            <input type="radio" name="receive" id="rcvPickup" value="pickup" checked>
+            <span class="choice-ico"><svg class="ico"><use href="#i-store"/></svg></span>
+            <span><b data-i18n="pickup">Do'kondan olib ketish</b><small data-i18n="pickupNote">Bepul, ertaga tayyor</small></span>
+          </label>
+          <label class="choice-item">
+            <input type="radio" name="receive" id="rcvCourier" value="courier">
+            <span class="choice-ico"><svg class="ico"><use href="#i-truck"/></svg></span>
+            <span><b data-i18n="courier">Kuryer orqali</b><small data-i18n="courierNote">Toshkent bo'ylab, 1–2 kun</small></span>
+          </label>
+        </div>
+        <div class="field" id="storeField">
+          <label for="storeSel" data-i18n="pickStore">Do'kon</label>
+          <select id="storeSel"><option data-i18n="storeMain">SOFIZAR, Toshkent markaziy do'koni</option></select>
+        </div>
+        <div class="field" id="addrField" hidden>
+          <label for="addrInput" data-i18n="address">Manzil</label>
+          <input id="addrInput" data-i18n-ph="addressPh" autocomplete="street-address">
+        </div>
+      </div>
+
+      <div class="recs">
+        <h2 class="panel-title" data-i18n="recommend">Sizga yoqishi mumkin</h2>
+        <div class="products products-3" id="recs"></div>
+      </div>
+    </div>
+
+    <aside class="cart-side">
+      <div class="panel summary">
+        <h2 class="panel-title" data-i18n="summary">Buyurtma</h2>
+        <dl class="sum-rows">
+          <div><dt id="sumItemsLabel" data-i18n="subtotal">Mahsulotlar</dt><dd id="sumItems"></dd></div>
+          <div id="sumDiscRow"><dt data-i18n="discount">Chegirma</dt><dd id="sumDisc" class="minus"></dd></div>
+          <div><dt data-i18n="deliveryCost">Yetkazib berish</dt><dd id="sumDel"></dd></div>
+        </dl>
+        <form class="promo" id="promoForm" novalidate>
+          <label class="sr" for="promoInput" data-i18n="promo">Promokod</label>
+          <span class="promo-ico"><svg class="ico"><use href="#i-tag"/></svg></span>
+          <input id="promoInput" data-i18n-ph="promoPh" autocomplete="off">
+          <button class="btn-text" type="submit" data-i18n="apply">Qo'llash</button>
+        </form>
+        <p class="promo-msg" id="promoMsg" hidden></p>
+        <div class="sum-total"><span data-i18n="total">Jami</span><b id="sumTotal"></b></div>
+        <p class="bonus-earn" id="bonusEarn"></p>
+        <button class="btn btn-dark btn-block" id="checkoutBtn"><span data-i18n="checkout">Buyurtma berish</span><svg class="ico"><use href="#i-arrow"/></svg></button>
+        <p class="pay-note" data-i18n="payNote">To'lov do'konda yoki kuryerga.</p>
+      </div>
+    </aside>
+  </section>
+
+  <section class="wrap" id="cartEmpty" hidden>
+    <div class="panel empty-state">
+      <span class="empty-ico"><svg class="ico"><use href="#i-bag"/></svg></span>
+      <h2 data-i18n="emptyTitle">Savat bo'sh</h2>
+      <p data-i18n="emptyText">Yoqqan buyumni savatga qo'shing.</p>
+      <a class="btn btn-dark" data-href="new"><span data-i18n="toCatalog">Katalogga o'tish</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+    </div>
+  </section>
+
+  <dialog class="modal" id="checkout" aria-labelledby="coTitle">
+    <form class="modal-body" id="coForm" novalidate>
+      <div id="coStep">
+        <h2 id="coTitle" data-i18n="coTitle">Buyurtmani tasdiqlash</h2>
+        <p class="modal-sub" id="coSummary"></p>
+        <div class="field">
+          <label for="coName" data-i18n="coName">Ismingiz</label>
+          <input id="coName" autocomplete="given-name" value="Dilnoza">
+          <span class="hint" id="coNameHint" hidden></span>
+        </div>
+        <div class="field">
+          <label for="coPhone" data-i18n="coPhone">Telefon</label>
+          <input id="coPhone" type="tel" inputmode="tel" autocomplete="tel" value="+998 90 123 45 67">
+          <span class="hint" id="coPhoneHint" data-i18n="coPhoneHint">Buyurtmani tasdiqlash uchun qo'ng'iroq qilamiz</span>
+        </div>
+        <div class="field">
+          <label for="coComment" data-i18n="coComment">Izoh</label>
+          <input id="coComment" data-i18n-ph="coCommentPh">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-light" id="coCancel" data-i18n="cancel">Bekor qilish</button>
+          <button type="submit" class="btn btn-dark" data-i18n="confirm">Tasdiqlash</button>
+        </div>
+      </div>
+      <div class="done-step" id="coDone" hidden>
+        <span class="done-ico"><svg class="ico"><use href="#i-check"/></svg></span>
+        <h2 data-i18n="doneTitle">Buyurtma qabul qilindi</h2>
+        <p id="coDoneText"></p>
+        <p class="hint" data-i18n="demoNote">Namoyish: buyurtma faqat shu brauzerda saqlanadi.</p>
+        <a class="btn btn-dark" data-href="orders"><span data-i18n="toOrders">Buyurtmalarimga o'tish</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+      </div>
+    </form>
+  </dialog>
+</main>
+<div id="chrome-bottom"></div>
+<!--/BODY-->
+<script src="assets/js/core.js"></script>
+<script src="assets/js/cart.js"></script>
+<script>SZ.start()</script>
+</body>
+</html>
