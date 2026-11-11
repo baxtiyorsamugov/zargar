@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Shaxsiy kabinet — SOFIZAR</title>
+  <meta name="robots" content="noindex">
+  <link rel="preload" href="assets/fonts/gilroy-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/gilroy-black.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body data-page="account">
+<!--BODY-->
+<div id="chrome-top"></div>
+<main data-page="account">
+  <section class="wrap page-top">
+    <div class="page-band">
+      <div>
+        <h1 id="hello">Salom!</h1>
+        <p data-i18n="accSub">Buyurtmalar, bonuslar va shaxsiy ma'lumotlar bir joyda</p>
+      </div>
+      <span class="band-chip" id="levelChip"><svg class="ico"><use href="#i-star"/></svg><span></span></span>
+    </div>
+  </section>
+
+  <section class="wrap acc-layout">
+    <aside class="acc-nav">
+      <div class="acc-user">
+        <span class="avatar" id="avatar">DK</span>
+        <span><b id="accName"></b><small id="accPhone"></small></span>
+      </div>
+      <nav class="acc-menu" id="accMenu">
+        <a data-tab="account"><svg class="ico"><use href="#i-home"/></svg><span data-i18n="overview">Umumiy</span></a>
+        <a data-tab="orders"><svg class="ico"><use href="#i-box"/></svg><span data-i18n="orders">Buyurtmalar</span><span class="menu-n" id="nOrders"></span></a>
+        <a data-tab="favorites"><svg class="ico"><use href="#i-heart"/></svg><span data-i18n="favs">Sevimlilar</span><span class="menu-n" id="nFavs"></span></a>
+        <a data-tab="bonus"><svg class="ico"><use href="#i-star"/></svg><span data-i18n="bonus">Bonuslar</span></a>
+        <a data-tab="addresses"><svg class="ico"><use href="#i-map"/></svg><span data-i18n="addresses">Manzillar</span></a>
+        <a data-tab="profile"><svg class="ico"><use href="#i-settings"/></svg><span data-i18n="profile">Profil</span></a>
+      </nav>
+      <button class="acc-logout" id="logout"><svg class="ico"><use href="#i-logout"/></svg><span data-i18n="logout">Chiqish</span></button>
+    </aside>
+
+    <div class="acc-content">
+      <!-- Обзор -->
+      <div class="acc-pane" data-pane="account">
+        <div class="stat-cards">
+          <a class="stat-card" data-href="orders"><span><b data-i18n="activeOrders">Faol buyurtmalar</b><small data-i18n="activeOrdersSub"></small></span><span class="stat-n" id="stActive"></span></a>
+          <a class="stat-card" data-href="bonus"><span><b data-i18n="bonusPts">Bonus ballar</b><small data-i18n="bonusPtsSub"></small></span><span class="stat-n gold" id="stBonus"></span></a>
+          <a class="stat-card" data-href="favorites"><span><b data-i18n="favCount">Sevimlilar</b><small data-i18n="favCountSub"></small></span><span class="stat-n" id="stFavs"></span></a>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2 class="panel-title" data-i18n="recentOrders">Oxirgi buyurtmalar</h2><a class="link-more" data-href="orders" data-i18n="allOrders">Barcha buyurtmalar</a></div>
+          <ul class="orders" id="recentOrders"></ul>
+        </div>
+      </div>
+
+      <!-- Заказы -->
+      <div class="acc-pane" data-pane="orders" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title" data-i18n="orders">Buyurtmalar</h2>
+            <div class="tabs" role="tablist" id="orderTabs">
+              <button class="tab" role="tab" aria-selected="true" data-otab="active"><span data-i18n="tabActive">Faol</span><span class="n" id="oActiveN"></span></button>
+              <button class="tab" role="tab" aria-selected="false" data-otab="history"><span data-i18n="tabHistory">Tarix</span><span class="n" id="oHistN"></span></button>
+            </div>
+          </div>
+          <ul class="orders" id="orderList"></ul>
+        </div>
+      </div>
+
+      <!-- Избранное -->
+      <div class="acc-pane" data-pane="favorites" hidden>
+        <div class="panel">
+          <h2 class="panel-title" data-i18n="favs">Sevimlilar</h2>
+          <div class="products products-3" id="favList"></div>
+        </div>
+      </div>
+
+      <!-- Бонусы -->
+      <div class="acc-pane" data-pane="bonus" hidden>
+        <div class="bonus-card">
+          <div>
+            <small data-i18n="bonusPts">Bonus ballar</small>
+            <b id="bonusBig"></b>
+            <span class="bonus-level"><span data-i18n="level">Daraja</span>: <span id="bonusLevel"></span></span>
+          </div>
+          <div class="bonus-progress">
+            <div class="bar"><span id="bonusBar"></span></div>
+            <small id="bonusNext"></small>
+          </div>
+          <p data-i18n="bonusHint"></p>
+        </div>
+        <div class="panel">
+          <h2 class="panel-title" data-i18n="bonusHistory">Ballar tarixi</h2>
+          <ul class="ledger" id="ledger"></ul>
+        </div>
+      </div>
+
+      <!-- Адреса -->
+      <div class="acc-pane" data-pane="addresses" hidden>
+        <div class="panel">
+          <div class="panel-head"><h2 class="panel-title" data-i18n="addresses">Manzillar</h2>
+            <button class="btn btn-light btn-sm" id="addAddrBtn"><svg class="ico"><use href="#i-plus"/></svg><span data-i18n="addAddress">Manzil qo'shish</span></button></div>
+          <form class="addr-form" id="addrForm" hidden novalidate>
+            <div class="field"><label for="aTitle" data-i18n="addrTitle">Nomi</label><input id="aTitle" data-i18n-ph="addrTitlePh"></div>
+            <div class="field grow"><label for="aText" data-i18n="address">Manzil</label><input id="aText" data-i18n-ph="addressPh" autocomplete="street-address"></div>
+            <button class="btn btn-dark" type="submit" data-i18n="save">Saqlash</button>
+          </form>
+          <div class="addr-list" id="addrList"></div>
+        </div>
+      </div>
+
+      <!-- Профиль -->
+      <div class="acc-pane" data-pane="profile" hidden>
+        <form class="panel profile-form" id="profileForm" novalidate>
+          <h2 class="panel-title" data-i18n="profile">Profil</h2>
+          <div class="form-grid">
+            <div class="field"><label for="pFirst" data-i18n="firstName">Ism</label><input id="pFirst" autocomplete="given-name"></div>
+            <div class="field"><label for="pLast" data-i18n="lastName">Familiya</label><input id="pLast" autocomplete="family-name"></div>
+            <div class="field"><label for="pPhone" data-i18n="coPhone">Telefon</label><input id="pPhone" type="tel" autocomplete="tel"></div>
+            <div class="field"><label for="pEmail" data-i18n="email">Email</label><input id="pEmail" type="email" autocomplete="email"></div>
+            <div class="field"><label for="pBday" data-i18n="bday">Tug'ilgan sana</label><input id="pBday" type="date" autocomplete="bday"></div>
+            <div class="field"><label for="pLang" data-i18n="lang">Til</label>
+              <select id="pLang"><option value="uz">O'zbekcha</option><option value="ru">Русский</option><option value="en">English</option></select></div>
+          </div>
+          <fieldset class="toggles">
+            <legend data-i18n="notify">Xabarnomalar</legend>
+            <label class="switch"><input type="checkbox" id="pSms"><span class="track"></span><span data-i18n="notifySms"></span></label>
+            <label class="switch"><input type="checkbox" id="pTg"><span class="track"></span><span data-i18n="notifyTg"></span></label>
+          </fieldset>
+          <button class="btn btn-dark" type="submit" data-i18n="saveProfile">O'zgarishlarni saqlash</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="chrome-bottom"></div>
+<!--/BODY-->
+<script src="assets/js/core.js"></script>
+<script src="assets/js/account.js"></script>
+<script>SZ.start()</script>
+</body>
+</html>

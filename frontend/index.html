@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SOFIZAR — zargarlik buyumlari</title>
+  <meta name="description" content="SOFIZAR: oltin 585 va kumush 925 dan uzuklar, sirg'alar, bilaguzuklar va zanjirlar. O'z zavodimizda ishlab chiqarilgan.">
+  <link rel="preload" href="assets/fonts/gilroy-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/gilroy-black.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body data-page="home">
+<!--BODY-->
+<div id="chrome-top"></div>
+<main id="top" data-page="home">
+  <section class="hero wrap">
+    <div class="hero-banner">
+      <img src="assets/img/hero-uzbek.webp" alt="" fetchpriority="high">
+      <div class="hero-shine" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <span class="hero-kicker" data-i18n="kicker">Yangi kolleksiya 2026</span>
+        <h1 data-i18n="heroTitle">Sifat, zamonaviy ijroda namoyon</h1>
+        <p class="hero-sub" data-i18n="heroSub">Oltin 585 va kumush 925 dan zargarlik buyumlari. Har biri o'z zavodimizda yaratilgan.</p>
+        <div class="hero-actions">
+          <a class="btn btn-dark" href="#collections" data-i18n="ctaCollection">Kolleksiyani ko'rish</a>
+          <a class="btn btn-light" href="#footer" data-i18n="ctaStore">Do'konni topish</a>
+        </div>
+      </div>
+      <div class="hero-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      <a class="hero-badge" href="#new">
+        <img src="assets/img/gold-ring.webp" alt="">
+        <span><b data-i18n="p1">Burama uzuk</b><small class="price">8 450 000 so'm</small></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section wrap" id="categories">
+    <div class="section-head">
+      <h2 data-i18n="popularCats">Mashhur kategoriyalar</h2>
+      <a class="link-more" href="#new" data-i18n="viewAll">Barchasini ko'rish</a>
+    </div>
+    <div class="cats" id="cats"></div>
+  </section>
+
+  <section class="section wrap" id="new">
+    <div class="section-head">
+      <h2 data-i18n="newItems">Yangi mahsulotlar</h2>
+      <div class="tabs" role="tablist" id="tabs">
+        <button class="tab" role="tab" aria-selected="true" data-tab="new"><span data-i18n="tabNew">Yangi</span><span class="n" data-count="new"></span></button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="popular"><span data-i18n="tabPopular">Ommabop</span><span class="n" data-count="popular"></span></button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="sale"><span data-i18n="tabSale">Chegirmalar</span><span class="n" data-count="sale"></span></button>
+      </div>
+    </div>
+    <div class="products" id="products"></div>
+  </section>
+
+  <section class="section wrap" id="collections">
+    <div class="section-head">
+      <h2 data-i18n="collections">Kolleksiyalar</h2>
+      <a class="link-more" href="#new" data-i18n="viewAll">Barchasini ko'rish</a>
+    </div>
+    <div class="collection">
+      <img src="assets/img/campaign-hands.webp" alt="" loading="lazy">
+      <div class="collection-copy">
+        <h3 data-i18n="collTitle">Oltin uyg'unlik</h3>
+        <p data-i18n="collText">Har kuni taqish uchun yumshoq shakllar: uzuklar, bilaguzuklar va zanjirlar bitta uslubda.</p>
+        <a class="btn btn-dark" href="#new"><span data-i18n="ctaCollection">Kolleksiyani ko'rish</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="benefits">
+    <div class="benefits" id="benefitList"></div>
+  </section>
+
+  <section class="section wrap" id="factory">
+    <div class="factory">
+      <div class="factory-copy">
+        <h2 data-i18n="factory">Bizning zavod</h2>
+        <p data-i18n="factoryText">25 yildan ortiq tajriba, zamonaviy texnologiyalar va zargarlik san'atiga e'tibor. Har bir buyum ishlab chiqarishdan tortib vitrinagacha nazoratdan o'tadi.</p>
+        <div class="stats">
+          <div><b>25+</b><small data-i18n="statYears">yillik tajriba</small></div>
+          <div><b>585 / 925</b><small data-i18n="statProbe">oltin va kumush proba</small></div>
+          <div><b>100%</b><small data-i18n="statCert">sertifikatlangan</small></div>
+        </div>
+        <a class="btn btn-light" href="#factory" data-i18n="aboutFactory">Zavod haqida</a>
+      </div>
+      <div class="factory-img"><img src="assets/img/atelier.webp" alt="Zargar ustaxonada uzukka ishlov bermoqda" loading="lazy"></div>
+    </div>
+  </section>
+</main>
+<div id="chrome-bottom"></div>
+<!--/BODY-->
+<script src="assets/js/core.js"></script>
+<script src="assets/js/home.js"></script>
+<script>SZ.start()</script>
+</body>
+</html>
