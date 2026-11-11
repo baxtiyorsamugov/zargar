@@ -1,179 +1,203 @@
-// SOFIZAR — главная. Данные ниже — пример; в продакшене приходят из API, которое берёт их из 1С.
+// SOFIZAR — главная. Товары ниже — пример; в продакшене приходят из API, которое берёт их из 1С.
 (() => {
-  const CATEGORIES = [
-    { id: "ring",     name: "Кольца",       icon: "i-ring",     count: 412 },
-    { id: "earrings", name: "Серьги",       icon: "i-earrings", count: 286 },
-    { id: "pendant",  name: "Подвески",     icon: "i-pendant",  count: 154 },
-    { id: "chain",    name: "Цепи",         icon: "i-chain",    count: 98 },
-    { id: "bracelet", name: "Браслеты",     icon: "i-bracelet", count: 121 },
-    { id: "wedding",  name: "Обручальные",  icon: "i-wedding",  count: 67 },
-  ];
-
-  const PRODUCTS = [
-    { sku: "SZ-10241", cat: "ring",     name: "Кольцо «Афросиаб»",     metal: "yellow", probe: 585, weight: 3.2, stone: "топаз",        price: 4850000,  stock: 3, isNew: true },
-    { sku: "SZ-20117", cat: "earrings", name: "Серьги «Регистан»",      metal: "white",  probe: 585, weight: 4.1, stone: "фианиты",      price: 5390000,  stock: 5, isNew: true },
-    { sku: "SZ-30422", cat: "pendant",  name: "Подвеска «Гирих»",       metal: "rose",   probe: 585, weight: 1.8, stone: "бирюза",       price: 2690000,  stock: 2, isNew: false },
-    { sku: "SZ-40012", cat: "chain",    name: "Цепь «Бисмарк», 50 см",  metal: "yellow", probe: 585, weight: 7.6, stone: null,           price: 8120000,  stock: 4, isNew: false },
-    { sku: "SZ-50308", cat: "bracelet", name: "Браслет «Шахризабз»",    metal: "rose",   probe: 585, weight: 5.4, stone: "фианиты",      price: 6740000,  stock: 1, isNew: true },
-    { sku: "SZ-60051", cat: "wedding",  name: "Обручальное кольцо",     metal: "white",  probe: 750, weight: 4.0, stone: null,           price: 7280000,  stock: 6, isNew: false },
-    { sku: "SZ-10388", cat: "ring",     name: "Кольцо «Сузане»",        metal: "rose",   probe: 585, weight: 2.7, stone: "аметист",      price: 3980000,  stock: 2, isNew: false },
-    { sku: "SZ-20290", cat: "earrings", name: "Серьги-пусеты «Капля»",  metal: "yellow", probe: 750, weight: 2.2, stone: "бриллианты",   price: 12400000, stock: 1, isNew: true },
-  ];
-
-  const STORES = [
-    { id: "s1", name: "SOFIZAR Чиланзар",    area: "Чиланзарский район", hours: "10:00–21:00" },
-    { id: "s2", name: "SOFIZAR Юнусабад",    area: "Юнусабадский район", hours: "10:00–21:00" },
-    { id: "s3", name: "SOFIZAR Мирабад",     area: "Мирабадский район",  hours: "10:00–20:00" },
-  ];
-
-  const METAL = { yellow: "жёлтое золото", white: "белое золото", rose: "красное золото" };
-  const $ = (s, r = document) => r.querySelector(s);
-  const money = (n) => n.toLocaleString("ru-RU").replace(/ |,/g, " ") + " сум";
-  const weight = (n) => n.toLocaleString("ru-RU", { minimumFractionDigits: 1 }) + " г";
-  const iconFor = (cat) => CATEGORIES.find((c) => c.id === cat).icon;
-
-  const state = { metal: "all", cat: null, favs: new Set(), reserved: 0, current: null };
-  try { JSON.parse(localStorage.getItem("sz-favs") || "[]").forEach((s) => state.favs.add(s)); } catch (e) {}
-
-  // Категории
-  $("#cats").innerHTML = CATEGORIES.map((c) => `
-    <button class="cat" data-cat="${c.id}" aria-pressed="false">
-      <svg aria-hidden="true"><use href="#${c.icon}"/></svg>
-      <b>${c.name}</b><span>${c.count} изделий</span>
-    </button>`).join("");
-
-  // Каталог
-  const grid = $("#grid");
-  grid.innerHTML = PRODUCTS.map((p) => `
-    <article class="card" data-sku="${p.sku}" data-metal="${p.metal}" data-cat="${p.cat}">
-      <div class="tile" data-metal="${p.metal}">
-        ${p.isNew ? '<span class="new">Новинка</span>' : ""}
-        <svg class="piece" viewBox="0 0 120 120" aria-hidden="true"><use href="#${iconFor(p.cat)}"/></svg>
-        <button class="icon-btn fav" aria-label="В избранное: ${p.name}" aria-pressed="${state.favs.has(p.sku)}">
-          <svg viewBox="0 0 24 24"><use href="#i-heart"/></svg>
-        </button>
-      </div>
-      <h3>${p.name}</h3>
-      <p class="specs">${METAL[p.metal][0].toUpperCase() + METAL[p.metal].slice(1)} ${p.probe}, ${weight(p.weight)}${p.stone ? ", " + p.stone : ""}</p>
-      <div class="card-foot">
-        <span class="price">${money(p.price)}</span>
-        <span class="stock">${p.stock === 1 ? "Последнее" : `В наличии: ${p.stock}`}</span>
-      </div>
-      <button class="btn btn-ghost reserve-btn">Забронировать</button>
-    </article>`).join("");
-
-  function applyFilters() {
-    let shown = 0;
-    grid.querySelectorAll(".card").forEach((card) => {
-      const ok = (state.metal === "all" || card.dataset.metal === state.metal) && (!state.cat || card.dataset.cat === state.cat);
-      card.hidden = !ok; if (ok) shown++;
-    });
-    $("#empty").hidden = shown > 0;
-  }
-
-  $("#filters").addEventListener("click", (e) => {
-    const chip = e.target.closest(".chip"); if (!chip) return;
-    state.metal = chip.dataset.metal;
-    $("#filters").querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", c === chip));
-    applyFilters();
-  });
-
-  $("#cats").addEventListener("click", (e) => {
-    const btn = e.target.closest(".cat"); if (!btn) return;
-    state.cat = state.cat === btn.dataset.cat ? null : btn.dataset.cat;
-    $("#cats").querySelectorAll(".cat").forEach((c) => {
-      const on = c.dataset.cat === state.cat;
-      c.setAttribute("aria-pressed", on);
-      c.style.borderColor = on ? "var(--gold)" : "";
-      c.style.background = on ? "var(--surface)" : "";
-    });
-    const h = $("#catalog h2");
-    h.textContent = state.cat ? CATEGORIES.find((c) => c.id === state.cat).name : "Новинки сезона";
-    applyFilters();
-    $("#catalog").scrollIntoView({ behavior: "smooth" });
-  });
-
-  // Избранное
-  const favBadge = $("#favCount");
-  const syncFavs = () => {
-    favBadge.textContent = state.favs.size; favBadge.hidden = state.favs.size === 0;
-    try { localStorage.setItem("sz-favs", JSON.stringify([...state.favs])); } catch (e) {}
+  const T = {
+    uz: {
+      city: "Toshkent", stores: "Do'konlar", delivery: "Yetkazib berish", payment: "To'lov usullari", warranty: "Kafolat",
+      about: "Biz haqimizda", contact: "Aloqa", searchLabel: "Qidiruv", searchPh: "Uzuk, sirg'a, zanjir...",
+      login: "Kirish", favs: "Sevimlilar", cart: "Savat", catalog: "Katalog",
+      c_rings: "Uzuklar", c_earrings: "Sirg'alar", c_bracelets: "Bilaguzuklar", c_chains: "Zanjirlar",
+      c_pendants: "Taqinchoqlar", c_sets: "To'plamlar", c_gifts: "Sovg'alar",
+      newItems: "Yangi mahsulotlar", sales: "Aksiyalar", kicker: "Yangi kolleksiya 2026",
+      heroTitle: "Sifat, zamonaviy ijroda namoyon",
+      heroSub: "Oltin 585 va kumush 925 dan zargarlik buyumlari. Har biri o'z zavodimizda yaratilgan.",
+      ctaCollection: "Kolleksiyani ko'rish", ctaStore: "Do'konni topish",
+      tabNew: "Yangi", tabPopular: "Ommabop", tabSale: "Chegirmalar",
+      collections: "Kolleksiyalar", viewAll: "Barchasini ko'rish",
+      factory: "Bizning zavod",
+      factoryText: "25 yildan ortiq tajriba, zamonaviy texnologiyalar va zargarlik san'atiga e'tibor. Har bir buyum ishlab chiqarishdan tortib vitrinagacha nazoratdan o'tadi.",
+      statYears: "yillik tajriba", statProbe: "oltin va kumush proba", statCert: "sertifikatlangan", aboutFactory: "Zavod haqida",
+      info: "Ma'lumot", footerAbout: "Jewelry Factory, O'zbekiston. Oltin va kumushdan zargarlik buyumlari.",
+      demo: "Rahbariyat uchun namoyish. Narxlar va mahsulotlar namunaviy.",
+      p1: "Brilliantli uzuk", p2: "Fianitli sirg'alar", p3: "Zanjirli bilaguzuk", p4: "Brilliantli taqinchoq", p5: "Safirli uzuk",
+      gold: "Oltin 585", items: "ta", tagNew: "Yangi", tagSale: "Chegirma", sum: "so'm",
+      addFav: "Sevimlilarga qo'shildi", delFav: "Sevimlilardan olib tashlandi", addCart: "Savatga qo'shildi",
+      empty: "Hech narsa topilmadi. Boshqa so'z bilan qidirib ko'ring.",
+      b: [["O'z ishlab chiqarishimiz", "Sifat kafolati"], ["Oltin 585 va kumush 925", "Barcha mahsulotlar sertifikatlangan"],
+          ["Yetkazib berish", "O'zbekiston bo'ylab"], ["Sovg'a qadoqlash", "Har bir buyurtma uchun"], ["Qulay to'lov", "Naqd va karta orqali"]],
+    },
+    ru: {
+      city: "Ташкент", stores: "Магазины", delivery: "Доставка", payment: "Способы оплаты", warranty: "Гарантия",
+      about: "О нас", contact: "Контакты", searchLabel: "Поиск", searchPh: "Кольцо, серьги, цепь...",
+      login: "Войти", favs: "Избранное", cart: "Корзина", catalog: "Каталог",
+      c_rings: "Кольца", c_earrings: "Серьги", c_bracelets: "Браслеты", c_chains: "Цепи",
+      c_pendants: "Подвески", c_sets: "Комплекты", c_gifts: "Подарки",
+      newItems: "Новинки", sales: "Акции", kicker: "Новая коллекция 2026",
+      heroTitle: "Качество в современном исполнении",
+      heroSub: "Украшения из золота 585 и серебра 925. Каждое создано на нашем собственном заводе.",
+      ctaCollection: "Смотреть коллекцию", ctaStore: "Найти магазин",
+      tabNew: "Новые", tabPopular: "Популярные", tabSale: "Скидки",
+      collections: "Коллекции", viewAll: "Смотреть все",
+      factory: "Наш завод",
+      factoryText: "Более 25 лет опыта, современные технологии и внимание к ювелирному мастерству. Каждое изделие проходит контроль от производства до витрины.",
+      statYears: "лет опыта", statProbe: "проба золота и серебра", statCert: "сертифицировано", aboutFactory: "О заводе",
+      info: "Информация", footerAbout: "Jewelry Factory, Узбекистан. Украшения из золота и серебра.",
+      demo: "Демонстрация для руководства. Цены и товары примерные.",
+      p1: "Кольцо с бриллиантом", p2: "Серьги с фианитами", p3: "Браслет-цепочка", p4: "Подвеска с бриллиантом", p5: "Кольцо с сапфиром",
+      gold: "Золото 585", items: "шт.", tagNew: "Новинка", tagSale: "Скидка", sum: "сум",
+      addFav: "Добавлено в избранное", delFav: "Убрано из избранного", addCart: "Добавлено в корзину",
+      empty: "Ничего не нашлось. Попробуйте другое слово.",
+      b: [["Собственное производство", "Гарантия качества"], ["Золото 585 и серебро 925", "Все изделия сертифицированы"],
+          ["Доставка", "По всему Узбекистану"], ["Подарочная упаковка", "К каждому заказу"], ["Удобная оплата", "Наличными и картой"]],
+    },
+    en: {
+      city: "Tashkent", stores: "Stores", delivery: "Delivery", payment: "Payment", warranty: "Warranty",
+      about: "About us", contact: "Contact", searchLabel: "Search", searchPh: "Ring, earrings, chain...",
+      login: "Sign in", favs: "Favorites", cart: "Bag", catalog: "Catalog",
+      c_rings: "Rings", c_earrings: "Earrings", c_bracelets: "Bracelets", c_chains: "Chains",
+      c_pendants: "Pendants", c_sets: "Sets", c_gifts: "Gifts",
+      newItems: "New arrivals", sales: "Offers", kicker: "New collection 2026",
+      heroTitle: "Quality in a modern form",
+      heroSub: "Jewelry in 585 gold and 925 silver. Every piece is made at our own factory.",
+      ctaCollection: "Explore the collection", ctaStore: "Find a store",
+      tabNew: "New", tabPopular: "Popular", tabSale: "On sale",
+      collections: "Collections", viewAll: "View all",
+      factory: "Our factory",
+      factoryText: "Over 25 years of experience, modern technology and care for the jeweler's craft. Every piece is checked from production to the showcase.",
+      statYears: "years of experience", statProbe: "gold and silver hallmark", statCert: "certified", aboutFactory: "About the factory",
+      info: "Information", footerAbout: "Jewelry Factory, Uzbekistan. Gold and silver jewelry.",
+      demo: "Demo for management. Prices and products are examples.",
+      p1: "Diamond ring", p2: "Cubic zirconia earrings", p3: "Chain bracelet", p4: "Diamond pendant", p5: "Sapphire ring",
+      gold: "585 gold", items: "items", tagNew: "New", tagSale: "Sale", sum: "UZS",
+      addFav: "Added to favorites", delFav: "Removed from favorites", addCart: "Added to bag",
+      empty: "Nothing found. Try another word.",
+      b: [["Own production", "Quality guarantee"], ["585 gold and 925 silver", "Every piece is certified"],
+          ["Delivery", "Across Uzbekistan"], ["Gift wrapping", "With every order"], ["Easy payment", "Cash or card"]],
+    },
   };
-  syncFavs();
 
-  grid.addEventListener("click", (e) => {
-    const card = e.target.closest(".card"); if (!card) return;
-    const p = PRODUCTS.find((x) => x.sku === card.dataset.sku);
-    if (e.target.closest(".fav")) {
-      const btn = e.target.closest(".fav");
-      const on = !state.favs.has(p.sku);
-      on ? state.favs.add(p.sku) : state.favs.delete(p.sku);
-      btn.setAttribute("aria-pressed", on);
-      syncFavs();
-      toast(on ? "Добавлено в избранное" : "Убрано из избранного");
-    } else if (e.target.closest(".reserve-btn")) {
-      openReserve(p);
-    }
-  });
+  const CATS = [
+    { key: "c_rings", img: "rings", n: 412 }, { key: "c_earrings", img: "earrings", n: 286 },
+    { key: "c_bracelets", img: "bracelets", n: 121 }, { key: "c_chains", img: "chains", n: 98 },
+    { key: "c_pendants", img: "pendants", n: 154 }, { key: "c_sets", img: "sets", n: 47 },
+    { key: "c_gifts", img: "gifts", n: 63 },
+  ];
+  const PRODUCTS = [
+    { id: 1, key: "p1", w: 3.4, price: 8450000, tabs: ["new", "popular"] },
+    { id: 2, key: "p2", w: 2.8, price: 6230000, tabs: ["new", "sale"], old: 6950000 },
+    { id: 3, key: "p3", w: 4.6, price: 7990000, tabs: ["new", "popular"] },
+    { id: 4, key: "p4", w: 1.9, price: 5480000, tabs: ["new", "sale"], old: 6100000 },
+    { id: 5, key: "p5", w: 3.1, price: 6950000, tabs: ["new", "popular"] },
+  ];
+  const BENEFIT_ICONS = ["i-gem", "i-shield", "i-truck", "i-gift", "i-card"];
 
-  // Магазины
-  $("#storeList").innerHTML = STORES.map((s) => `
-    <div class="store"><b>${s.name}</b><span>${s.area}</span><span class="open">Ежедневно ${s.hours}</span></div>`).join("");
-  $("#rStore").innerHTML = STORES.map((s) => `<option value="${s.id}">${s.name}</option>`).join("");
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const store = { get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (e) { return d; } },
+                  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
-  // Бронь
-  const dlg = $("#reserve"), form = $("#reserveForm");
-  const formHTML = form.innerHTML;
-  function openReserve(p) {
-    state.current = p;
-    form.innerHTML = formHTML;
-    $("#rStore").innerHTML = STORES.map((s) => `<option value="${s.id}">${s.name}</option>`).join("");
-    $("#reserveItem").innerHTML = `
-      <div class="tile" data-metal="${p.metal}"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#${iconFor(p.cat)}"/></svg></div>
-      <div><b>${p.name}</b><p class="specs">${money(p.price)}, артикул ${p.sku}</p></div>`;
-    $("#reserveCancel").onclick = () => dlg.close();
-    dlg.showModal();
-    $("#rName").focus();
+  const state = { lang: store.get("sz-lang", "uz"), tab: "new", q: "", favs: new Set(store.get("sz-favs", [])), cart: store.get("sz-cart", 0) };
+  if (!T[state.lang]) state.lang = "uz";
+  const t = (k) => T[state.lang][k];
+  const money = (n) => n.toLocaleString("ru-RU").replace(/\s/g, " ") + " " + t("sum");
+  const grams = (n) => n.toFixed(1).replace(".", state.lang === "en" ? "." : ",") + (state.lang === "ru" ? " г" : " g");
+
+  function renderCats() {
+    $("#cats").innerHTML = CATS.map((c) => `
+      <a class="cat" href="#new">
+        <span class="cat-img"><img src="assets/img/cat-${c.img}.jpg" alt="" loading="lazy"></span>
+        <span>${t(c.key)}<small>${c.n} ${t("items")}</small></span>
+      </a>`).join("");
   }
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const name = $("#rName"), phone = $("#rPhone");
-    const digits = phone.value.replace(/\D/g, "");
-    if (!name.value.trim()) { name.focus(); return; }
-    if (digits.length !== 12) {
-      $("#rPhoneHint").textContent = "Введите номер полностью: +998 и 9 цифр";
-      $("#rPhoneHint").style.color = "var(--gold)";
-      phone.focus(); return;
+
+  function renderProducts() {
+    const q = state.q.trim().toLowerCase();
+    const list = PRODUCTS.filter((p) => p.tabs.includes(state.tab) && (!q || t(p.key).toLowerCase().includes(q)));
+    $("#products").innerHTML = list.length ? list.map((p) => `
+      <article class="product">
+        <div class="p-img">
+          <img src="assets/img/product-${p.id}.jpg" alt="${t(p.key)}" loading="lazy">
+          ${p.old ? `<span class="tag sale">−${Math.round((1 - p.price / p.old) * 100)}%</span>` : `<span class="tag">${t("tagNew")}</span>`}
+          <button class="fav" data-id="${p.id}" aria-pressed="${state.favs.has(p.id)}" aria-label="${t("favs")}: ${t(p.key)}"><svg class="ico"><use href="#i-heart"/></svg></button>
+        </div>
+        <div class="p-info">
+          <span class="p-name">${t(p.key)}</span>
+          <span class="p-meta">${t("gold")}, ${grams(p.w)}</span>
+          <div class="p-row">
+            <span class="p-price">${p.old ? `<s>${money(p.old)}</s>` : ""}${money(p.price)}</span>
+            <button class="bag" data-id="${p.id}" aria-label="${t("cart")}: ${t(p.key)}"><svg class="ico"><use href="#i-bag"/></svg></button>
+          </div>
+        </div>
+      </article>`).join("") : `<p style="grid-column:1/-1;color:var(--ink-soft);padding:32px 0">${t("empty")}</p>`;
+    $$("[data-count]").forEach((el) => { el.textContent = PRODUCTS.filter((p) => p.tabs.includes(el.dataset.count)).length; });
+  }
+
+  function renderBenefits() {
+    $("#benefitList").innerHTML = t("b").map(([title, sub], i) => `
+      <div class="benefit"><span class="benefit-ico"><svg class="ico"><use href="#${BENEFIT_ICONS[i]}"/></svg></span>
+      <span><b>${title}</b><small>${sub}</small></span></div>`).join("");
+  }
+
+  function badge(el, n, bump) {
+    el.textContent = n; el.hidden = n === 0;
+    if (bump) { el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); }
+  }
+
+  function applyLang() {
+    document.documentElement.lang = state.lang;
+    $$("[data-i18n]").forEach((el) => { const v = t(el.dataset.i18n); if (typeof v === "string") el.textContent = v; });
+    $$("[data-i18n-ph]").forEach((el) => { el.placeholder = t(el.dataset.i18nPh); });
+    $$(".lang button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.lang === state.lang));
+    $(".hero-badge .price").textContent = money(PRODUCTS[0].price);
+    renderCats(); renderProducts(); renderBenefits();
+  }
+
+  // События
+  $(".lang").addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    state.lang = b.dataset.lang; store.set("sz-lang", state.lang); applyLang();
+  });
+
+  $("#tabs").addEventListener("click", (e) => {
+    const b = e.target.closest(".tab"); if (!b) return;
+    state.tab = b.dataset.tab;
+    $$(".tab").forEach((x) => x.setAttribute("aria-selected", x === b));
+    renderProducts();
+  });
+
+  const search = $("#search");
+  search.addEventListener("input", () => {
+    state.q = search.value;
+    if (state.q && state.tab !== "new") { state.tab = "new"; $$(".tab").forEach((x) => x.setAttribute("aria-selected", x.dataset.tab === "new")); }
+    renderProducts();
+  });
+  search.addEventListener("keydown", (e) => { if (e.key === "Enter") $("#new").scrollIntoView({ behavior: "smooth" }); });
+  addEventListener("keydown", (e) => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); search.focus(); } });
+
+  $("#products").addEventListener("click", (e) => {
+    const fav = e.target.closest(".fav"), bag = e.target.closest(".bag");
+    if (fav) {
+      const id = +fav.dataset.id, on = !state.favs.has(id);
+      on ? state.favs.add(id) : state.favs.delete(id);
+      fav.setAttribute("aria-pressed", on);
+      store.set("sz-favs", [...state.favs]); badge($("#favCount"), state.favs.size, on);
+      toast(t(on ? "addFav" : "delFav"));
+    } else if (bag) {
+      state.cart++; store.set("sz-cart", state.cart); badge($("#cartCount"), state.cart, true);
+      bag.classList.add("added"); setTimeout(() => bag.classList.remove("added"), 900);
+      toast(t("addCart"));
     }
-    const store = STORES.find((s) => s.id === $("#rStore").value);
-    state.reserved++;
-    $("#resCount").textContent = state.reserved; $("#resCount").hidden = false;
-    form.innerHTML = `
-      <div class="done">
-        <b>Забронировано</b>
-        <p>${state.current.name} ждёт вас в магазине ${store.name} 48 часов. Мы позвоним на ${phone.value.trim()}, чтобы подтвердить.</p>
-        <p class="hint">Прототип: заявка никуда не отправляется.</p>
-        <button type="button" class="btn btn-primary" id="doneBtn">Готово</button>
-      </div>`;
-    $("#doneBtn").onclick = () => dlg.close();
   });
-  dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
 
-  // Шапка и меню
   const header = $("#header");
-  const onScroll = () => header.classList.toggle("is-scrolled", scrollY > 8);
+  const onScroll = () => header.classList.toggle("is-scrolled", scrollY > 50);
   addEventListener("scroll", onScroll, { passive: true }); onScroll();
-  const menuBtn = $("#menuBtn"), nav = $("#nav");
-  menuBtn.addEventListener("click", () => {
-    const open = nav.classList.toggle("is-open");
-    menuBtn.setAttribute("aria-expanded", open);
-  });
-  nav.addEventListener("click", (e) => { if (e.target.tagName === "A") { nav.classList.remove("is-open"); menuBtn.setAttribute("aria-expanded", false); } });
 
-  // Тост
   let tt;
   function toast(msg) {
-    const t = $("#toast"); t.textContent = msg; t.classList.add("is-on");
-    clearTimeout(tt); tt = setTimeout(() => t.classList.remove("is-on"), 2000);
+    const el = $("#toast"); $("span", el).textContent = msg; el.classList.add("is-on");
+    clearTimeout(tt); tt = setTimeout(() => el.classList.remove("is-on"), 1800);
   }
+
+  applyLang();
+  badge($("#favCount"), state.favs.size); badge($("#cartCount"), state.cart);
 })();
