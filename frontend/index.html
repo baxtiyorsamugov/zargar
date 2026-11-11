@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SOFIZAR — ювелирные украшения</title>
+  <meta name="description" content="Кольца, серьги, цепи и браслеты из золота 585 и 750 пробы. Выберите на сайте и заберите в магазине SOFIZAR.">
+  <!-- Gilroy подключается из assets/fonts (см. README там). Manrope — запасной вариант, близкий по рисунку. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<!--BODY-->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-ring" viewBox="0 0 120 120">
+      <circle cx="60" cy="72" r="32" fill="none" stroke="currentColor" stroke-width="9"/>
+      <path d="M60 22 L72 36 L60 46 L48 36 Z" fill="var(--turq)"/>
+      <path d="M60 22 L66 36 L60 46 Z" fill="#fff" opacity=".35"/>
+    </symbol>
+    <symbol id="i-earrings" viewBox="0 0 120 120">
+      <g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">
+        <path d="M36 18 a8 8 0 1 1 0 16"/><path d="M84 18 a8 8 0 1 1 0 16"/>
+        <path d="M36 34 v10"/><path d="M84 34 v10"/>
+      </g>
+      <path d="M36 44 C24 62 22 80 36 92 C50 80 48 62 36 44 Z" fill="currentColor"/>
+      <path d="M84 44 C72 62 70 80 84 92 C98 80 96 62 84 44 Z" fill="currentColor"/>
+      <circle cx="36" cy="74" r="6" fill="var(--turq)"/><circle cx="84" cy="74" r="6" fill="var(--turq)"/>
+    </symbol>
+    <symbol id="i-pendant" viewBox="0 0 120 120">
+      <path d="M14 14 C30 60 90 60 106 14" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round"/>
+      <circle cx="60" cy="54" r="5" fill="none" stroke="currentColor" stroke-width="3"/>
+      <path d="M60 60 L84 84 L60 108 L36 84 Z" fill="currentColor"/>
+      <path d="M60 72 L72 84 L60 96 L48 84 Z" fill="var(--turq)"/>
+    </symbol>
+    <symbol id="i-chain" viewBox="0 0 120 120">
+      <g fill="none" stroke="currentColor" stroke-width="6">
+        <ellipse cx="30" cy="60" rx="16" ry="10"/><ellipse cx="60" cy="60" rx="16" ry="10"/><ellipse cx="90" cy="60" rx="16" ry="10"/>
+      </g>
+    </symbol>
+    <symbol id="i-bracelet" viewBox="0 0 120 120">
+      <ellipse cx="60" cy="64" rx="44" ry="22" fill="none" stroke="currentColor" stroke-width="8"/>
+      <circle cx="60" cy="86" r="7" fill="var(--turq)"/><circle cx="38" cy="83" r="5" fill="currentColor"/><circle cx="82" cy="83" r="5" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-wedding" viewBox="0 0 120 120">
+      <circle cx="46" cy="64" r="26" fill="none" stroke="currentColor" stroke-width="10"/>
+      <circle cx="74" cy="64" r="26" fill="none" stroke="currentColor" stroke-width="10" opacity=".7"/>
+    </symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></symbol>
+  </defs>
+</svg>
+
+<header class="header" id="header">
+  <div class="wrap header-row">
+    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+    </button>
+    <a class="logo" href="#top" aria-label="SOFIZAR, на главную">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 20 12 30 16 20 20 16 30 12 20 2 16 12 12Z" fill="currentColor"/></svg>
+      SOFIZAR
+    </a>
+    <nav class="nav" id="nav">
+      <a href="#catalog">Каталог</a>
+      <a href="#categories">Категории</a>
+      <a href="#promise">Гарантии</a>
+      <a href="#stores">Магазины</a>
+    </nav>
+    <div class="header-tools">
+      <button class="icon-btn" aria-label="Поиск"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg></button>
+      <button class="icon-btn" aria-label="Избранное"><svg viewBox="0 0 24 24"><use href="#i-heart"/></svg><span class="badge" id="favCount" hidden>0</span></button>
+      <button class="icon-btn" aria-label="Мои брони"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg><span class="badge" id="resCount" hidden>0</span></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1>Золото, которое носят каждый день</h1>
+        <p class="hero-lead">Кольца, серьги и цепи 585 и 750 пробы. Выберите украшение на сайте, а примерьте и заберите в ближайшем магазине.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#catalog">Смотреть каталог</a>
+          <a class="btn btn-ghost" href="#stores">Найти магазин</a>
+        </div>
+        <div class="hero-facts">
+          <div><b>585 и 750</b><span>проба на каждом изделии</span></div>
+          <div><b>48 часов</b><span>держим бронь в магазине</span></div>
+          <div><b>0 сум</b><span>за подгонку размера</span></div>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 600 600">
+          <defs>
+            <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#F6E2B0"/><stop offset=".35" stop-color="#CF9F55"/>
+              <stop offset=".7" stop-color="#8E6629"/><stop offset="1" stop-color="#EDCD8E"/>
+            </linearGradient>
+          </defs>
+          <g class="girih">
+            <path class="draw" pathLength="1" d="M120 120H480V480H120Z"/>
+            <path class="draw" pathLength="1" d="M300 45 555 300 300 555 45 300Z"/>
+            <circle class="draw" pathLength="1" cx="300" cy="300" r="196"/>
+            <circle class="girih-faint" cx="300" cy="300" r="282"/>
+          </g>
+          <g class="ring-group">
+            <circle class="ring-band" cx="300" cy="340" r="112"/>
+            <path class="ring-shine" d="M215 290 A112 112 0 0 1 270 235"/>
+            <circle class="ring-prong" cx="270" cy="222" r="7"/><circle class="ring-prong" cx="330" cy="222" r="7"/>
+            <path class="ring-gem" d="M300 148 L348 196 L300 236 L252 196 Z"/>
+            <path class="ring-gem-hi" d="M300 148 L322 196 L300 236 Z"/>
+            <path class="ring-glint" d="M330 160 l4 -14 4 14 14 4 -14 4 -4 14 -4 -14 -14 -4Z" fill="#fff"/>
+          </g>
+        </svg>
+        <div class="hero-tag"><b>Кольцо «Афросиаб»</b><span>Золото 585, топаз, 3,2 г</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="categories" style="padding-top:0">
+    <div class="wrap">
+      <div class="cats" id="cats"></div>
+    </div>
+  </section>
+
+  <section class="section" id="catalog" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div style="display:grid;gap:10px">
+          <h2>Новинки сезона</h2>
+          <p>Наличие обновляется из магазинов каждые 15 минут.</p>
+        </div>
+        <div class="filters" id="filters" role="group" aria-label="Фильтр по металлу">
+          <button class="chip" aria-pressed="true" data-metal="all">Всё</button>
+          <button class="chip" aria-pressed="false" data-metal="yellow">Жёлтое золото</button>
+          <button class="chip" aria-pressed="false" data-metal="white">Белое золото</button>
+          <button class="chip" aria-pressed="false" data-metal="rose">Красное золото</button>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="empty" hidden>В этой категории пока нет изделий из выбранного металла. Сбросьте фильтр, чтобы увидеть всё.</p>
+    </div>
+  </section>
+
+  <section class="section" id="promise" style="padding-top:0">
+    <div class="wrap">
+      <div class="promise">
+        <div class="wrap promise-inner">
+          <h2>Покупаете золото, а не обещания</h2>
+          <div class="promise-list">
+            <div><b>Клеймо пробирной палаты</b><p>На каждом изделии стоит проба. Вес и состав указаны в бирке и чеке.</p></div>
+            <div><b>Сертификат на камни</b><p>Бриллианты и цветные камни продаём с документом о характеристиках.</p></div>
+            <div><b>Подгонка размера</b><p>Уменьшим или увеличим кольцо в мастерской бесплатно в течение года.</p></div>
+            <div><b>Чистка и полировка</b><p>Приносите украшения раз в год: вернём им блеск в любом нашем магазине.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="stores" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Магазины в Ташкенте</h2>
+        <p>Бронь с сайта ждёт вас в выбранном магазине 48 часов.</p>
+      </div>
+      <div class="stores" id="storeList"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-row">
+    <a class="logo" href="#top"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 20 12 30 16 20 20 16 30 12 20 2 16 12 12Z" fill="currentColor"/></svg>SOFIZAR</a>
+    <span>© 2026 SOFIZAR. Ювелирные украшения из золота.</span>
+  </div>
+</footer>
+
+<dialog class="reserve" id="reserve" aria-labelledby="reserveTitle">
+  <form method="dialog" class="reserve-body" id="reserveForm" novalidate>
+    <h3 id="reserveTitle" style="font-size:var(--fs-xl);font-weight:800">Забронировать в магазине</h3>
+    <div class="reserve-item" id="reserveItem"></div>
+    <div class="field">
+      <label for="rName">Ваше имя</label>
+      <input id="rName" name="name" autocomplete="given-name" required>
+    </div>
+    <div class="field">
+      <label for="rPhone">Телефон</label>
+      <input id="rPhone" name="phone" type="tel" inputmode="tel" value="+998 " autocomplete="tel" required>
+      <span class="hint" id="rPhoneHint">Перезвоним, когда украшение будет ждать вас</span>
+    </div>
+    <div class="field">
+      <label for="rStore">Магазин</label>
+      <select id="rStore" name="store"></select>
+    </div>
+    <div class="reserve-actions">
+      <button type="button" class="btn btn-ghost" id="reserveCancel">Отмена</button>
+      <button type="submit" class="btn btn-primary">Забронировать</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<!--/BODY-->
+<script src="assets/js/main.js"></script>
+</body>
+</html>
