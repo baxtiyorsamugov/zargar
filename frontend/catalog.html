@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Katalog — SOFIZAR</title>
+  <meta name="description" content="SOFIZAR katalogi: oltin 585 va kumush 925 dan uzuklar, sirg'alar, bilaguzuklar va zanjirlar.">
+  <link rel="preload" href="assets/fonts/gilroy-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/gilroy-black.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body data-page="catalog">
+<!--BODY-->
+<div id="chrome-top"></div>
+<main data-page="catalog">
+  <section class="wrap page-top">
+    <nav class="crumbs" aria-label="breadcrumbs" id="catCrumbs"></nav>
+    <div class="page-band">
+      <div>
+        <h1 id="catTitle">Katalog</h1>
+        <p id="catSub"></p>
+      </div>
+      <div class="band-cats" id="bandCats"></div>
+    </div>
+  </section>
+
+  <section class="wrap catalog-layout">
+    <aside class="filters" id="filters" aria-labelledby="fTitle">
+      <div class="filters-head">
+        <h2 id="fTitle" data-i18n="filters">Filtrlar</h2>
+        <button class="btn-text" id="fReset" data-i18n="reset">Tozalash</button>
+        <button class="icon-btn f-close" id="fClose" aria-label="close"><svg class="ico"><use href="#i-close"/></svg></button>
+      </div>
+      <fieldset class="f-group">
+        <legend data-i18n="fCategory">Toifa</legend>
+        <div class="f-list" id="fCat"></div>
+      </fieldset>
+      <fieldset class="f-group">
+        <legend data-i18n="fMetal">Metall</legend>
+        <div class="f-list" id="fMetal"></div>
+      </fieldset>
+      <fieldset class="f-group">
+        <legend data-i18n="fPrice">Narx, so'm</legend>
+        <div class="price-inputs">
+          <label class="sr" for="fMin" data-i18n="from">dan</label>
+          <input id="fMin" inputmode="numeric" placeholder="0">
+          <span>—</span>
+          <label class="sr" for="fMax" data-i18n="to">gacha</label>
+          <input id="fMax" inputmode="numeric" placeholder="15 000 000">
+        </div>
+        <div class="f-chips" id="fPricePresets"></div>
+      </fieldset>
+      <fieldset class="f-group">
+        <legend class="sr" data-i18n="fOffers">Takliflar</legend>
+        <label class="switch"><input type="checkbox" id="fSale"><span class="track"></span><span data-i18n="onlySale">Faqat chegirmadagilar</span></label>
+        <label class="switch"><input type="checkbox" id="fNew"><span class="track"></span><span data-i18n="onlyNew">Faqat yangi</span></label>
+      </fieldset>
+      <button class="btn btn-dark btn-block f-apply" id="fApply"></button>
+    </aside>
+
+    <div class="catalog-main">
+      <div class="toolbar">
+        <button class="btn btn-light btn-sm f-open" id="fOpen"><svg class="ico"><use href="#i-filter"/></svg><span data-i18n="filters">Filtrlar</span><span class="menu-n" id="fCount"></span></button>
+        <span class="result-n" id="resultN"></span>
+        <label class="sort">
+          <span data-i18n="sortBy">Saralash:</span>
+          <select id="sortSel">
+            <option value="pop" data-i18n="sortPop">Ommabop</option>
+            <option value="new" data-i18n="sortNew">Avval yangilari</option>
+            <option value="asc" data-i18n="sortAsc">Arzonroq</option>
+            <option value="desc" data-i18n="sortDesc">Qimmatroq</option>
+          </select>
+        </label>
+      </div>
+      <div class="active-chips" id="activeChips"></div>
+      <div class="products products-3" id="catGrid"></div>
+      <div class="panel empty-state" id="catEmpty" hidden>
+        <span class="empty-ico"><svg class="ico"><use href="#i-search"/></svg></span>
+        <h2 data-i18n="noResults">Hech narsa topilmadi</h2>
+        <p data-i18n="noResultsText">Filtrlarni o'zgartiring yoki tozalang.</p>
+        <button class="btn btn-dark" id="emptyReset" data-i18n="resetFilters">Filtrlarni tozalash</button>
+      </div>
+    </div>
+  </section>
+  <div class="f-backdrop" id="fBackdrop" hidden></div>
+</main>
+<div id="chrome-bottom"></div>
+<!--/BODY-->
+<script src="assets/js/core.js"></script>
+<script src="assets/js/catalog.js"></script>
+<script>SZ.start()</script>
+</body>
+</html>

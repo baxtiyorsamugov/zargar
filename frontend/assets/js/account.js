@@ -32,7 +32,7 @@
   function orderHTML(o) {
     const d = new Date(o.date), open = local.open === o.id;
     const count = o.items.reduce((n, l) => n + l.qty, 0);
-    const thumbs = o.items.slice(0, 3).map((l) => `<img src="assets/img/${byId(l.id).img}" alt="">`).join("");
+    const thumbs = o.items.slice(0, 3).map((l) => `<span class="metal-${byId(l.id).metal}"><img src="assets/img/${byId(l.id).img}" alt=""></span>`).join("");
     const step = STEP[o.status];
     return `
     <li class="order ${open ? "is-open" : ""} ${ACTIVE.includes(o.status) ? "is-active" : ""}">
@@ -48,7 +48,7 @@
       <div class="order-detail">
         <ol class="steps">${t("steps").map((s, i) => `<li class="${i < step ? "done" : i === step ? "now" : ""}"><span class="dot">${i < step || (i === step && o.status === "done") ? '<svg class="ico"><use href="#i-check"/></svg>' : i + 1}</span>${s}</li>`).join("")}</ol>
         <div class="od-items"><small>${t("orderItems")}</small>
-          ${o.items.map((l) => { const p = byId(l.id); return `<div class="od-item"><img src="assets/img/${p.img}" alt=""><span><b>${t(p.key)}</b><small>${l.size ? `${t("size")} ${sizeLabel(p, l.size)}, ` : ""}${l.qty} ${t("items")}</small></span><span class="od-price">${money(p.price * l.qty)}</span></div>`; }).join("")}
+          ${o.items.map((l) => { const p = byId(l.id); return `<div class="od-item"><a class="metal-${p.metal}" href="${href("product-" + p.id)}"><img src="assets/img/${p.img}" alt=""></a><span><b>${t(p.key)}</b><small>${l.size ? `${t("size")} ${sizeLabel(p, l.size)}, ` : ""}${l.qty} ${t("items")}</small></span><span class="od-price">${money(p.price * l.qty)}</span></div>`; }).join("")}
         </div>
         <button class="btn btn-light btn-sm" data-repeat="${o.id}"><svg class="ico"><use href="#i-bag"/></svg><span>${t("repeat")}</span></button>
       </div>` : ""}

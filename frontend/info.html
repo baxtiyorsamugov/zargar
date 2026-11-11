@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Xaridorlarga — SOFIZAR</title>
+  <meta name="description" content="SOFIZAR: yetkazib berish, to'lov, kafolat, do'konlar va savol-javoblar.">
+  <link rel="preload" href="assets/fonts/gilroy-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/gilroy-black.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body data-page="info">
+<!--BODY-->
+<div id="chrome-top"></div>
+<main data-page="info">
+  <section class="wrap page-top">
+    <div class="page-band">
+      <div>
+        <h1 data-i18n="forBuyers">Xaridorlarga</h1>
+        <p data-i18n="infoSub"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap info-layout">
+    <nav class="info-nav" id="infoNav">
+      <a data-sec="delivery"><svg class="ico"><use href="#i-truck"/></svg><span data-i18n="delivery"></span></a>
+      <a data-sec="payment"><svg class="ico"><use href="#i-card"/></svg><span data-i18n="payment"></span></a>
+      <a data-sec="warranty"><svg class="ico"><use href="#i-shield"/></svg><span data-i18n="warranty"></span></a>
+      <a data-sec="stores"><svg class="ico"><use href="#i-store"/></svg><span data-i18n="stores"></span></a>
+      <a data-sec="faq"><svg class="ico"><use href="#i-spark"/></svg><span data-i18n="faq"></span></a>
+    </nav>
+
+    <div class="info-content">
+      <section class="panel info-sec" id="delivery">
+        <h2 class="panel-title" data-i18n="delivery">Yetkazib berish</h2>
+        <div class="info-cards" id="deliveryCards"></div>
+        <p class="hint" data-i18n="deliveryNote"></p>
+      </section>
+
+      <section class="panel info-sec" id="payment">
+        <h2 class="panel-title" data-i18n="payment">To'lov usullari</h2>
+        <div class="info-cards info-cards-3" id="paymentCards"></div>
+      </section>
+
+      <section class="panel info-sec" id="warranty">
+        <h2 class="panel-title" data-i18n="warranty">Kafolat</h2>
+        <ul class="check-list" id="warrantyList"></ul>
+      </section>
+
+      <section class="panel info-sec" id="stores">
+        <h2 class="panel-title" data-i18n="stores">Do'konlar</h2>
+        <div class="store-card">
+          <div class="store-img"><img src="assets/img/hero-uzbek.webp" alt="" loading="lazy"></div>
+          <div class="store-copy">
+            <b data-i18n="storeName">SOFIZAR, markaziy do'kon</b>
+            <dl class="spec">
+              <div><dt data-i18n="address">Manzil</dt><dd data-i18n="storeAddr"></dd></div>
+              <div><dt data-i18n="hours">Ish vaqti</dt><dd data-i18n="storeHours"></dd></div>
+              <div><dt data-i18n="coPhone">Telefon</dt><dd>+998 55 500-00-00</dd></div>
+            </dl>
+            <div class="store-actions">
+              <a class="btn btn-dark btn-sm" href="https://yandex.uz/maps/?text=SOFIZAR%20Toshkent" target="_blank" rel="noopener"><svg class="ico"><use href="#i-map"/></svg><span data-i18n="openMap">Xaritada ochish</span></a>
+              <button class="btn btn-light btn-sm" id="copyPhone"><svg class="ico"><use href="#i-phone"/></svg><span data-i18n="copyPhone">Raqamni nusxalash</span></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel info-sec" id="faq">
+        <h2 class="panel-title" data-i18n="faq">Savol-javob</h2>
+        <div class="faq" id="faqList"></div>
+      </section>
+    </div>
+  </section>
+</main>
+<div id="chrome-bottom"></div>
+<!--/BODY-->
+<script src="assets/js/core.js"></script>
+<script src="assets/js/pages.js"></script>
+<script>SZ.start()</script>
+</body>
+</html>
