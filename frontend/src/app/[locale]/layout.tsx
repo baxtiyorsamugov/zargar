@@ -1,11 +1,9 @@
-import "@fontsource-variable/manrope";
-import "@fontsource/cormorant-garamond/400.css";
-import "@fontsource/cormorant-garamond/500.css";
 import "../globals.css";
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { isLocale, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -40,17 +38,14 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
+      <head>
+        <link rel="preload" href="/fonts/gilroy-regular.woff2" as="font" type="font/woff2" crossOrigin="" />
+        <link rel="preload" href="/fonts/gilroy-black.woff2" as="font" type="font/woff2" crossOrigin="" />
+      </head>
       <body>
         <Header locale={locale} t={t} />
         <main>{children}</main>
-        <footer className="footer" id="contacts">
-          <div className="wrap">
-            <span>
-              © {new Date().getFullYear()} SOFIZAR. {t.footer.rights}
-            </span>
-            <span>Tashkent</span>
-          </div>
-        </footer>
+        <Footer locale={locale} t={t} />
       </body>
     </html>
   );

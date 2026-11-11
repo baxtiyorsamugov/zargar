@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Gilroy — коммерческий шрифт, файлы кладутся вручную (см. public/fonts/README.md)
+public/fonts/*.woff2
