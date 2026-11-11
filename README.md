@@ -16,4 +16,8 @@
 
 Товары, заказы и пользователь сейчас примерные; позже их отдаст API, которое берёт данные из 1С.
 
-Открыть локально: `python3 -m http.server -d frontend 8000` → http://localhost:8000
+## Запуск локально
+
+1. Положите файлы Gilroy в `frontend/assets/fonts/` (см. README там).
+2. Windows: дважды щёлкните `start-server.bat`. macOS/Linux: `./start-server.sh`.
+3. Откроется http://localhost:8000. Нужен установленный Python 3.
