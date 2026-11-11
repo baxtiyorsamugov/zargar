@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>SOFIZAR — zargarlik buyumlari</title>
   <meta name="description" content="SOFIZAR: oltin 585 va kumush 925 dan uzuklar, sirg'alar, bilaguzuklar va zanjirlar. O'z zavodimizda ishlab chiqarilgan.">
-  <!-- Gilroy берётся из assets/fonts (см. README). Пока файлов нет — Manrope. -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+  <link rel="preload" href="assets/fonts/gilroy-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/gilroy-black.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
@@ -22,6 +20,7 @@
     <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20Z"/></symbol>
     <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8.5h14l-1.2 11.5H6.2L5 8.5Z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/></symbol>
     <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
     <symbol id="i-gem" viewBox="0 0 24 24"><path d="M6.5 4h11L21 9l-9 11L3 9l3.5-5Z"/><path d="M3 9h18M9 4l3 16 3-16"/></symbol>
     <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 19 6v5.5c0 4.4-3 7.8-7 9.5-4-1.7-7-5.1-7-9.5V6l7-3Z"/><path d="m8.8 12 2.2 2.2 4.2-4.4"/></symbol>
@@ -86,7 +85,7 @@
 <main id="top">
   <section class="hero wrap">
     <div class="hero-banner">
-      <img src="assets/img/hero.jpg" alt="" fetchpriority="high">
+      <img src="assets/img/hero-uzbek.webp" alt="" fetchpriority="high">
       <div class="hero-shine" aria-hidden="true"></div>
       <div class="hero-copy">
         <span class="hero-kicker" data-i18n="kicker">Yangi kolleksiya 2026</span>
@@ -99,13 +98,17 @@
       </div>
       <div class="hero-dots" aria-hidden="true"><span></span><span></span><span></span></div>
       <a class="hero-badge" href="#new">
-        <img src="assets/img/product-1.jpg" alt="">
+        <img src="assets/img/gold-ring.webp" alt="">
         <span><b data-i18n="p1">Brilliantli uzuk</b><small class="price">8 450 000 so'm</small></span>
       </a>
     </div>
   </section>
 
   <section class="section wrap" id="categories">
+    <div class="section-head">
+      <h2 data-i18n="popularCats">Mashhur kategoriyalar</h2>
+      <a class="link-more" href="#new" data-i18n="viewAll">Barchasini ko'rish</a>
+    </div>
     <div class="cats" id="cats"></div>
   </section>
 
@@ -126,9 +129,13 @@
       <h2 data-i18n="collections">Kolleksiyalar</h2>
       <a class="link-more" href="#new" data-i18n="viewAll">Barchasini ko'rish</a>
     </div>
-    <div class="promos">
-      <a class="promo" href="#new"><img src="assets/img/promo-gold.jpg" alt="Oltin uyg'unlik kolleksiyasi" loading="lazy"></a>
-      <a class="promo" href="#new"><img src="assets/img/promo-silver.jpg" alt="Har kun uchun yengillik: kumush kolleksiyasi" loading="lazy"></a>
+    <div class="collection">
+      <img src="assets/img/campaign-hands.webp" alt="" loading="lazy">
+      <div class="collection-copy">
+        <h3 data-i18n="collTitle">Oltin uyg'unlik</h3>
+        <p data-i18n="collText">Har kuni taqish uchun yumshoq shakllar: uzuklar, bilaguzuklar va zanjirlar bitta uslubda.</p>
+        <a class="btn btn-dark" href="#new"><span data-i18n="ctaCollection">Kolleksiyani ko'rish</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+      </div>
     </div>
   </section>
 
@@ -148,7 +155,7 @@
         </div>
         <a class="btn btn-light" href="#factory" data-i18n="aboutFactory">Zavod haqida</a>
       </div>
-      <div class="factory-img"><img src="assets/img/factory-building.jpg" alt="SOFIZAR zavodi binosi" loading="lazy"></div>
+      <div class="factory-img"><img src="assets/img/atelier.webp" alt="Zargar ustaxonada uzukka ishlov bermoqda" loading="lazy"></div>
     </div>
   </section>
 </main>

@@ -1,15 +1,15 @@
 # Шрифт Gilroy
 
-Gilroy — коммерческий шрифт (автор Radomir Tinkov), его нельзя брать с бесплатных сайтов и хранить в публичном репозитории без лицензии.
+Сайт использует Gilroy: Regular 400, Medium 500, SemiBold 600, Bold 700, Black (для заголовков 800–900).
 
-Что сделать:
-1. Купить веб-лицензию (например, на myfonts.com) на начертания Regular, Medium, SemiBold, Bold, ExtraBold.
-2. Положить файлы сюда с такими именами:
-   - `Gilroy-Regular.woff2` (400)
-   - `Gilroy-Medium.woff2` (500)
-   - `Gilroy-SemiBold.woff2` (600)
-   - `Gilroy-Bold.woff2` (700)
-   - `Gilroy-ExtraBold.woff2` (800)
-3. Если репозиторий публичный — добавить `*.woff2` в `.gitignore` и класть шрифты при сборке Docker-образа из приватного хранилища.
+Файлы `.woff2` лежат здесь локально, но **не коммитятся** (см. `.gitignore`): Gilroy — коммерческий шрифт, а репозиторий публичный.
 
-Пока файлов нет, сайт показывает Manrope (Google Fonts) — он ближе всего к Gilroy по рисунку, поэтому вёрстка не «поедет», когда шрифт появится.
+Чтобы сайт собрался у разработчика или в Docker, положите в эту папку:
+
+- `gilroy-regular.woff2`
+- `gilroy-medium.woff2`
+- `gilroy-semibold.woff2`
+- `gilroy-bold.woff2`
+- `gilroy-black.woff2`
+
+Если репозиторий станет приватным, строку из `.gitignore` можно убрать и хранить шрифты прямо в git.

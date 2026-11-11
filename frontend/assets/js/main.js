@@ -18,7 +18,8 @@
       statYears: "yillik tajriba", statProbe: "oltin va kumush proba", statCert: "sertifikatlangan", aboutFactory: "Zavod haqida",
       info: "Ma'lumot", footerAbout: "Jewelry Factory, O'zbekiston. Oltin va kumushdan zargarlik buyumlari.",
       demo: "Rahbariyat uchun namoyish. Narxlar va mahsulotlar namunaviy.",
-      p1: "Brilliantli uzuk", p2: "Fianitli sirg'alar", p3: "Zanjirli bilaguzuk", p4: "Brilliantli taqinchoq", p5: "Safirli uzuk",
+      p1: "Burama uzuk", p2: "Tomchi sirg'alar", p3: "Tomchi marjonli zanjir", p4: "Zanjir bilaguzuk",
+      popularCats: "Mashhur kategoriyalar", collTitle: "Oltin uyg'unlik", collText: "Har kuni taqish uchun yumshoq shakllar: uzuklar, bilaguzuklar va zanjirlar bitta uslubda.",
       gold: "Oltin 585", items: "ta", tagNew: "Yangi", tagSale: "Chegirma", sum: "so'm",
       addFav: "Sevimlilarga qo'shildi", delFav: "Sevimlilardan olib tashlandi", addCart: "Savatga qo'shildi",
       empty: "Hech narsa topilmadi. Boshqa so'z bilan qidirib ko'ring.",
@@ -42,7 +43,8 @@
       statYears: "лет опыта", statProbe: "проба золота и серебра", statCert: "сертифицировано", aboutFactory: "О заводе",
       info: "Информация", footerAbout: "Jewelry Factory, Узбекистан. Украшения из золота и серебра.",
       demo: "Демонстрация для руководства. Цены и товары примерные.",
-      p1: "Кольцо с бриллиантом", p2: "Серьги с фианитами", p3: "Браслет-цепочка", p4: "Подвеска с бриллиантом", p5: "Кольцо с сапфиром",
+      p1: "Кольцо-переплетение", p2: "Серьги-капли", p3: "Цепь с подвеской-каплей", p4: "Браслет-цепь",
+      popularCats: "Популярные категории", collTitle: "Золотая гармония", collText: "Мягкие формы на каждый день: кольца, браслеты и цепи в одном стиле.",
       gold: "Золото 585", items: "шт.", tagNew: "Новинка", tagSale: "Скидка", sum: "сум",
       addFav: "Добавлено в избранное", delFav: "Убрано из избранного", addCart: "Добавлено в корзину",
       empty: "Ничего не нашлось. Попробуйте другое слово.",
@@ -66,7 +68,8 @@
       statYears: "years of experience", statProbe: "gold and silver hallmark", statCert: "certified", aboutFactory: "About the factory",
       info: "Information", footerAbout: "Jewelry Factory, Uzbekistan. Gold and silver jewelry.",
       demo: "Demo for management. Prices and products are examples.",
-      p1: "Diamond ring", p2: "Cubic zirconia earrings", p3: "Chain bracelet", p4: "Diamond pendant", p5: "Sapphire ring",
+      p1: "Twist ring", p2: "Drop hoop earrings", p3: "Drop pendant necklace", p4: "Chain bracelet",
+      popularCats: "Popular categories", collTitle: "Golden harmony", collText: "Soft shapes for every day: rings, bracelets and chains in one style.",
       gold: "585 gold", items: "items", tagNew: "New", tagSale: "Sale", sum: "UZS",
       addFav: "Added to favorites", delFav: "Removed from favorites", addCart: "Added to bag",
       empty: "Nothing found. Try another word.",
@@ -76,17 +79,15 @@
   };
 
   const CATS = [
-    { key: "c_rings", img: "rings", n: 412 }, { key: "c_earrings", img: "earrings", n: 286 },
-    { key: "c_bracelets", img: "bracelets", n: 121 }, { key: "c_chains", img: "chains", n: 98 },
-    { key: "c_pendants", img: "pendants", n: 154 }, { key: "c_sets", img: "sets", n: 47 },
-    { key: "c_gifts", img: "gifts", n: 63 },
+    { key: "c_rings", img: "category-rings.webp", n: 412 },
+    { key: "c_earrings", img: "category-earrings.webp", n: 286 },
+    { key: "c_chains", img: "category-necklaces.webp", n: 252 },
   ];
   const PRODUCTS = [
-    { id: 1, key: "p1", w: 3.4, price: 8450000, tabs: ["new", "popular"] },
-    { id: 2, key: "p2", w: 2.8, price: 6230000, tabs: ["new", "sale"], old: 6950000 },
-    { id: 3, key: "p3", w: 4.6, price: 7990000, tabs: ["new", "popular"] },
-    { id: 4, key: "p4", w: 1.9, price: 5480000, tabs: ["new", "sale"], old: 6100000 },
-    { id: 5, key: "p5", w: 3.1, price: 6950000, tabs: ["new", "popular"] },
+    { id: 1, key: "p1", img: "gold-ring.webp",     w: 6.2, price: 8450000, tabs: ["new", "popular"] },
+    { id: 2, key: "p2", img: "gold-earrings.webp", w: 5.4, price: 7990000, tabs: ["new", "sale"], old: 8890000 },
+    { id: 3, key: "p3", img: "gold-necklace.webp", w: 2.1, price: 5480000, tabs: ["new", "popular"] },
+    { id: 4, key: "p4", img: "gold-bracelet.webp", w: 3.6, price: 6230000, tabs: ["new"] },
   ];
   const BENEFIT_ICONS = ["i-gem", "i-shield", "i-truck", "i-gift", "i-card"];
 
@@ -104,8 +105,9 @@
   function renderCats() {
     $("#cats").innerHTML = CATS.map((c) => `
       <a class="cat" href="#new">
-        <span class="cat-img"><img src="assets/img/cat-${c.img}.jpg" alt="" loading="lazy"></span>
-        <span>${t(c.key)}<small>${c.n} ${t("items")}</small></span>
+        <img src="assets/img/${c.img}" alt="" loading="lazy">
+        <span class="cat-label"><span><b>${t(c.key)}</b><small>${c.n} ${t("items")}</small></span>
+        <span class="cat-go"><svg class="ico"><use href="#i-arrow"/></svg></span></span>
       </a>`).join("");
   }
 
@@ -115,7 +117,7 @@
     $("#products").innerHTML = list.length ? list.map((p) => `
       <article class="product">
         <div class="p-img">
-          <img src="assets/img/product-${p.id}.jpg" alt="${t(p.key)}" loading="lazy">
+          <img src="assets/img/${p.img}" alt="${t(p.key)}" loading="lazy">
           ${p.old ? `<span class="tag sale">−${Math.round((1 - p.price / p.old) * 100)}%</span>` : `<span class="tag">${t("tagNew")}</span>`}
           <button class="fav" data-id="${p.id}" aria-pressed="${state.favs.has(p.id)}" aria-label="${t("favs")}: ${t(p.key)}"><svg class="ico"><use href="#i-heart"/></svg></button>
         </div>
