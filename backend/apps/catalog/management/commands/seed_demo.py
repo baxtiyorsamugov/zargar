@@ -6,11 +6,31 @@
 """
 
 from decimal import Decimal
+from pathlib import Path
 
+from django.core.files import File
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-from apps.catalog.models import Category, Collection, Product, ProductInsert, ProductVariant, Stone
+from apps.catalog.models import (
+    Category,
+    Collection,
+    Product,
+    ProductImage,
+    ProductInsert,
+    ProductVariant,
+    Stone,
+)
+
+# Демо-фото по категориям (до подключения 1С, где фото привязываются по артикулу)
+DEMO_MEDIA = Path(__file__).resolve().parents[2] / "demo_media"
+DEMO_PHOTOS = {
+    "rings": "gold-ring.webp",
+    "wedding-rings": "gold-ring.webp",
+    "earrings": "gold-earrings.webp",
+    "pendants": "gold-necklace.webp",
+    "bracelets": "gold-bracelet.webp",
+}
 
 CATEGORIES = [
     ("rings", "Uzuklar", "Кольца", "Rings"),
@@ -241,6 +261,12 @@ class Command(BaseCommand):
                 ProductInsert.objects.get_or_create(
                     product=product, stone=stones[stone], defaults={"count": 1}
                 )
+            photo = DEMO_MEDIA / DEMO_PHOTOS[cat]
+            if photo.exists() and not product.images.exists():
+                with photo.open("rb") as fh:
+                    ProductImage.objects.create(
+                        product=product, alt=names[1], image=File(fh, name=f"{sku.lower()}.webp")
+                    )
 
         self.stdout.write(
             self.style.SUCCESS(

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import AddToCart from "@/components/AddToCart";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProduct, mediaPath, type ProductDetail } from "@/lib/api";
@@ -100,22 +101,12 @@ export default async function ProductPage({ params }: Props) {
           </div>
           <p className="meta">{p.in_stock ? t.product.inStock : t.product.outOfStock}</p>
 
-          {sized.length > 0 && (
-            <>
-              <div className="meta">{t.product.size}</div>
-              <div className="sizes">
-                {sized.map((v) => (
-                  <span key={v.id} className={`size${v.in_stock ? "" : " off"}`}>
-                    {v.size}
-                  </span>
-                ))}
-              </div>
-            </>
-          )}
-
-          <button className="btn" disabled={!p.in_stock}>
-            {t.product.addToCart}
-          </button>
+          <AddToCart
+            locale={locale}
+            slug={p.slug}
+            variants={p.variants}
+            t={{ product: t.product, currency: t.currency }}
+          />
 
           <dl className="specs">
             <dt>{t.product.metal}</dt>

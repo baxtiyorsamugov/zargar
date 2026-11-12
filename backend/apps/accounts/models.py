@@ -63,3 +63,21 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.first_name
+
+
+class PhoneCode(models.Model):
+    """Одноразовый код входа (ADR-0010). Сам код не хранится — только HMAC-хеш."""
+
+    phone = models.CharField(_("телефон"), max_length=13, db_index=True)
+    code_hash = models.CharField(max_length=64)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    attempts = models.PositiveSmallIntegerField(default=0)
+    used_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("код входа")
+        verbose_name_plural = _("коды входа")
+        ordering = ("-created_at",)
+
+    def __str__(self):
+        return f"{self.phone} {self.created_at:%Y-%m-%d %H:%M}"

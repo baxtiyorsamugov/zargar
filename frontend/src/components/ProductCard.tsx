@@ -9,15 +9,20 @@ import { formatPrice, formatPriceFrom } from "@/lib/seo";
 type Props = { product: ProductListItem; locale: Locale; t: Dictionary; priority?: boolean };
 
 export default function ProductCard({ product: p, locale, t, priority }: Props) {
+  const off =
+    p.old_price_from && p.price_from
+      ? Math.round((1 - Number(p.price_from) / Number(p.old_price_from)) * 100)
+      : 0;
+  const color = t.ui.color[p.metal_color];
   return (
     <Link href={`/${locale}/product/${p.slug}`} className="card">
-      <div className="ph">
+      <div className={`ph metal-${p.metal === "silver" ? "silver" : p.metal_color}`}>
         {p.image ? (
           <Image
             src={mediaPath(p.image.url)}
             alt={p.image.alt || p.name}
             fill
-            sizes="(max-width: 820px) 50vw, 25vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 960px) 33vw, 25vw"
             priority={priority}
           />
         ) : (
@@ -25,16 +30,23 @@ export default function ProductCard({ product: p, locale, t, priority }: Props) 
             SZ
           </span>
         )}
-        {p.is_new && <span className="badge">New</span>}
+        {off > 0 ? (
+          <span className="badge sale">−{off}%</span>
+        ) : (
+          p.is_new && <span className="badge">{t.ui.newIn}</span>
+        )}
       </div>
-      <h3>{p.name}</h3>
-      <div className="meta">
-        {t.metal[p.metal] ?? p.metal}
-        {p.purity ? ` · ${p.purity}` : ""}
-      </div>
-      <div className="price">
-        {formatPriceFrom(p.price_from, locale, t)}
-        {p.old_price_from && <s>{formatPrice(p.old_price_from, locale, t.currency)}</s>}
+      <div className="card-info">
+        <h3>{p.name}</h3>
+        <div className="meta">
+          {t.metal[p.metal] ?? p.metal}
+          {color && p.metal === "gold" ? ` (${color})` : ""}
+          {p.purity ? ` ${p.purity}` : ""}
+        </div>
+        <div className="price">
+          {p.old_price_from && <s>{formatPrice(p.old_price_from, locale, t.currency)}</s>}
+          {formatPriceFrom(p.price_from, locale, t)}
+        </div>
       </div>
     </Link>
   );
