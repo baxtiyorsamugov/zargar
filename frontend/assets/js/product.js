@@ -1,6 +1,6 @@
 // SOFIZAR — карточка товара: галерея, металл, размер, характеристики, похожие товары.
 (() => {
-  const { t, PRODUCTS, byId, state, money, grams, sizeLabel, spec, href, esc, extend, onRoute, productCard, addToCart, $, $$, onChange } = SZ;
+  const { t, PRODUCTS, byId, state, money, grams, sizeLabel, spec, href, esc, extend, onRoute, productCard, addToCart, removeOneFromCart, $, $$, onChange } = SZ;
   const root = $('main[data-page="product"]'); if (!root) return;
 
   extend({
@@ -47,18 +47,28 @@
 
   const local = { id: 1, size: null, img: 0 };
   const cur = () => byId(local.id) || PRODUCTS[0];
+  const addButton = $("#pdAdd", root);
+  const removeButton = $("#pdRemove", root);
 
   function render() {
     const p = cur(), siblings = PRODUCTS.filter((x) => x.key === p.key);
+    const quantity = SZ.cartCount(p.id);
+    const count = $(".product-cart-count", addButton);
+    addButton.classList.toggle("added", state.addedProducts.has(p.id));
+    count.hidden = quantity === 0;
+    count.textContent = quantity;
+    addButton.setAttribute("aria-label", t("addToCart") + (quantity ? " · " + t("cart") + ": " + quantity : ""));
+    removeButton.hidden = quantity === 0;
+    removeButton.setAttribute("aria-label", t("removeOne") + ": " + t(p.key));
     document.title = `${t(p.key)} — SOFIZAR`;
     $("#pCrumbs", root).innerHTML = [[href("home"), t("home") || "Home"], [href("catalog"), t("catalog")], [href("catalog-" + p.cat), t("c_" + p.cat)]]
       .map(([h, l]) => `<a href="${h}">${l}</a><svg class="ico"><use href="#i-chev"/></svg>`).join("") + `<span>${t(p.key)}</span>`;
 
     // галерея: фото на белом + фото на модели
     const imgs = [p.img, p.life];
-    $("#gMain", root).innerHTML = `<div class="g-frame ${local.img === 0 ? "metal-" + p.metal : ""} ${local.img ? "is-life" : ""}"><img src="assets/img/${imgs[local.img]}" alt="${esc(t(p.key))}"></div>`
+    $("#gMain", root).innerHTML = `<div class="g-frame ${local.img === 0 ? "metal-" + p.metal : ""} ${local.img ? "is-life" : ""}"><span class="media-slot"><img src="assets/img/${imgs[local.img]}" alt="${esc(t(p.key))}"></span></div>`
       + (p.old ? `<span class="tag sale">−${Math.round((1 - p.price / p.old) * 100)}%</span>` : p.tabs.includes("new") ? `<span class="tag">${t("tagNew")}</span>` : "");
-    $("#gThumbs", root).innerHTML = imgs.map((src, i) => `<button class="g-thumb ${i === 0 ? "metal-" + p.metal : ""}" role="tab" aria-selected="${local.img === i}" data-img="${i}"><img src="assets/img/${src}" alt=""></button>`).join("");
+    $("#gThumbs", root).innerHTML = imgs.map((src, i) => `<button class="g-thumb ${i === 0 ? "metal-" + p.metal : ""}" role="tab" aria-selected="${local.img === i}" data-img="${i}"><span class="media-slot"><img src="assets/img/${src}" alt=""></span></button>`).join("");
 
     $("#pdTags", root).innerHTML = `<span class="pill pill-ready">${t("m_" + p.metal)} ${p.probe}</span>`;
     $("#pdName", root).textContent = t(p.key);
@@ -67,7 +77,7 @@
 
     $("#pdMetalName", root).textContent = `${t("m_" + p.metal)} ${p.probe}`;
     $("#pdMetals", root).innerHTML = siblings.map((s) => `<a class="mswatch metal-${s.metal} ${s.id === p.id ? "is-on" : ""}" href="${href("product-" + s.id)}" aria-label="${t("m_" + s.metal)} ${s.probe}" aria-current="${s.id === p.id}">
-      <img src="assets/img/${s.img}" alt=""><small>${money(s.price).replace(/ .*$/, "")}</small></a>`).join("");
+      <span class="media-slot"><img src="assets/img/${s.img}" alt=""></span><small>${money(s.price).replace(/ .*$/, "")}</small></a>`).join("");
 
     const hasSizes = !!p.sizes;
     $("#pdSizeBlock", root).hidden = !hasSizes;
@@ -102,13 +112,18 @@
     if (th) { local.img = +th.dataset.img; render(); }
     if (sz) { local.size = +sz.dataset.size; $("#pdSizeErr", root).hidden = true; render(); }
   });
-  $("#pdAdd", root).addEventListener("click", () => {
+  addButton.addEventListener("click", () => {
     const p = cur();
     if (p.sizes && local.size == null) {
       const err = $("#pdSizeErr", root); err.textContent = t("pickSize"); err.hidden = false;
       $("#pdSizes .size-chip", root)?.focus(); return;
     }
     addToCart(p.id, local.size ?? undefined);
+  });
+  removeButton.addEventListener("click", () => {
+    const restoreFocus = document.activeElement === removeButton;
+    removeOneFromCart(cur().id, local.size);
+    if (restoreFocus && removeButton.hidden) addButton.focus({ preventScroll: true });
   });
 
   // Таблица размеров

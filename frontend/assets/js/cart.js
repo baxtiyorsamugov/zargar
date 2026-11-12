@@ -24,7 +24,7 @@
       </label>` : "";
     return `
     <li class="cart-line">
-      <a class="cl-img metal-${p.metal}" href="${href("product-" + p.id)}"><img src="assets/img/${p.img}" alt="${esc(t(p.key))}"></a>
+      <a class="cl-img metal-${p.metal}" href="${href("product-" + p.id)}"><span class="media-slot"><img src="assets/img/${p.img}" alt="${esc(t(p.key))}"></span></a>
       <div class="cl-info">
         <a class="cl-name" href="${href("product-" + p.id)}">${t(p.key)}</a>
         <span class="p-meta">${spec(p)}</span>

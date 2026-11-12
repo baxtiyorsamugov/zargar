@@ -59,10 +59,9 @@
     // заголовок
     const title = f.q ? t("searchTitle", f.q) : f.cat ? t("c_" + f.cat) : f.sale ? t("saleTitle") : f.isNew ? t("newTitle") : f.mode === "popular" ? t("popTitle") : t("catalog");
     $("#catTitle", root).textContent = title;
-    $("#catSub", root).textContent = `${t("found", list.length)} · ${t("catalogSub")}`;
+    $("#catSub", root).textContent = t("catalogSub");
     $("#catCrumbs", root).innerHTML = `<a href="${href("home")}">${t("home")}</a><svg class="ico"><use href="#i-chev"/></svg>`
       + (f.cat ? `<a href="${href("catalog")}">${t("catalog")}</a><svg class="ico"><use href="#i-chev"/></svg><span>${t("c_" + f.cat)}</span>` : `<span>${t("catalog")}</span>`);
-    $("#bandCats", root).innerHTML = [null, ...CATS].map((c) => `<a class="band-pill ${f.cat === c ? "is-on" : ""}" href="${href(c ? "catalog-" + c : "catalog")}" data-cat="${c || ""}">${c ? t("c_" + c) : t("all")}</a>`).join("");
 
     // фильтры
     $("#fCat", root).innerHTML = [null, ...CATS].map((c) => {
@@ -104,11 +103,15 @@
   function resetAll(keepQ) { Object.assign(f, { cat: null, min: 0, max: 0, sale: false, isNew: false, mode: null, q: keepQ ? f.q : "" }); f.metals.clear(); }
   function syncHash() {
     const r = f.cat ? "catalog-" + f.cat : "catalog";
-    try { history.replaceState(null, "", href(r)); } catch (e) {}
+    try {
+      history.replaceState(null, "", href(r));
+      catalogRoute = r;
+    } catch (e) {}
     $$("[data-route]").forEach((a) => a.classList.toggle("is-current", a.dataset.route === r));
   }
 
   // Маршрут: catalog, catalog-rings, catalog-new, catalog-sale, catalog-popular
+  let catalogRoute;
   onRoute((r) => {
     if (!r.startsWith("catalog")) return;
     const key = r.slice(8);
@@ -120,7 +123,14 @@
     const q = sessionStorage.getItem("sz-q");
     if (q != null) { sessionStorage.removeItem("sz-q"); f.q = q.trim(); $("#search").value = f.q; }
     render();
+    if (catalogRoute !== undefined && catalogRoute !== r) SZ.fadeSection(root);
+    catalogRoute = r;
   });
+
+  function fadeResults() {
+    const grid = $("#catGrid", root);
+    SZ.fadeSection(grid.hidden ? $("#catEmpty", root) : grid);
+  }
 
   // События фильтров
   root.addEventListener("change", (e) => {
@@ -132,13 +142,14 @@
     else if (el.id === "sortSel") f.sort = el.value;
     else return;
     render();
+    if (el.name === "fcat") fadeResults();
   });
   ["fMin", "fMax"].forEach((id) => $("#" + id, root).addEventListener("input", (e) => {
     const v = num(e.target.value); e.target.value = fmt(v);
     id === "fMin" ? (f.min = v) : (f.max = v); render();
   }));
   root.addEventListener("click", (e) => {
-    const pr = e.target.closest("[data-min]"), un = e.target.closest("[data-unset]"), bc = e.target.closest(".band-pill");
+    const pr = e.target.closest("[data-min]"), un = e.target.closest("[data-unset]");
     if (pr) { const a = +pr.dataset.min, b = +pr.dataset.max; const same = f.min === a && f.max === b; f.min = same ? 0 : a; f.max = same ? 0 : b; render(); }
     if (un) {
       const k = un.dataset.unset;
@@ -146,8 +157,8 @@
       else if (k.startsWith("metal:")) f.metals.delete(k.slice(6)); else if (k === "price") { f.min = f.max = 0; }
       else if (k === "sale") f.sale = false; else if (k === "new") f.isNew = false;
       render();
+      if (k === "cat") fadeResults();
     }
-    if (bc && !SZ.SPA) { e.preventDefault(); f.cat = bc.dataset.cat || null; syncHash(); render(); }
   });
   const resetBtn = () => { resetAll(); $("#search").value = ""; syncHash(); render(); };
   $("#fReset", root).addEventListener("click", resetBtn);

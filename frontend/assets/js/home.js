@@ -14,7 +14,7 @@
   function renderCats() {
     $("#cats", root).innerHTML = CATS.map((c) => `
       <a class="cat" href="${href("catalog-" + c.cat)}">
-        <img src="assets/img/${c.img}" alt="" loading="lazy">
+        <span class="media-slot"><img src="assets/img/${c.img}" alt="" loading="lazy"></span>
         <span class="cat-label"><span><b>${t("c_" + c.cat)}</b><small>${PRODUCTS.filter((p) => p.cat === c.cat).length} ${t("items")}</small></span>
         <span class="cat-go"><svg class="ico"><use href="#i-arrow"/></svg></span></span>
       </a>`).join("");
@@ -36,10 +36,11 @@
   }
 
   $("#tabs", root).addEventListener("click", (e) => {
-    const b = e.target.closest(".tab"); if (!b) return;
+    const b = e.target.closest(".tab"); if (!b || b.dataset.tab === state.tab) return;
     state.tab = b.dataset.tab;
     $$(".tab", root).forEach((x) => x.setAttribute("aria-selected", x === b));
     renderProducts();
+    SZ.fadeSection($("#products", root));
   });
 
   onChange(render);

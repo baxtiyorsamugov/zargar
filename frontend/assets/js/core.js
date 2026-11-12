@@ -49,7 +49,7 @@
   /* ---------- Переводы ---------- */
   const T = {
     uz: {
-      city: "Toshkent", stores: "Do'konlar", delivery: "Yetkazib berish", payment: "To'lov usullari", warranty: "Kafolat",
+      chooseRegion: "Hududni tanlang", stores: "Do'konlar", delivery: "Yetkazib berish", payment: "To'lov usullari", warranty: "Kafolat",
       about: "Biz haqimizda", contact: "Aloqa", searchLabel: "Qidiruv", searchPh: "Uzuk, sirg'a, zanjir...",
       account: "Kabinet", favs: "Sevimlilar", cart: "Savat", catalog: "Katalog", home: "Bosh sahifa",
       c_rings: "Uzuklar", c_earrings: "Sirg'alar", c_bracelets: "Bilaguzuklar", c_chains: "Zanjirlar",
@@ -79,6 +79,7 @@
       // корзина
       cartTitle: "Savat", cartSub: (n, s) => `${n} ta mahsulot, ${s}`, cartEmptySub: "Savatingiz hozircha bo'sh",
       continueShop: "Xaridni davom ettirish", toFav: "Sevimlilarga", remove: "O'chirish", removed: "Savatdan olib tashlandi", undo: "Qaytarish",
+      removeOne: "Savatdan bir dona olib tashlash",
       qty: "Soni", receive: "Qabul qilish usuli", pickup: "Do'kondan olib ketish", pickupNote: "Bepul, ertaga tayyor",
       courier: "Kuryer orqali", courierNote: "Toshkent bo'ylab, 1–2 kun", pickStore: "Do'kon", storeMain: "SOFIZAR, Toshkent markaziy do'koni",
       address: "Manzil", addressPh: "Ko'cha, uy, xonadon",
@@ -111,7 +112,7 @@
       logoutDemo: "Namoyish rejimida chiqish o'chirilgan",
     },
     ru: {
-      city: "Ташкент", stores: "Магазины", delivery: "Доставка", payment: "Способы оплаты", warranty: "Гарантия",
+      chooseRegion: "Выберите регион", stores: "Магазины", delivery: "Доставка", payment: "Способы оплаты", warranty: "Гарантия",
       about: "О нас", contact: "Контакты", searchLabel: "Поиск", searchPh: "Кольцо, серьги, цепь...",
       account: "Кабинет", favs: "Избранное", cart: "Корзина", catalog: "Каталог", home: "Главная",
       c_rings: "Кольца", c_earrings: "Серьги", c_bracelets: "Браслеты", c_chains: "Цепи",
@@ -139,6 +140,7 @@
           ["Доставка", "По всему Узбекистану"], ["Подарочная упаковка", "К каждому заказу"], ["Удобная оплата", "Наличными и картой"]],
       cartTitle: "Корзина", cartSub: (n, s) => `${n} шт. на ${s}`, cartEmptySub: "В корзине пока ничего нет",
       continueShop: "Продолжить покупки", toFav: "В избранное", remove: "Удалить", removed: "Убрано из корзины", undo: "Вернуть",
+      removeOne: "Убрать одну штуку из корзины",
       qty: "Количество", receive: "Способ получения", pickup: "Самовывоз из магазина", pickupNote: "Бесплатно, будет готово завтра",
       courier: "Курьером", courierNote: "По Ташкенту, 1–2 дня", pickStore: "Магазин", storeMain: "SOFIZAR, центральный магазин в Ташкенте",
       address: "Адрес", addressPh: "Улица, дом, квартира",
@@ -170,7 +172,7 @@
       logoutDemo: "В демо-режиме выход отключён",
     },
     en: {
-      city: "Tashkent", stores: "Stores", delivery: "Delivery", payment: "Payment", warranty: "Warranty",
+      chooseRegion: "Choose a region", stores: "Stores", delivery: "Delivery", payment: "Payment", warranty: "Warranty",
       about: "About us", contact: "Contact", searchLabel: "Search", searchPh: "Ring, earrings, chain...",
       account: "Account", favs: "Favorites", cart: "Bag", catalog: "Catalog", home: "Home",
       c_rings: "Rings", c_earrings: "Earrings", c_bracelets: "Bracelets", c_chains: "Chains",
@@ -198,6 +200,7 @@
           ["Delivery", "Across Uzbekistan"], ["Gift wrapping", "With every order"], ["Easy payment", "Cash or card"]],
       cartTitle: "Bag", cartSub: (n, s) => `${n} items, ${s}`, cartEmptySub: "Your bag is empty for now",
       continueShop: "Continue shopping", toFav: "Save to favorites", remove: "Remove", removed: "Removed from bag", undo: "Undo",
+      removeOne: "Remove one from bag",
       qty: "Quantity", receive: "How to receive", pickup: "Pick up in store", pickupNote: "Free, ready tomorrow",
       courier: "Courier", courierNote: "Within Tashkent, 1–2 days", pickStore: "Store", storeMain: "SOFIZAR flagship store, Tashkent",
       address: "Address", addressPh: "Street, building, apartment",
@@ -260,6 +263,25 @@
   const METALS = ["yellow", "white", "rose", "silver"];
   const byId = (id) => PRODUCTS.find((p) => p.id === +id);
 
+  /* ---------- Регионы Узбекистана (ISO 3166-2) ---------- */
+  const REGIONS = {
+    TK: { uz: "Toshkent shahri", ru: "Город Ташкент", en: "Tashkent city" },
+    AN: { uz: "Andijon viloyati", ru: "Андижанская область", en: "Andijan region" },
+    BU: { uz: "Buxoro viloyati", ru: "Бухарская область", en: "Bukhara region" },
+    JI: { uz: "Jizzax viloyati", ru: "Джизакская область", en: "Jizzakh region" },
+    QA: { uz: "Qashqadaryo viloyati", ru: "Кашкадарьинская область", en: "Kashkadarya region" },
+    NW: { uz: "Navoiy viloyati", ru: "Навоийская область", en: "Navoi region" },
+    NG: { uz: "Namangan viloyati", ru: "Наманганская область", en: "Namangan region" },
+    QR: { uz: "Qoraqalpogʻiston Respublikasi", ru: "Республика Каракалпакстан", en: "Republic of Karakalpakstan" },
+    SA: { uz: "Samarqand viloyati", ru: "Самаркандская область", en: "Samarkand region" },
+    SI: { uz: "Sirdaryo viloyati", ru: "Сырдарьинская область", en: "Syrdarya region" },
+    SU: { uz: "Surxondaryo viloyati", ru: "Сурхандарьинская область", en: "Surkhandarya region" },
+    TO: { uz: "Toshkent viloyati", ru: "Ташкентская область", en: "Tashkent region" },
+    FA: { uz: "Fargʻona viloyati", ru: "Ферганская область", en: "Fergana region" },
+    XO: { uz: "Xorazm viloyati", ru: "Хорезмская область", en: "Khorezm region" },
+  };
+  const isRegion = (code) => typeof code === "string" && Object.hasOwn(REGIONS, code);
+
   /* ---------- Хранилище ---------- */
   const store = {
     get(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch (e) { return d; } },
@@ -267,9 +289,11 @@
   };
   const state = {
     lang: store.get("sz-lang", "uz"),
+    region: store.get("sz-region", ""),
     favs: new Set(store.get("sz-favs", [2, 3])),
     cart: store.get("sz-cart2", [{ id: 1, size: 17, qty: 1 }, { id: 2, qty: 1 }]),
   };
+  state.addedProducts = new Set([...store.get("sz-added-products", []), ...state.cart.map((line) => line.id)]);
   if (!T[state.lang]) state.lang = "uz";
 
   const t = (k, ...a) => { const v = T[state.lang][k]; return typeof v === "function" ? v(...a) : v; };
@@ -311,6 +335,16 @@
     if (page === "info") return h || "info";
     return h || page;
   }
+  const sectionFades = new WeakMap();
+  function fadeSection(element, duration = 420) {
+    if (!element?.animate || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    sectionFades.get(element)?.cancel();
+    sectionFades.set(element, element.animate(
+      [{ opacity: 0 }, { opacity: 1 }],
+      { duration, easing: "ease-out" }
+    ));
+  }
+
   const routeFns = [];
   function onRoute(fn) { routeFns.push(fn); }
   function runRoute() { const r = currentRoute(); routeFns.forEach((fn) => fn(r)); markNav(r); }
@@ -325,7 +359,10 @@
   function chromeTop() {
     return `
     <div class="topbar"><div class="wrap">
-      <span class="city"><svg class="ico"><use href="#i-pin"/></svg><span data-i18n="city"></span></span>
+      <label class="region-control">
+        <svg class="ico" aria-hidden="true"><use href="#i-pin"/></svg>
+        <select id="regionSelect"></select>
+      </label>
       <nav aria-label="Info">
         <a href="${href("stores")}" data-i18n="stores"></a><a href="${href("delivery")}" data-i18n="delivery"></a>
         <a href="${href("payment")}" data-i18n="payment"></a><a href="${href("warranty")}" data-i18n="warranty"></a>
@@ -340,7 +377,7 @@
     </div></div>
     <header class="header" id="header">
       <div class="wrap header-row">
-        <a class="logo" href="${href("home")}" aria-label="SOFIZAR"></a>
+        <a class="logo" href="${href("home")}" aria-label="SOFIZAR"><span class="media-slot"><img src="assets/img/logo-horizontal.svg" alt=""></span></a>
         <label class="search">
           <svg class="ico"><use href="#i-search"/></svg><span class="sr" data-i18n="searchLabel"></span>
           <input id="search" type="search" data-i18n-ph="searchPh" autocomplete="off"><span class="kbd">Ctrl K</span>
@@ -364,7 +401,7 @@
     return `
     <footer class="footer" id="footer"><div class="wrap">
       <div class="footer-grid">
-        <div><span class="logo" aria-label="SOFIZAR"></span><p data-i18n="footerAbout"></p></div>
+        <div><span class="logo" role="img" aria-label="SOFIZAR"><span class="media-slot"><img src="assets/img/logo-horizontal.svg" alt=""></span></span><p data-i18n="footerAbout"></p></div>
         <div><h3 data-i18n="catalog"></h3><ul>
           ${CATS.map((c) => `<li><a href="${href("catalog-" + c)}" data-i18n="c_${c}"></a></li>`).join("")}
           <li><a href="${href("catalog-sale")}" data-i18n="sales"></a></li></ul></div>
@@ -388,21 +425,54 @@
   const listeners = [];
   const emit = () => listeners.forEach((fn) => fn());
 
-  function cartCount() { return state.cart.reduce((n, l) => n + l.qty, 0); }
-  function saveCart() { store.set("sz-cart2", state.cart); syncBadges(true); emit(); }
+  function cartCount(productId) {
+    return state.cart.reduce((total, line) => total + (productId == null || line.id === productId ? line.qty : 0), 0);
+  }
+  function saveCart() {
+    store.set("sz-cart2", state.cart);
+    store.set("sz-added-products", [...state.addedProducts]);
+    syncBadges("cart");
+    emit();
+  }
+  const defaultSize = (product) => product.sizes?.[Math.floor(product.sizes.length / 2)];
+
   function addToCart(id, size) {
-    const p = byId(id); const s = size ?? (p.sizes ? p.sizes[Math.floor(p.sizes.length / 2)] : undefined);
+    const p = byId(id); const s = size ?? defaultSize(p);
     const line = state.cart.find((l) => l.id === p.id && l.size === s);
     line ? line.qty++ : state.cart.push({ id: p.id, size: s, qty: 1 });
+    state.addedProducts.add(p.id);
     saveCart(); toast(t("addCart"), { label: t("goCart"), href: href("cart") });
+  }
+  function removeOneFromCart(id, selectedSize) {
+    const product = byId(id);
+    const size = selectedSize ?? defaultSize(product);
+    let index = state.cart.findIndex((line) => line.id === product.id && line.size === size);
+    if (index < 0) index = state.cart.findLastIndex((line) => line.id === product.id);
+    if (index < 0) return;
+
+    const line = state.cart[index];
+    if (line.qty > 1) line.qty--;
+    else state.cart.splice(index, 1);
+    saveCart();
   }
   function toggleFav(id) {
     const on = !state.favs.has(+id); on ? state.favs.add(+id) : state.favs.delete(+id);
-    store.set("sz-favs", [...state.favs]); syncBadges(on); emit(); toast(t(on ? "addFav" : "delFav"));
+    store.set("sz-favs", [...state.favs]); syncBadges("favs"); emit(); toast(t(on ? "addFav" : "delFav"));
     return on;
   }
-  function syncBadges(bump) {
-    const set = (el, n) => { el.textContent = n; el.hidden = n === 0; if (bump) { el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); } };
+  function syncBadges(bumpBadge) {
+    const set = (el, n) => {
+      el.textContent = n;
+      el.hidden = n === 0;
+      if (el.dataset.badge === bumpBadge) {
+        const icon = $(".ico", el.parentElement);
+        el.classList.remove("bump");
+        icon.classList.remove("bump");
+        const target = n > 0 ? el : icon;
+        void target.getBoundingClientRect();
+        target.classList.add("bump");
+      }
+    };
     $$('[data-badge="favs"]').forEach((el) => set(el, state.favs.size));
     $$('[data-badge="cart"]').forEach((el) => set(el, cartCount()));
   }
@@ -418,10 +488,12 @@
 
   // Карточка товара — общая для главной, корзины (рекомендации) и избранного
   function productCard(p, opts = {}) {
+    const quantity = cartCount(p.id);
+    const added = state.addedProducts.has(p.id);
     return `
     <article class="product">
       <div class="p-img">
-        <a class="p-link metal-${p.metal}" href="${href("product-" + p.id)}" tabindex="-1" aria-hidden="true"><img src="assets/img/${p.img}" alt="" loading="lazy"></a>
+        <a class="p-link metal-${p.metal}" href="${href("product-" + p.id)}" tabindex="-1" aria-hidden="true"><span class="media-slot"><img src="assets/img/${p.img}" alt="" loading="lazy"></span></a>
         ${p.old ? `<span class="tag sale">−${Math.round((1 - p.price / p.old) * 100)}%</span>` : opts.noTag ? "" : `<span class="tag">${t("tagNew")}</span>`}
         <button class="fav" data-fav="${p.id}" aria-pressed="${state.favs.has(p.id)}" aria-label="${esc(t("favs"))}: ${esc(t(p.key))}"><svg class="ico"><use href="#i-heart"/></svg></button>
       </div>
@@ -430,21 +502,99 @@
         <span class="p-meta">${spec(p)}</span>
         <div class="p-row">
           <span class="p-price">${p.old ? `<s>${money(p.old)}</s>` : ""}${money(p.price)}</span>
-          <button class="bag" data-add="${p.id}" aria-label="${esc(t("cart"))}: ${esc(t(p.key))}"><svg class="ico"><use href="#i-bag"/></svg></button>
+          <div class="p-cart-actions">
+            ${quantity ? `<button type="button" class="bag-minus" data-remove-one="${p.id}" aria-label="${esc(t("removeOne"))}: ${esc(t(p.key))}">−</button>` : ""}
+            <button type="button" class="bag${added ? " added" : ""}" data-add="${p.id}" aria-label="${esc(t("cart"))}: ${esc(t(p.key))}${quantity ? " ×" + quantity : ""}">
+              <svg class="ico" aria-hidden="true"><use href="#i-bag"/></svg>${quantity ? '<span class="product-cart-count" aria-hidden="true">' + quantity + '</span>' : ""}
+            </button>
+          </div>
         </div>
       </div>
     </article>`;
   }
   // Делегирование кликов по сердечку и корзине на любой странице
   document.addEventListener("click", (e) => {
-    const fav = e.target.closest("[data-fav]"), add = e.target.closest("[data-add]");
+    const fav = e.target.closest("[data-fav]");
     if (fav) { const on = toggleFav(fav.dataset.fav); $$(`[data-fav="${fav.dataset.fav}"]`).forEach((b) => b.setAttribute("aria-pressed", on)); }
-    if (add) { addToCart(add.dataset.add); add.classList.add("added"); setTimeout(() => add.classList.remove("added"), 900); }
+
+    const cartButton = e.target.closest("[data-add], [data-remove-one]");
+    if (!cartButton) return;
+    const { add, removeOne } = cartButton.dataset;
+    const id = add ?? removeOne;
+    const page = cartButton.closest("main") ?? document;
+    const restoreFocus = document.activeElement === cartButton;
+    if (add) addToCart(id);
+    else removeOneFromCart(id);
+
+    if (restoreFocus) {
+      const minus = removeOne && $(`[data-remove-one="${id}"]`, page);
+      (minus || $(`[data-add="${id}"]`, page))?.focus({ preventScroll: true });
+    }
   });
+
+  /* ---------- Выбор региона ---------- */
+  const regionSessionKey = "sz-region-ip";
+
+  function renderRegion() {
+    const select = $("#regionSelect");
+    const prompt = t("chooseRegion");
+    select.setAttribute("aria-label", prompt);
+    const placeholder = new Option(prompt, "");
+    placeholder.disabled = true;
+    select.replaceChildren(placeholder, ...Object.entries(REGIONS).map(
+      ([code, names]) => new Option(names[state.lang], code)
+    ));
+    select.value = isRegion(state.region) ? state.region : "";
+  }
+
+  async function detectRegion() {
+    if (isRegion(state.region)) return;
+    try {
+      const cached = sessionStorage.getItem(regionSessionKey);
+      if (cached !== null) {
+        if (isRegion(cached)) {
+          state.region = cached;
+          renderRegion();
+        }
+        return;
+      }
+    } catch {
+      // Storage may be unavailable in private or restricted contexts.
+    }
+
+    const select = $("#regionSelect");
+    select.dataset.regionPending = "";
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 2500);
+    let detected = "";
+    try {
+      const response = await fetch("https://ipwho.is/?fields=success,country_code,region_code", {
+        credentials: "omit", referrerPolicy: "no-referrer", signal: controller.signal,
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const code = String(data.region_code ?? "").trim().toUpperCase().replace(/^UZ-/, "");
+        if (data.success && data.country_code === "UZ" && isRegion(code)) detected = code;
+      }
+    } catch {
+      // The selector remains available when the IP lookup fails.
+    } finally {
+      clearTimeout(timeout);
+      delete select.dataset.regionPending;
+    }
+
+    try { sessionStorage.setItem(regionSessionKey, detected); } catch {}
+    const manual = store.get("sz-region", "");
+    if (isRegion(manual) || (!isRegion(state.region) && detected)) {
+      state.region = isRegion(manual) ? manual : detected;
+      renderRegion();
+    }
+  }
 
   /* ---------- Язык ---------- */
   function applyLang() {
     document.documentElement.lang = state.lang;
+    renderRegion();
     $$("[data-i18n]").forEach((el) => { const v = T[state.lang][el.dataset.i18n]; if (typeof v === "string") el.textContent = v; });
     $$("[data-i18n-ph]").forEach((el) => { el.placeholder = t(el.dataset.i18nPh); });
     $$(".lang button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.lang === state.lang));
@@ -462,18 +612,499 @@
     if (target) target.scrollIntoView(); else scrollTo(0, 0);
   }
 
+  /* ---------- Подвижное выделение в переключателях ---------- */
+  const selectionGroups = [
+    [".lang", 'button[aria-pressed="true"]'],
+    [".tabs, .g-thumbs", '[aria-selected="true"]'],
+    [".acc-menu, .info-nav, .catnav .wrap, .actions", ".is-current"],
+    [".metal-swatches", '[aria-current="true"]'],
+    [".size-chips", '[aria-checked="true"]'],
+    ["#fCat", "label:has(input:checked)"],
+    ["#fPricePresets", ".is-on"],
+  ];
+
+  function mountSelectionHighlights() {
+    if (!window.ResizeObserver || !window.MutationObserver) return;
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+    for (const [groups, activeSelector] of selectionGroups) {
+      $$(groups).forEach((group) => {
+        let previous;
+        let frame = 0;
+
+        function sync() {
+          frame = 0;
+          const active = group.querySelector(activeSelector);
+          if (!active?.offsetWidth || !group.clientWidth) {
+            delete group.dataset.selection;
+            previous = undefined;
+            return;
+          }
+
+          const x = active.offsetLeft;
+          const y = active.offsetTop;
+          group.style.setProperty("--selection-x", x + "px");
+          group.style.setProperty("--selection-y", y + "px");
+          group.style.setProperty("--selection-width", active.offsetWidth + "px");
+          group.style.setProperty("--selection-height", active.offsetHeight + "px");
+          group.dataset.selection = previous ? "moving" : "instant";
+
+          // Bring a newly selected item into view within a scrolling strip.
+          if (active !== previous && group.scrollWidth > group.clientWidth &&
+              /auto|scroll/.test(getComputedStyle(group).overflowX)) {
+            const right = x + active.offsetWidth;
+            const left = group.scrollLeft;
+            const padding = parseFloat(getComputedStyle(group).paddingInlineStart) || 0;
+            if (x < left || right > left + group.clientWidth) {
+              const target = x < left ? x - padding : right - group.clientWidth + padding;
+              group.scrollTo({ left: target, behavior: previous && !reducedMotion.matches ? "smooth" : "instant" });
+            }
+          }
+
+          previous = active;
+        }
+
+        function schedule() {
+          if (!frame) frame = requestAnimationFrame(sync);
+        }
+
+        const sizes = new ResizeObserver(schedule);
+        function observeSizes() {
+          sizes.disconnect();
+          sizes.observe(group);
+          for (const item of group.children) sizes.observe(item);
+        }
+
+        const changes = new MutationObserver((records) => {
+          if (records.some((record) => record.type === "childList" && record.target === group)) observeSizes();
+          schedule();
+        });
+        changes.observe(group, {
+          subtree: true, childList: true, attributes: true,
+          attributeFilter: ["class", "aria-pressed", "aria-selected", "aria-current", "aria-checked"],
+        });
+        group.addEventListener("change", schedule);
+        observeSizes();
+        sync();
+      });
+    }
+  }
+
+  /* ---------- Фокус и выпадающие списки ---------- */
+  function trackTabFocus() {
+    const root = document.documentElement;
+    const clear = () => delete root.dataset.tabFocus;
+    addEventListener("keydown", (event) => {
+      if (event.key === "Tab" && !event.altKey && !event.ctrlKey && !event.metaKey) {
+        root.dataset.tabFocus = "";
+      } else if (event.key === "Alt" || event.altKey) {
+        clear();
+      }
+    }, true);
+    addEventListener("pointerdown", clear, true);
+    addEventListener("blur", clear);
+  }
+
+  function mountDropdowns() {
+    const controls = new WeakMap();
+    const list = document.createElement("div");
+    list.id = "select-options";
+    list.className = "select-options";
+    list.setAttribute("role", "listbox");
+    list.hidden = true;
+    if (list.showPopover) list.setAttribute("popover", "manual");
+    const optionList = document.createElement("div");
+    optionList.className = "select-option-list";
+    list.append(optionList);
+    document.body.append(list);
+
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+    let opened;
+    let closing;
+    let motion;
+    let cursor = -1;
+    let typed = "";
+    let lastKey = 0;
+
+    async function animate(element, keyframes, duration) {
+      if (reducedMotion.matches || !element.animate) return true;
+      const animation = element.animate(keyframes, { duration, easing: "cubic-bezier(.2,.7,.2,1)" });
+      motion = animation;
+      try {
+        await animation.finished;
+        return true;
+      } catch {
+        return false;
+      } finally {
+        if (motion === animation) motion = null;
+      }
+    }
+
+    function hideList(button) {
+      button.setAttribute("aria-expanded", "false");
+      button.removeAttribute("aria-activedescendant");
+      if (!list.hidden && list.hidePopover) list.hidePopover();
+      list.hidden = true;
+    }
+
+    function finishClose() {
+      if (!closing) return;
+      motion?.cancel();
+      const { button } = closing;
+      hideList(button);
+      delete button.dataset.selectWide;
+      delete button.dataset.selectMotion;
+      closing = null;
+    }
+
+    async function close(immediate = false) {
+      if (!opened) {
+        if (immediate) finishClose();
+        return;
+      }
+
+      const control = opened;
+      const { select, button } = control;
+      const startHeight = list.getBoundingClientRect().height;
+      const slot = button.parentElement;
+      const startWidth = slot.getBoundingClientRect().width;
+      opened = null;
+      closing = control;
+      motion?.cancel();
+      list.inert = true;
+      if (immediate) return finishClose();
+
+      if (!list.hidden && !await animate(list, [
+        { height: startHeight + "px" },
+        { height: "0px" },
+      ], 170)) return;
+      if (closing !== control) return;
+      hideList(button);
+
+      if (select.id === "regionSelect") {
+        delete button.dataset.selectWide;
+        if (!await animate(slot, [
+          { width: startWidth + "px" },
+          { width: slot.getBoundingClientRect().width + "px" },
+        ], 180)) return;
+      }
+      if (closing === control) finishClose();
+    }
+
+    function position() {
+      const control = opened || closing;
+      if (!control || list.hidden) return;
+      if (!control.button.isConnected || !control.button.offsetWidth) return close(true);
+      const rect = control.button.getBoundingClientRect();
+      const room = document.documentElement.clientHeight - rect.bottom - 8;
+      if (rect.bottom <= 0 || room < 24) return close(true);
+      list.style.left = rect.left + "px";
+      list.style.top = (rect.bottom - 1) + "px";
+      list.style.width = rect.width + "px";
+      list.style.setProperty("--select-max-height", Math.min(room, 320) + "px");
+    }
+
+    function highlight(index) {
+      const items = [...optionList.children];
+      cursor = index;
+      items.forEach((item, i) => item.classList.toggle("is-highlighted", i === index));
+      const item = items[index];
+      if (!item) {
+        opened.button.removeAttribute("aria-activedescendant");
+        return;
+      }
+      opened.button.setAttribute("aria-activedescendant", item.id);
+      const top = item.offsetTop;
+      if (top < optionList.scrollTop) optionList.scrollTop = top;
+      if (top + item.offsetHeight > optionList.scrollTop + optionList.clientHeight) {
+        optionList.scrollTop = top + item.offsetHeight - optionList.clientHeight;
+      }
+    }
+
+    const availableOptions = (select) => [...select.options].filter(
+      (option) => !option.selected && !option.disabled && !option.hidden
+    );
+
+    function renderOptions(options) {
+      optionList.replaceChildren(...options.map((option, index) => {
+        const item = document.createElement("div");
+        item.id = list.id + "-" + index;
+        item.setAttribute("role", "option");
+        item.dataset.value = option.value;
+        item.textContent = option.text;
+        return item;
+      }));
+    }
+
+    async function open(control) {
+      if (opened === control) return;
+      close(true);
+      const { select, button } = control;
+      const options = availableOptions(select);
+      if (!options.length) return;
+      if (innerHeight - button.getBoundingClientRect().bottom < 125) {
+        button.scrollIntoView({ block: "center", behavior: "instant" });
+      }
+      renderOptions(options);
+      opened = control;
+      cursor = -1;
+      typed = "";
+      button.dataset.selectMotion = "";
+      if (select.id === "regionSelect") {
+        const slot = button.parentElement;
+        const startWidth = slot.getBoundingClientRect().width;
+        button.dataset.selectWide = "";
+        const wideWidth = slot.getBoundingClientRect().width;
+        if (!await animate(slot, [
+          { width: startWidth + "px" },
+          { width: wideWidth + "px" },
+        ], 190)) return;
+      }
+      if (opened !== control) return;
+
+      list.hidden = false;
+      list.inert = false;
+      list.setAttribute("aria-label", button.getAttribute("aria-label"));
+      button.setAttribute("aria-expanded", "true");
+      if (list.showPopover) list.showPopover();
+      optionList.scrollTop = 0;
+      position();
+      if (opened !== control) return;
+      if (cursor >= 0) highlight(cursor);
+      const height = list.getBoundingClientRect().height;
+      animate(list, [{ height: "0px" }, { height: height + "px" }], 250);
+    }
+
+    function choose(value) {
+      const { select, button } = opened;
+      const previousFocus = document.activeElement === button;
+      const replacement = select.hasAttribute("data-size") ? '[data-size="' + select.dataset.size + '"]' : "";
+      close();
+      select.value = value;
+      select.dispatchEvent(new Event("input", { bubbles: true }));
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+      sync();
+      if (previousFocus && !button.isConnected && replacement) {
+        controls.get($(replacement))?.button.focus({ preventScroll: true });
+      }
+    }
+
+    function handleKey(event, control) {
+      const { key } = event;
+      if (opened !== control && !["ArrowDown", "ArrowUp", "Home", "End"].includes(key)) return;
+      if (key === "Tab") { close(); return; }
+      if (key === "Escape") { event.preventDefault(); close(); return; }
+      if (key === "Enter" || key === " ") {
+        event.preventDefault();
+        if (cursor >= 0) choose(optionList.children[cursor].dataset.value);
+        else close();
+        return;
+      }
+      if (["ArrowDown", "ArrowUp", "Home", "End"].includes(key)) {
+        event.preventDefault();
+        open(control);
+        if (opened !== control) return;
+        const last = optionList.children.length - 1;
+        if (key === "Home" || (key === "ArrowDown" && cursor < 0)) highlight(0);
+        else if (key === "End" || (key === "ArrowUp" && cursor < 0)) highlight(last);
+        else highlight(Math.max(0, Math.min(last, cursor + (key === "ArrowDown" ? 1 : -1))));
+      } else if (key.length === 1 && !event.altKey && !event.ctrlKey && !event.metaKey) {
+        const now = performance.now();
+        typed = (now - lastKey < 600 ? typed : "") + key.toLocaleLowerCase();
+        lastKey = now;
+        const index = [...optionList.children].findIndex((item) => item.textContent.toLocaleLowerCase().startsWith(typed));
+        if (index >= 0) highlight(index);
+      }
+    }
+
+    function enhance(select) {
+      const label = select.labels?.[0];
+      const labelText = label?.contains(select) ? label.querySelector(":scope > span") : label;
+      const wrap = document.createElement("span");
+      wrap.className = "select-control";
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "select-trigger";
+      button.setAttribute("role", "combobox");
+      button.setAttribute("aria-controls", list.id);
+      button.setAttribute("aria-expanded", "false");
+      button.innerHTML = '<span class="select-value"></span><svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg>';
+      select.before(wrap);
+      wrap.append(button, select);
+      select.hidden = true;
+      const control = { select, button, labelText, valueText: button.firstElementChild };
+      button.addEventListener("click", () => opened === control ? close() : open(control));
+      button.addEventListener("keydown", (event) => handleKey(event, control));
+      controls.set(select, control);
+      return control;
+    }
+
+    function sync() {
+      if (opened && !opened.button.isConnected || closing && !closing.button.isConnected) close(true);
+      $$("select:not([multiple])").forEach((select) => {
+        const { button, labelText, valueText } = controls.get(select) || enhance(select);
+        const text = select.selectedOptions[0]?.text ?? "";
+        const label = select.getAttribute("aria-label") || labelText?.textContent.trim();
+        const options = availableOptions(select);
+        if (valueText.textContent !== text) {
+          valueText.textContent = text;
+          if (opened?.select === select) {
+            const highlighted = optionList.children[cursor]?.dataset.value;
+            renderOptions(options);
+            highlight(options.findIndex((option) => option.value === highlighted));
+          }
+        }
+        const accessibleName = label && label !== text ? label + ": " + text : text;
+        if (button.getAttribute("aria-label") !== accessibleName) button.setAttribute("aria-label", accessibleName);
+        const disabled = select.matches(":disabled") || options.length === 0;
+        if (button.disabled !== disabled) button.disabled = disabled;
+      });
+    }
+
+    list.addEventListener("pointerdown", (event) => {
+      if (event.target.closest('[role="option"]')) event.preventDefault();
+    });
+    list.addEventListener("click", (event) => {
+      const option = event.target.closest("[data-value]");
+      if (option && opened) choose(option.dataset.value);
+    });
+    document.addEventListener("pointerdown", (event) => {
+      if (opened && !opened.button.contains(event.target) && !list.contains(event.target)) close();
+    }, true);
+    document.addEventListener("focusin", (event) => {
+      if (opened && event.target !== opened.button) close();
+    });
+    document.addEventListener("change", sync);
+    addEventListener("resize", position);
+    addEventListener("scroll", (event) => { if (event.target !== optionList) position(); }, true);
+    new MutationObserver(sync).observe(document.body, {
+      subtree: true, childList: true, attributes: true,
+      attributeFilter: ["disabled", "selected", "aria-label"],
+    });
+    sync();
+  }
+
+  /* ---------- Плейсхолдеры изображений ---------- */
+  function mountMediaLoading() {
+    const selector = ".media-slot > img";
+
+    function markPending(image) {
+      if (!image.complete) image.parentElement.dataset.media = "pending";
+    }
+
+    async function reveal(event) {
+      const image = event.target;
+      if (!image.matches?.(selector) || image.parentElement.dataset.media !== "pending") return;
+      if (event.type === "load" && image.decode) {
+        try { await image.decode(); } catch { /* A failed decode must release the placeholder. */ }
+      }
+      if (image.isConnected) image.parentElement.dataset.media = "ready";
+    }
+
+    document.addEventListener("load", reveal, true);
+    document.addEventListener("error", reveal, true);
+    $$(selector).forEach(markPending);
+    new MutationObserver((records) => {
+      for (const record of records) {
+        for (const node of record.addedNodes) {
+          if (node.nodeType !== 1) continue;
+          if (node.matches(selector)) markPending(node);
+          $$(selector, node).forEach(markPending);
+        }
+      }
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+
+  /* ---------- Аккордеоны ---------- */
+  function mountAccordions() {
+    const transitions = new WeakMap();
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+    function reveal(details) {
+      const gap = 12;
+      const rect = details.getBoundingClientRect();
+      const headerBottom = Math.max(0, $("#header").getBoundingClientRect().bottom);
+      const clipped = rect.bottom - innerHeight + gap;
+      const roomAbove = rect.top - headerBottom - gap;
+      // Keep the start of long content below the sticky header.
+      const offset = Math.min(clipped, roomAbove);
+      if (clipped > 0 && offset > 0) {
+        scrollBy({ top: offset, behavior: reducedMotion.matches ? "instant" : "smooth" });
+      }
+    }
+
+    document.addEventListener("click", (event) => {
+      const summary = event.target.closest("details.acc > summary");
+      if (!summary || event.defaultPrevented) return;
+      event.preventDefault();
+
+      const details = summary.parentElement;
+      const previous = transitions.get(details);
+      const opening = !(previous?.opening ?? details.open);
+      const startHeight = details.getBoundingClientRect().height;
+      previous?.animation.cancel();
+
+      if (reducedMotion.matches || !details.animate) {
+        transitions.delete(details);
+        delete details.dataset.accordionAnimating;
+        details.open = opening;
+        if (opening) reveal(details);
+        return;
+      }
+
+      // Measure the destination layout without using the scaled summary's height.
+      details.open = opening;
+      const endHeight = details.getBoundingClientRect().height;
+      details.open = true;
+      details.dataset.accordionAnimating = opening ? "opening" : "closing";
+      const animation = details.animate(
+        [{ height: startHeight + "px" }, { height: endHeight + "px" }],
+        { duration: 290, easing: "cubic-bezier(.2,.7,.2,1)", fill: "both" }
+      );
+      transitions.set(details, { animation, opening });
+      animation.onfinish = () => {
+        details.open = opening;
+        animation.cancel();
+        transitions.delete(details);
+        delete details.dataset.accordionAnimating;
+        if (opening && details.isConnected) reveal(details);
+      };
+    });
+  }
+
   /* ---------- Монтирование ---------- */
   function mount() {
     document.body.insertAdjacentHTML("afterbegin", ICONS);
     $("#chrome-top").outerHTML = chromeTop();
     $("#chrome-bottom").outerHTML = chromeBottom();
+    $(".catalog-btn").addEventListener("click", (event) => {
+      if (document.body.dataset.page === "catalog" && event.button === 0 &&
+          !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) {
+        event.preventDefault();
+        if (currentRoute() !== "catalog") location.hash = SPA ? "catalog" : "";
+      }
+    });
     $$("[data-href]").forEach((el) => { el.href = href(el.dataset.href); });
+
+    $("#regionSelect").addEventListener("change", (event) => {
+      const code = event.target.value;
+      if (!isRegion(code)) return;
+      state.region = code;
+      delete event.target.dataset.regionPending;
+      store.set("sz-region", code);
+    });
+    detectRegion();
 
     $(".lang").addEventListener("click", (e) => {
       const b = e.target.closest("button"); if (!b) return;
       state.lang = b.dataset.lang; store.set("sz-lang", state.lang); applyLang();
     });
     const header = $("#header");
+    const updateHeaderHeight = () => document.documentElement.style.setProperty("--header-height", header.offsetHeight + "px");
+    updateHeaderHeight();
+    if (window.ResizeObserver) new ResizeObserver(updateHeaderHeight).observe(header);
+    else addEventListener("resize", updateHeaderHeight);
+
     const onScroll = () => header.classList.toggle("is-scrolled", scrollY > 50);
     addEventListener("scroll", onScroll, { passive: true }); onScroll();
     addEventListener("keydown", (e) => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); $("#search").focus(); } });
@@ -481,14 +1112,25 @@
       if (e.key !== "Enter") return;
       if (document.body.dataset.page !== "catalog") { sessionStorage.setItem("sz-q", $("#search").value); location.href = href("catalog"); }
     });
-    syncBadges(false);
+    syncBadges();
   }
 
-  window.SZ = { SPA, T, t, PRODUCTS, MODELS, CATS, METALS, byId, state, store, money, grams, sizeLabel, spec, catName, date, esc, href, pageOf, onRoute, extend, $, $$, toast,
-    addToCart, toggleFav, saveCart, cartCount, syncBadges, productCard, onChange: (fn) => listeners.push(fn), applyLang, route };
+  window.SZ = { SPA, T, t, PRODUCTS, MODELS, CATS, METALS, byId, state, store, money, grams, sizeLabel, spec, catName, date, esc, href, pageOf, onRoute, extend, $, $$, toast, fadeSection,
+    addToCart, removeOneFromCart, toggleFav, saveCart, cartCount, syncBadges, productCard, onChange: (fn) => listeners.push(fn), applyLang, route };
 
   mount();
   addEventListener("hashchange", SPA ? route : runRoute);
+  addEventListener("pageshow", (event) => {
+    if (event.persisted) fadeSection(document.body, 520);
+  });
   // страницы подключаются после core.js и вызывают SZ.applyLang() сами (см. SZ.start)
-  window.SZ.start = () => { applyLang(); SPA ? route() : runRoute(); };
+  window.SZ.start = () => {
+    applyLang();
+    SPA ? route() : runRoute();
+    trackTabFocus();
+    mountDropdowns();
+    mountSelectionHighlights();
+    mountMediaLoading();
+    mountAccordions();
+  };
 })();

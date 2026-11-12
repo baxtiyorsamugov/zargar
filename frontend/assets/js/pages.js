@@ -110,7 +110,6 @@
   onRoute((r) => {
     if (SZ.pageOf(r) !== "info") return;
     const id = r === "info" ? "delivery" : r; mark(id);
-    if (!SZ.SPA) { const el = document.getElementById(id); if (el && r !== "info") setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 50); }
   });
   // подсветка раздела при прокрутке
   const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && mark(e.target.id)), { rootMargin: "-40% 0px -55% 0px" });
