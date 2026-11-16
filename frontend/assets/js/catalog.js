@@ -1,16 +1,16 @@
 // SOFIZAR — каталог: фильтры, сортировка, поиск. Данные — SZ.PRODUCTS (позже — API каталога из 1С).
 (() => {
-  const { t, PRODUCTS, CATS, METALS, money, productCard, href, esc, extend, onRoute, $, $$, onChange } = SZ;
+  const { t, PRODUCTS, CATS, METALS, money, productCard, href, esc, searchKey, extend, onRoute, $, $$, onChange } = SZ;
   const root = $('main[data-page="catalog"]'); if (!root) return;
 
   extend({
-    uz: { filters: "Filtrlar", reset: "Tozalash", fCategory: "Toifa", fMetal: "Metall", fPrice: "Narx, so'm", from: "dan", to: "gacha",
+    uz: { filters: "Filtrlar", reset: "Tozalash", fCategory: "Toifa", fMetal: "Metall", fPrice: "Narx, soʻm", from: "dan", to: "gacha",
       fOffers: "Takliflar", onlySale: "Faqat chegirmadagilar", onlyNew: "Faqat yangi", all: "Hammasi",
-      showN: (n) => `${n} ta mahsulotni ko'rsatish`, found: (n) => `${n} ta mahsulot`, sortBy: "Saralash:",
+      showN: (n) => `${n} ta mahsulotni koʻrsatish`, found: (n) => `${n} ta mahsulot`, sortBy: "Saralash:",
       sortPop: "Ommabop", sortNew: "Avval yangilari", sortAsc: "Avval arzonlari", sortDesc: "Avval qimmatlari",
-      noResults: "Hech narsa topilmadi", noResultsText: "Filtrlarni o'zgartiring yoki tozalang.", resetFilters: "Filtrlarni tozalash",
-      pr1: "1 mln gacha", pr2: "1–6 mln", pr3: "6 mln dan", catalogSub: "Oltin 585 va kumush 925, o'z zavodimizda ishlab chiqarilgan",
-      newTitle: "Yangi mahsulotlar", saleTitle: "Aksiyalar", popTitle: "Ommabop", searchTitle: (q) => `«${q}» bo'yicha qidiruv`, home: "Bosh sahifa",
+      noResults: "Hech narsa topilmadi", noResultsText: "Filtrlarni oʻzgartiring yoki tozalang.", resetFilters: "Filtrlarni tozalash",
+      pr1: "1 mln gacha", pr2: "1–6 mln", pr3: "6 mln dan", catalogSub: "Oltin 585 va kumush 925, oʻz zavodimizda ishlab chiqarilgan",
+      newTitle: "Yangi mahsulotlar", saleTitle: "Aksiyalar", popTitle: "Ommabop", searchTitle: (q) => `«${q}» boʻyicha qidiruv`, home: "Bosh sahifa",
       priceChip: (a, b) => `${a || 0} – ${b || "∞"}` },
     ru: { filters: "Фильтры", reset: "Сбросить", fCategory: "Категория", fMetal: "Металл", fPrice: "Цена, сум", from: "от", to: "до",
       fOffers: "Предложения", onlySale: "Только со скидкой", onlyNew: "Только новинки", all: "Все",
@@ -44,7 +44,11 @@
     if (f.sale && !p.old) return false;
     if (f.isNew && !p.tabs.includes("new")) return false;
     if (f.mode === "popular" && !p.tabs.includes("popular")) return false;
-    if (f.q) { const q = f.q.toLowerCase(); if (![t(p.key), t("c_" + p.cat), t("m_" + p.metal), p.sku].some((s) => s.toLowerCase().includes(q))) return false; }
+    if (f.q) {
+      const query = searchKey(f.q);
+      const fields = [t(p.key), t("c_" + p.cat), t("m_" + p.metal), p.sku];
+      return fields.some((field) => searchKey(field).includes(query));
+    }
     return true;
   }
   function sorted(list) {

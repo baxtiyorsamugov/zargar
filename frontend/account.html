@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Shaxsiy kabinet — SOFIZAR</title>
   <meta name="robots" content="noindex">
-  <link rel="preload" href="assets/fonts/gilroy-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/gilroy-black.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=compact-controls">
+  <link rel="icon" href="assets/img/sofizar/favicon.png" type="image/png">
+  <link rel="stylesheet" href="assets/css/main.css?v=sofizar-scroll-polish">
 </head>
 <body data-page="account">
 <!--BODY-->
@@ -17,7 +16,7 @@
     <div class="page-band">
       <div>
         <h1 id="hello">Salom!</h1>
-        <p data-i18n="accSub">Buyurtmalar, bonuslar va shaxsiy ma'lumotlar bir joyda</p>
+        <p data-i18n="accSub">Buyurtmalar, bonuslar va shaxsiy maʼlumotlar bir joyda</p>
       </div>
       <span class="band-chip" id="levelChip"><svg class="ico"><use href="#i-star"/></svg><span></span></span>
     </div>
@@ -100,7 +99,7 @@
       <div class="acc-pane" data-pane="addresses" hidden>
         <div class="panel">
           <div class="panel-head"><h2 class="panel-title" data-i18n="addresses">Manzillar</h2>
-            <button class="btn btn-light btn-sm" id="addAddrBtn"><svg class="ico"><use href="#i-plus"/></svg><span data-i18n="addAddress">Manzil qo'shish</span></button></div>
+            <button class="btn btn-light btn-sm" id="addAddrBtn"><svg class="ico"><use href="#i-plus"/></svg><span data-i18n="addAddress">Manzil qoʻshish</span></button></div>
           <form class="addr-form" id="addrForm" hidden novalidate>
             <div class="field"><label for="aTitle" data-i18n="addrTitle">Nomi</label><input id="aTitle" data-i18n-ph="addrTitlePh"></div>
             <div class="field grow"><label for="aText" data-i18n="address">Manzil</label><input id="aText" data-i18n-ph="addressPh" autocomplete="street-address"></div>
@@ -119,16 +118,16 @@
             <div class="field"><label for="pLast" data-i18n="lastName">Familiya</label><input id="pLast" autocomplete="family-name"></div>
             <div class="field"><label for="pPhone" data-i18n="coPhone">Telefon</label><input id="pPhone" type="tel" autocomplete="tel"></div>
             <div class="field"><label for="pEmail" data-i18n="email">Email</label><input id="pEmail" type="email" autocomplete="email"></div>
-            <div class="field"><label for="pBday" data-i18n="bday">Tug'ilgan sana</label><input id="pBday" type="date" autocomplete="bday"></div>
+            <div class="field"><label for="pBday" data-i18n="bday">Tugʻilgan sana</label><input id="pBday" type="date" autocomplete="bday"></div>
             <div class="field"><label for="pLang" data-i18n="lang">Til</label>
-              <select id="pLang"><option value="uz">O'zbekcha</option><option value="ru">Русский</option><option value="en">English</option></select></div>
+              <select id="pLang"><option value="uz">Oʻzbekcha</option><option value="ru">Русский</option><option value="en">English</option></select></div>
           </div>
           <fieldset class="toggles">
             <legend data-i18n="notify">Xabarnomalar</legend>
             <label class="switch"><input type="checkbox" id="pSms"><span class="track"></span><span data-i18n="notifySms"></span></label>
             <label class="switch"><input type="checkbox" id="pTg"><span class="track"></span><span data-i18n="notifyTg"></span></label>
           </fieldset>
-          <button class="btn btn-dark" type="submit" data-i18n="saveProfile">O'zgarishlarni saqlash</button>
+          <button class="btn btn-dark" type="submit" data-i18n="saveProfile">Oʻzgarishlarni saqlash</button>
         </form>
       </div>
     </div>
@@ -136,8 +135,8 @@
 </main>
 <div id="chrome-bottom"></div>
 <!--/BODY-->
-<script src="assets/js/core.js?v=compact-controls"></script>
-<script src="assets/js/account.js?v=local-selection"></script>
+<script src="assets/js/core.js?v=uzbek-apostrophes"></script>
+<script src="assets/js/account.js?v=uzbek-apostrophes"></script>
 <script>SZ.start()</script>
 </body>
 </html>

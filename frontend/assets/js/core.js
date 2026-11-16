@@ -49,69 +49,80 @@
   /* ---------- Переводы ---------- */
   const T = {
     uz: {
-      chooseRegion: "Hududni tanlang", stores: "Do'konlar", delivery: "Yetkazib berish", payment: "To'lov usullari", warranty: "Kafolat",
-      about: "Biz haqimizda", contact: "Aloqa", searchLabel: "Qidiruv", searchPh: "Uzuk, sirg'a, zanjir...",
+      backTop: "Sahifa boshiga",
+      chooseRegion: "Hududni tanlang", stores: "Doʻkonlar", delivery: "Yetkazib berish", payment: "Toʻlov usullari", warranty: "Kafolat",
+      about: "Biz haqimizda", contact: "Aloqa", searchLabel: "Qidiruv", searchPh: "Uzuk, sirgʻa, zanjir...",
       account: "Kabinet", favs: "Sevimlilar", cart: "Savat", catalog: "Katalog", home: "Bosh sahifa",
-      c_rings: "Uzuklar", c_earrings: "Sirg'alar", c_bracelets: "Bilaguzuklar", c_chains: "Zanjirlar",
-      c_pendants: "Taqinchoqlar", c_sets: "To'plamlar", c_gifts: "Sovg'alar",
-      newItems: "Yangi mahsulotlar", sales: "Aksiyalar", info: "Ma'lumot",
-      footerAbout: "Jewelry Factory, O'zbekiston. Oltin va kumushdan zargarlik buyumlari.",
+      c_rings: "Uzuklar", c_earrings: "Sirgʻalar", c_bracelets: "Bilaguzuklar", c_chains: "Zanjirlar",
+      c_pendants: "Taqinchoqlar", c_sets: "Toʻplamlar", c_gifts: "Sovgʻalar",
+      newItems: "Yangi mahsulotlar", sales: "Aksiyalar", info: "Maʼlumot",
+      footerAbout: "Jewelry Factory, Oʻzbekiston. Oltin va kumushdan zargarlik buyumlari.",
       demo: "Rahbariyat uchun namoyish. Narxlar, mahsulotlar va buyurtmalar namunaviy.",
-      p1: "Burama uzuk", p2: "Tomchi sirg'alar", p3: "Tomchi marjonli zanjir", p4: "Zanjir bilaguzuk",
-      gold: "Oltin 585", items: "ta", sum: "so'm", size: "Razmer",
-      addFav: "Sevimlilarga qo'shildi", delFav: "Sevimlilardan olib tashlandi", addCart: "Savatga qo'shildi", goCart: "Savatga o'tish",
+      p1: "Burama uzuk", p2: "Tomchi sirgʻalar", p3: "Tomchi marjonli zanjir", p4: "Zanjir bilaguzuk",
+      gold: "Oltin 585", items: "ta", sum: "soʻm", size: "Razmer",
+      addFav: "Sevimlilarga qoʻshildi", delFav: "Sevimlilardan olib tashlandi", addCart: "Savatga qoʻshildi", goCart: "Savatga oʻtish",
       m_yellow: "Sariq oltin", m_white: "Oq oltin", m_rose: "Qizil oltin", m_silver: "Kumush",
       fMetal: "Metall", forBuyers: "Xaridorlarga", faq: "Savol-javob", aboutNav: "Zavod haqida", newShort: "Yangi", pending: "",
       months: ["yanvar","fevral","mart","aprel","may","iyun","iyul","avgust","sentabr","oktabr","noyabr","dekabr"],
       // главная
       kicker: "Yangi kolleksiya 2026", heroTitle: "Sifat, zamonaviy ijroda namoyon",
-      heroSub: "Oltin 585 va kumush 925 dan zargarlik buyumlari. Har biri o'z zavodimizda yaratilgan.",
-      ctaCollection: "Kolleksiyani ko'rish", ctaStore: "Do'konni topish", popularCats: "Mashhur kategoriyalar",
+      heroSub: "Oltin 585 va kumush 925 dan zargarlik buyumlari. Har biri oʻz zavodimizda yaratilgan.",
+      ctaCollection: "Kolleksiyani koʻrish", ctaStore: "Doʻkonni topish", popularCats: "Mashhur kategoriyalar",
       tabNew: "Yangi", tabPopular: "Ommabop", tabSale: "Chegirmalar", tagNew: "Yangi",
-      collections: "Kolleksiyalar", viewAll: "Barchasini ko'rish", collTitle: "Oltin uyg'unlik",
+      collections: "Kolleksiyalar", viewAll: "Barchasini koʻrish", collTitle: "Oltin uygʻunlik",
+      worldTitle: "SOFIZAR olami", viewJewelry: "Buyumlarni koʻrish", prevCollection: "Oldingi kolleksiya", nextCollection: "Keyingi kolleksiya",
+      playFilm: "Videoni ijro etish", pauseFilm: "Videoni pauzaga qoʻyish", showFilm: "Bannerni koʻrsatish",
+      prevFilm: "Oldingi banner", nextFilm: "Keyingi banner",
+      seasons: [
+        ["Bahor", "Bahor kolleksiyasi", "Nozik uslub va bahor nafisligi."],
+        ["Yangi yil", "Yangi yil kolleksiyasi", "Bayramona kayfiyat va nafis sovgʻalar."],
+        ["8-mart", "8-mart kolleksiyasi", "Ayollarga bagʻishlangan nafis sovgʻalar."],
+        ["Tugʻilgan kun", "Tugʻilgan kun kolleksiyasi", "Unutilmas kun uchun nafis sovgʻalar."],
+      ],
       collText: "Har kuni taqish uchun yumshoq shakllar: uzuklar, bilaguzuklar va zanjirlar bitta uslubda.",
       factory: "Bizning zavod",
-      factoryText: "25 yildan ortiq tajriba, zamonaviy texnologiyalar va zargarlik san'atiga e'tibor. Har bir buyum ishlab chiqarishdan tortib vitrinagacha nazoratdan o'tadi.",
+      factoryText: "25 yildan ortiq tajriba, zamonaviy texnologiyalar va zargarlik sanʼatiga eʼtibor. Har bir buyum ishlab chiqarishdan tortib vitrinagacha nazoratdan oʻtadi.",
       statYears: "yillik tajriba", statProbe: "oltin va kumush proba", statCert: "sertifikatlangan", aboutFactory: "Zavod haqida",
-      empty: "Hech narsa topilmadi. Boshqa so'z bilan qidirib ko'ring.",
-      b: [["O'z ishlab chiqarishimiz", "Sifat kafolati"], ["Oltin 585 va kumush 925", "Barcha mahsulotlar sertifikatlangan"],
-          ["Yetkazib berish", "O'zbekiston bo'ylab"], ["Sovg'a qadoqlash", "Har bir buyurtma uchun"], ["Qulay to'lov", "Naqd va karta orqali"]],
+      empty: "Hech narsa topilmadi. Boshqa soʻz bilan qidirib koʻring.",
+      b: [["Oʻz ishlab chiqarishimiz", "Sifat kafolati"], ["Oltin 585 va kumush 925", "Barcha mahsulotlar sertifikatlangan"],
+          ["Yetkazib berish", "Oʻzbekiston boʻylab"], ["Sovgʻa qadoqlash", "Har bir buyurtma uchun"], ["Qulay toʻlov", "Naqd va karta orqali"]],
       // корзина
-      cartTitle: "Savat", cartSub: (n, s) => `${n} ta mahsulot, ${s}`, cartEmptySub: "Savatingiz hozircha bo'sh",
-      continueShop: "Xaridni davom ettirish", toFav: "Sevimlilarga", remove: "O'chirish", removed: "Savatdan olib tashlandi", undo: "Qaytarish",
+      cartTitle: "Savat", cartSub: (n, s) => `${n} ta mahsulot, ${s}`, cartEmptySub: "Savatingiz hozircha boʻsh",
+      continueShop: "Xaridni davom ettirish", toFav: "Sevimlilarga", remove: "Oʻchirish", removed: "Savatdan olib tashlandi", undo: "Qaytarish",
       removeOne: "Savatdan bir dona olib tashlash",
-      qty: "Soni", receive: "Qabul qilish usuli", pickup: "Do'kondan olib ketish", pickupNote: "Bepul, ertaga tayyor",
-      courier: "Kuryer orqali", courierNote: "Toshkent bo'ylab, 1–2 kun", pickStore: "Do'kon", storeMain: "SOFIZAR, Toshkent markaziy do'koni",
-      address: "Manzil", addressPh: "Ko'cha, uy, xonadon",
+      qty: "Soni", receive: "Qabul qilish usuli", pickup: "Doʻkondan olib ketish", pickupNote: "Bepul, ertaga tayyor",
+      courier: "Kuryer orqali", courierNote: "Toshkent boʻylab, 1–2 kun", pickStore: "Doʻkon", storeMain: "SOFIZAR, Toshkent markaziy doʻkoni",
+      address: "Manzil", addressPh: "Koʻcha, uy, xonadon",
       summary: "Buyurtma", subtotal: "Mahsulotlar", discount: "Chegirma", deliveryCost: "Yetkazib berish", free: "Bepul", total: "Jami",
-      promo: "Promokod", promoPh: "Masalan, SOFIZAR10", apply: "Qo'llash", promoOk: "Promokod qo'llandi: −10%", promoBad: "Bunday promokod yo'q. Tekshirib qayta kiriting.",
-      checkout: "Buyurtma berish", payNote: "To'lov do'konda yoki kuryerga: naqd yoki karta orqali. Onlayn to'lov tez orada.",
+      promo: "Promokod", promoPh: "Masalan, SOFIZAR10", apply: "Qoʻllash", promoOk: "Promokod qoʻllandi: −10%", promoBad: "Bunday promokod yoʻq. Tekshirib qayta kiriting.",
+      checkout: "Buyurtma berish", payNote: "Toʻlov doʻkonda yoki kuryerga: naqd yoki karta orqali. Onlayn toʻlov tez orada.",
       bonusEarn: (n) => `Bu buyurtma uchun +${n} bonus ball`,
-      emptyTitle: "Savat bo'sh", emptyText: "Yoqqan buyumni savatga qo'shing, u shu yerda paydo bo'ladi.", toCatalog: "Katalogga o'tish",
+      emptyTitle: "Savat boʻsh", emptyText: "Yoqqan buyumni savatga qoʻshing, u shu yerda paydo boʻladi.", toCatalog: "Katalogga oʻtish",
       recommend: "Sizga yoqishi mumkin",
-      coTitle: "Buyurtmani tasdiqlash", coName: "Ismingiz", coPhone: "Telefon", coPhoneHint: "Buyurtmani tasdiqlash uchun qo'ng'iroq qilamiz",
-      coPhoneErr: "Raqamni to'liq kiriting: +998 va 9 ta raqam", coNameErr: "Ismingizni kiriting", coComment: "Izoh", coCommentPh: "Masalan, sovg'a qadoqlash kerak",
-      cancel: "Bekor qilish", confirm: "Tasdiqlash", doneTitle: "Buyurtma qabul qilindi", doneText: (id) => `Buyurtma raqami ${id}. Menejer 15 daqiqa ichida qo'ng'iroq qiladi.`,
-      toOrders: "Buyurtmalarimga o'tish", demoNote: "Namoyish: buyurtma faqat shu brauzerda saqlanadi.",
+      coTitle: "Buyurtmani tasdiqlash", coName: "Ismingiz", coPhone: "Telefon", coPhoneHint: "Buyurtmani tasdiqlash uchun qoʻngʻiroq qilamiz",
+      coPhoneErr: "Raqamni toʻliq kiriting: +998 va 9 ta raqam", coNameErr: "Ismingizni kiriting", coComment: "Izoh", coCommentPh: "Masalan, sovgʻa qadoqlash kerak",
+      cancel: "Bekor qilish", confirm: "Tasdiqlash", doneTitle: "Buyurtma qabul qilindi", doneText: (id) => `Buyurtma raqami ${id}. Menejer 15 daqiqa ichida qoʻngʻiroq qiladi.`,
+      toOrders: "Buyurtmalarimga oʻtish", demoNote: "Namoyish: buyurtma faqat shu brauzerda saqlanadi.",
       // кабинет
-      hello: (n) => `Salom, ${n}!`, accSub: "Buyurtmalar, bonuslar va shaxsiy ma'lumotlar bir joyda",
+      hello: (n) => `Salom, ${n}!`, accSub: "Buyurtmalar, bonuslar va shaxsiy maʼlumotlar bir joyda",
       overview: "Umumiy", orders: "Buyurtmalar", bonus: "Bonuslar", addresses: "Manzillar", profile: "Profil", logout: "Chiqish",
-      activeOrders: "Faol buyurtmalar", activeOrdersSub: "tayyorlanmoqda yoki yo'lda", bonusPts: "Bonus ballar", bonusPtsSub: "1 ball = 1 so'm",
+      activeOrders: "Faol buyurtmalar", activeOrdersSub: "tayyorlanmoqda yoki yoʻlda", bonusPts: "Bonus ballar", bonusPtsSub: "1 ball = 1 soʻm",
       favCount: "Sevimlilar", favCountSub: "saqlangan buyumlar", recentOrders: "Oxirgi buyurtmalar", allOrders: "Barcha buyurtmalar",
       tabActive: "Faol", tabHistory: "Tarix", order: "Buyurtma", pieces: (n) => `${n} ta mahsulot`,
-      st_new: "Qabul qilindi", st_prep: "Tayyorlanmoqda", st_ready: "Do'konda kutmoqda", st_way: "Yo'lda", st_done: "Topshirildi", st_cancel: "Bekor qilindi",
+      st_new: "Qabul qilindi", st_prep: "Tayyorlanmoqda", st_ready: "Doʻkonda kutmoqda", st_way: "Yoʻlda", st_done: "Topshirildi", st_cancel: "Bekor qilindi",
       steps: ["Qabul qilindi", "Tayyorlanmoqda", "Tayyor", "Topshirildi"],
-      repeat: "Qayta buyurtma", orderItems: "Tarkibi", noOrders: "Faol buyurtmalar yo'q. Yangi mahsulotlarni ko'rib chiqing.",
-      favEmpty: "Sevimlilar ro'yxati bo'sh. Mahsulot kartochkasidagi yurakchani bosing.",
+      repeat: "Qayta buyurtma", orderItems: "Tarkibi", noOrders: "Faol buyurtmalar yoʻq. Yangi mahsulotlarni koʻrib chiqing.",
+      favEmpty: "Sevimlilar roʻyxati boʻsh. Mahsulot kartochkasidagi yurakchani bosing.",
       level: "Daraja", lvlSilver: "Kumush", lvlGold: "Oltin", toNext: (n) => `Oltin darajagacha ${n} ball`,
-      bonusHint: "Har bir xariddan 1% ball qaytadi. Ballar bilan keyingi buyurtmaning 30% gacha to'lash mumkin.",
-      bonusHistory: "Ballar tarixi", earnFor: (id) => `${id} buyurtmasi uchun`, spentOn: (id) => `${id} buyurtmasida ishlatildi`, birthday: "Tug'ilgan kun sovg'asi",
-      addAddress: "Manzil qo'shish", addrTitle: "Nomi", addrTitlePh: "Uy, ish...", save: "Saqlash", saved: "Saqlandi", mainAddr: "Asosiy",
-      firstName: "Ism", lastName: "Familiya", email: "Email", bday: "Tug'ilgan sana", lang: "Til", notify: "Xabarnomalar",
-      notifySms: "Buyurtma holati haqida SMS", notifyTg: "Telegram orqali yangi kolleksiyalar", saveProfile: "O'zgarishlarni saqlash",
-      logoutDemo: "Namoyish rejimida chiqish o'chirilgan",
+      bonusHint: "Har bir xariddan 1% ball qaytadi. Ballar bilan keyingi buyurtmaning 30% gacha toʻlash mumkin.",
+      bonusHistory: "Ballar tarixi", earnFor: (id) => `${id} buyurtmasi uchun`, spentOn: (id) => `${id} buyurtmasida ishlatildi`, birthday: "Tugʻilgan kun sovgʻasi",
+      addAddress: "Manzil qoʻshish", addrTitle: "Nomi", addrTitlePh: "Uy, ish...", save: "Saqlash", saved: "Saqlandi", mainAddr: "Asosiy",
+      firstName: "Ism", lastName: "Familiya", email: "Email", bday: "Tugʻilgan sana", lang: "Til", notify: "Xabarnomalar",
+      notifySms: "Buyurtma holati haqida SMS", notifyTg: "Telegram orqali yangi kolleksiyalar", saveProfile: "Oʻzgarishlarni saqlash",
+      logoutDemo: "Namoyish rejimida chiqish oʻchirilgan",
     },
     ru: {
+      backTop: "Наверх",
       chooseRegion: "Выберите регион", stores: "Магазины", delivery: "Доставка", payment: "Способы оплаты", warranty: "Гарантия",
       about: "О нас", contact: "Контакты", searchLabel: "Поиск", searchPh: "Кольцо, серьги, цепь...",
       account: "Кабинет", favs: "Избранное", cart: "Корзина", catalog: "Каталог", home: "Главная",
@@ -131,6 +142,15 @@
       ctaCollection: "Смотреть коллекцию", ctaStore: "Найти магазин", popularCats: "Популярные категории",
       tabNew: "Новые", tabPopular: "Популярные", tabSale: "Скидки", tagNew: "Новинка",
       collections: "Коллекции", viewAll: "Смотреть все", collTitle: "Золотая гармония",
+      worldTitle: "Мир SOFIZAR", viewJewelry: "Смотреть украшения", prevCollection: "Предыдущая коллекция", nextCollection: "Следующая коллекция",
+      playFilm: "Воспроизвести видео", pauseFilm: "Приостановить видео", showFilm: "Показать баннер",
+      prevFilm: "Предыдущий баннер", nextFilm: "Следующий баннер",
+      seasons: [
+        ["Весна", "Весенняя коллекция", "Украшения с лёгким весенним настроением."],
+        ["Новый год", "Новогодняя коллекция", "Украшения и подарки к зимним праздникам."],
+        ["8 марта", "Коллекция к 8 Марта", "Украшения в подарок близким."],
+        ["День рождения", "Ко дню рождения", "Украшения для особенного дня."],
+      ],
       collText: "Мягкие формы на каждый день: кольца, браслеты и цепи в одном стиле.",
       factory: "Наш завод",
       factoryText: "Более 25 лет опыта, современные технологии и внимание к ювелирному мастерству. Каждое изделие проходит контроль от производства до витрины.",
@@ -172,6 +192,7 @@
       logoutDemo: "В демо-режиме выход отключён",
     },
     en: {
+      backTop: "Back to top",
       chooseRegion: "Choose a region", stores: "Stores", delivery: "Delivery", payment: "Payment", warranty: "Warranty",
       about: "About us", contact: "Contact", searchLabel: "Search", searchPh: "Ring, earrings, chain...",
       account: "Account", favs: "Favorites", cart: "Bag", catalog: "Catalog", home: "Home",
@@ -191,6 +212,15 @@
       ctaCollection: "Explore the collection", ctaStore: "Find a store", popularCats: "Popular categories",
       tabNew: "New", tabPopular: "Popular", tabSale: "On sale", tagNew: "New",
       collections: "Collections", viewAll: "View all", collTitle: "Golden harmony",
+      worldTitle: "The world of SOFIZAR", viewJewelry: "Explore jewelry", prevCollection: "Previous collection", nextCollection: "Next collection",
+      playFilm: "Play video", pauseFilm: "Pause video", showFilm: "Show banner",
+      prevFilm: "Previous banner", nextFilm: "Next banner",
+      seasons: [
+        ["Spring", "Spring collection", "Delicate jewelry with a touch of spring."],
+        ["New Year", "New Year collection", "Jewelry and gifts for the festive season."],
+        ["March 8", "March 8 collection", "Jewelry to celebrate the women in your life."],
+        ["Birthday", "Birthday collection", "Jewelry for a special day."],
+      ],
       collText: "Soft shapes for every day: rings, bracelets and chains in one style.",
       factory: "Our factory",
       factoryText: "Over 25 years of experience, modern technology and care for the jeweler's craft. Every piece is checked from production to the showcase.",
@@ -297,6 +327,7 @@
   if (!T[state.lang]) state.lang = "uz";
 
   const t = (k, ...a) => { const v = T[state.lang][k]; return typeof v === "function" ? v(...a) : v; };
+  const searchKey = (text) => text.toLowerCase().replace(/['‘’ʻʼ\u0060]/g, "'");
   const money = (n) => Math.round(n).toLocaleString("ru-RU").replace(/\s/g, " ") + " " + t("sum");
   const grams = (n) => n.toFixed(1).replace(".", state.lang === "en" ? "." : ",") + (state.lang === "ru" ? " г" : " g");
   const sizeLabel = (p, s) => (p.unit ? `${s} ${state.lang === "ru" ? "см" : "cm"}` : String(s).replace(".", state.lang === "en" ? "." : ","));
@@ -345,6 +376,55 @@
     ));
   }
 
+  function mountPageArrival() {
+    if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const blocks = [
+      ".section-head > *", "#cats > .cat", ".products > .product", ".more-row",
+      ".season", ".season-navigation", ".benefits > .benefit", ".world-heading > *", ".factory",
+      ".gallery > *", ".pd-info > :not(.pd-head, .pd-tabs)", ".pd-tabs > .acc",
+      ".cart-main > .panel", ".cart-side > .summary", ".recs > h2", "#cartEmpty > .panel",
+      ".acc-nav", ".acc-pane > :not(:has(.products))", ".acc-pane > .panel > .panel-title",
+      ".info-nav", ".info-sec", ".about-intro > *", ".process > .step", ".quality", ".cta-band",
+    ].join(", ");
+    const observedPages = new WeakSet();
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter((entry) => entry.isIntersecting);
+      visible.sort((a, b) => {
+        const vertical = a.boundingClientRect.top - b.boundingClientRect.top;
+        return Math.abs(vertical) > 12 ? vertical : a.boundingClientRect.left - b.boundingClientRect.left;
+      });
+      visible.forEach(({ target }, index) => {
+        observer.unobserve(target);
+        target.style.setProperty("--arrival-delay", `${Math.min(index, 6) * 55}ms`);
+        target.dataset.arrival = "visible";
+      });
+    }, { threshold: .08 });
+
+    function watch(node) {
+      if (!node.getClientRects().length) return;
+      node.dataset.arrival = "pending";
+      observer.observe(node);
+    }
+
+    function watchPage() {
+      const main = $("main[data-page]:not([hidden])");
+      if (!main || observedPages.has(main)) return;
+      observedPages.add(main);
+      $$(blocks, main).forEach(watch);
+    }
+
+    document.addEventListener("focusin", (event) => {
+      const node = event.target.closest("[data-arrival]");
+      if (!node) return;
+      observer.unobserve(node);
+      delete node.dataset.arrival;
+    });
+    $$(".footer > .wrap").forEach(watch);
+    watchPage();
+    if (SPA) onRoute(watchPage);
+  }
+
   const routeFns = [];
   function onRoute(fn) { routeFns.push(fn); }
   function runRoute() { const r = currentRoute(); routeFns.forEach((fn) => fn(r)); markNav(r); }
@@ -377,7 +457,7 @@
     </div></div>
     <header class="header" id="header">
       <div class="wrap header-row">
-        <a class="logo" href="${href("home")}" aria-label="SOFIZAR"><span class="media-slot"><img src="assets/img/logo-horizontal.svg" alt=""></span></a>
+        <a class="logo" href="${href("home")}" aria-label="SOFIZAR"><img src="assets/img/sofizar/wordmark.webp" alt=""></a>
         <label class="search">
           <svg class="ico"><use href="#i-search"/></svg><span class="sr" data-i18n="searchLabel"></span>
           <input id="search" type="search" data-i18n-ph="searchPh" autocomplete="off"><span class="kbd">Ctrl K</span>
@@ -401,7 +481,7 @@
     return `
     <footer class="footer" id="footer"><div class="wrap">
       <div class="footer-grid">
-        <div><span class="logo" role="img" aria-label="SOFIZAR"><span class="media-slot"><img src="assets/img/logo-horizontal.svg" alt=""></span></span><p data-i18n="footerAbout"></p></div>
+        <div><span class="logo" role="img" aria-label="SOFIZAR"><img src="assets/img/sofizar/wordmark.webp" alt=""></span><p data-i18n="footerAbout"></p></div>
         <div><h3 data-i18n="catalog"></h3><ul>
           ${CATS.map((c) => `<li><a href="${href("catalog-" + c)}" data-i18n="c_${c}"></a></li>`).join("")}
           <li><a href="${href("catalog-sale")}" data-i18n="sales"></a></li></ul></div>
@@ -416,6 +496,10 @@
       </div>
       <div class="fineprint"><span>© 2026 SOFIZAR</span><span data-i18n="demo"></span></div>
     </div></footer>
+    <button type="button" class="back-top" id="backTop">
+      <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg>
+      <span class="sr" data-i18n="backTop"></span>
+    </button>
     <div class="toast" id="toast" role="status" aria-live="polite"><svg class="ico"><use href="#i-check"/></svg><span class="toast-msg"></span><a class="toast-act" hidden></a></div>`;
   }
 
@@ -862,6 +946,7 @@
       }
       if (opened !== control) return;
 
+      list.classList.toggle("is-region", select.id === "regionSelect");
       list.hidden = false;
       list.inert = false;
       list.setAttribute("aria-label", button.getAttribute("aria-label"));
@@ -910,9 +995,9 @@
         else highlight(Math.max(0, Math.min(last, cursor + (key === "ArrowDown" ? 1 : -1))));
       } else if (key.length === 1 && !event.altKey && !event.ctrlKey && !event.metaKey) {
         const now = performance.now();
-        typed = (now - lastKey < 600 ? typed : "") + key.toLocaleLowerCase();
+        typed = (now - lastKey < 600 ? typed : "") + searchKey(key);
         lastKey = now;
-        const index = [...optionList.children].findIndex((item) => item.textContent.toLocaleLowerCase().startsWith(typed));
+        const index = [...optionList.children].findIndex((item) => searchKey(item.textContent).startsWith(typed));
         if (index >= 0) highlight(index);
       }
     }
@@ -1074,6 +1159,15 @@
 
   /* ---------- Монтирование ---------- */
   function mount() {
+    const isReload = performance.getEntriesByType("navigation")[0]?.type === "reload";
+    let isFirstVisit = false;
+    try {
+      const key = "sz-first-arrival-seen";
+      isFirstVisit = !sessionStorage.getItem(key);
+      if (isFirstVisit) sessionStorage.setItem(key, "1");
+    } catch { /* Page navigation still works without storage. */ }
+    if (isFirstVisit || isReload) document.body.dataset.firstArrival = "";
+
     document.body.insertAdjacentHTML("afterbegin", ICONS);
     $("#chrome-top").outerHTML = chromeTop();
     $("#chrome-bottom").outerHTML = chromeBottom();
@@ -1105,7 +1199,34 @@
     if (window.ResizeObserver) new ResizeObserver(updateHeaderHeight).observe(header);
     else addEventListener("resize", updateHeaderHeight);
 
-    const onScroll = () => header.classList.toggle("is-scrolled", scrollY > 50);
+    const backTop = $("#backTop");
+    const homeLink = $(".header-row .logo", header);
+    const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+    let returnToTopTimer = 0;
+    const updateBackTop = () => {
+      const visible = !returnToTopTimer && scrollY > 320;
+      backTop.classList.toggle("is-visible", visible);
+      backTop.inert = !visible;
+    };
+    const waitForScrollToSettle = () => {
+      clearTimeout(returnToTopTimer);
+      // If the return is interrupted above the threshold, make the button available again.
+      returnToTopTimer = setTimeout(() => {
+        returnToTopTimer = 0;
+        updateBackTop();
+      }, 180);
+    };
+    backTop.addEventListener("click", () => {
+      if (document.activeElement === backTop) homeLink.focus({ preventScroll: true });
+      waitForScrollToSettle();
+      updateBackTop();
+      scrollTo({ top: 0, behavior: reduceMotion.matches ? "instant" : "smooth" });
+    });
+    const onScroll = () => {
+      header.classList.toggle("is-scrolled", scrollY > 50);
+      if (returnToTopTimer) waitForScrollToSettle();
+      updateBackTop();
+    };
     addEventListener("scroll", onScroll, { passive: true }); onScroll();
     addEventListener("keydown", (e) => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); $("#search").focus(); } });
     $("#search").addEventListener("keydown", (e) => {
@@ -1115,13 +1236,17 @@
     syncBadges();
   }
 
-  window.SZ = { SPA, T, t, PRODUCTS, MODELS, CATS, METALS, byId, state, store, money, grams, sizeLabel, spec, catName, date, esc, href, pageOf, onRoute, extend, $, $$, toast, fadeSection,
+  window.SZ = { SPA, T, t, PRODUCTS, MODELS, CATS, METALS, byId, state, store, money, grams, sizeLabel, spec, catName, date, esc, searchKey, href, pageOf, onRoute, extend, $, $$, toast, fadeSection,
     addToCart, removeOneFromCart, toggleFav, saveCart, cartCount, syncBadges, productCard, onChange: (fn) => listeners.push(fn), applyLang, route };
 
   mount();
-  addEventListener("hashchange", SPA ? route : runRoute);
+  addEventListener("hashchange", () => {
+    if (SPA) delete document.body.dataset.firstArrival;
+    SPA ? route() : runRoute();
+  });
+  addEventListener("pagehide", () => { delete document.body.dataset.firstArrival; });
   addEventListener("pageshow", (event) => {
-    if (event.persisted) fadeSection(document.body, 520);
+    if (event.persisted) fadeSection($("main[data-page]:not([hidden])"), 520);
   });
   // страницы подключаются после core.js и вызывают SZ.applyLang() сами (см. SZ.start)
   window.SZ.start = () => {
@@ -1132,5 +1257,6 @@
     mountSelectionHighlights();
     mountMediaLoading();
     mountAccordions();
+    mountPageArrival();
   };
 })();

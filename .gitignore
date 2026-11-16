@@ -1,2 +1,3 @@
-# Gilroy — коммерческий шрифт, в публичный репозиторий не кладём
+# В репозиторий входит только шрифт Manrope с открытой лицензией.
 frontend/assets/fonts/*.woff2
+!frontend/assets/fonts/ManropeVariable.woff2

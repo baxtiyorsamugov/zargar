@@ -20,7 +20,8 @@
 
   const local = { tab: "account", otab: "active", open: null, addingAddr: false };
   const profile = Object.assign({ first: "Dilnoza", last: "Karimova", phone: "+998 90 123 45 67", email: "dilnoza@example.com", bday: "1994-05-14", sms: true, tg: false }, store.get("sz-profile", {}));
-  let addresses = store.get("sz-addr", null) || [{ titleKey: "home", text: "Toshkent, Chilonzor tumani, Bunyodkor ko'chasi 12, 45-xonadon", main: true }];
+  const homeAddress = "Toshkent, Chilonzor tumani, Bunyodkor koʻchasi 12, 45-xonadon";
+  const addresses = store.get("sz-addr", null) || [{ titleKey: "home", text: homeAddress, main: true }];
 
   const orders = () => [...store.get("sz-orders", []), ...SEED_ORDERS];
   const ledger = () => [...store.get("sz-bonus-extra", []).map((b) => ({ kind: "earn", id: b.id, pts: b.pts, date: b.date })), ...SEED_LEDGER];
@@ -98,7 +99,7 @@
     $("#addrList", root).innerHTML = addresses.map((a, i) => `
       <div class="addr ${a.main ? "is-main" : ""}">
         <span class="addr-ico"><svg class="ico"><use href="#i-map"/></svg></span>
-        <span class="addr-text"><b>${esc(addrTitle(a))}</b>${a.main ? `<span class="pill pill-ready">${t("mainAddr")}</span>` : ""}<small>${esc(a.text)}</small></span>
+        <span class="addr-text"><b>${esc(addrTitle(a))}</b>${a.main ? `<span class="pill pill-ready">${t("mainAddr")}</span>` : ""}<small>${esc(a.titleKey === "home" ? homeAddress : a.text)}</small></span>
         <button class="icon-btn" data-del-addr="${i}" aria-label="${t("remove")}"><svg class="ico"><use href="#i-trash"/></svg></button>
       </div>`).join("");
   }
