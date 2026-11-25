@@ -60,7 +60,7 @@
       demo: "Rahbariyat uchun namoyish. Narxlar, mahsulotlar va buyurtmalar namunaviy.",
       p1: "Burama uzuk", p2: "Tomchi sirgʻalar", p3: "Tomchi marjonli zanjir", p4: "Zanjir bilaguzuk",
       gold: "Oltin 585", items: "ta", sum: "soʻm", size: "Razmer",
-      addFav: "Sevimlilarga qoʻshildi", delFav: "Sevimlilardan olib tashlandi", addCart: "Savatga qoʻshildi", goCart: "Savatga oʻtish",
+      addFav: "Sevimlilarga qoʻshildi", delFav: "Sevimlilardan olib tashlandi", addCart: "Savatga qoʻshildi", outOfStock: "Sotuvda yoʻq", showMore: (n, left) => `Yana ${n} ta koʻrsatish (${left})`, goCart: "Savatga oʻtish",
       m_yellow: "Sariq oltin", m_white: "Oq oltin", m_rose: "Qizil oltin", m_silver: "Kumush",
       fMetal: "Metall", forBuyers: "Xaridorlarga", faq: "Savol-javob", aboutNav: "Zavod haqida", newShort: "Yangi", pending: "",
       months: ["yanvar","fevral","mart","aprel","may","iyun","iyul","avgust","sentabr","oktabr","noyabr","dekabr"],
@@ -133,7 +133,7 @@
       demo: "Демонстрация для руководства. Цены, товары и заказы примерные.",
       p1: "Кольцо-переплетение", p2: "Серьги-капли", p3: "Цепь с подвеской-каплей", p4: "Браслет-цепь",
       gold: "Золото 585", items: "шт.", sum: "сум", size: "Размер",
-      addFav: "Добавлено в избранное", delFav: "Убрано из избранного", addCart: "Добавлено в корзину", goCart: "Перейти в корзину",
+      addFav: "Добавлено в избранное", delFav: "Убрано из избранного", addCart: "Добавлено в корзину", outOfStock: "Нет в наличии", showMore: (n, left) => `Показать ещё ${n} (осталось ${left})`, goCart: "Перейти в корзину",
       m_yellow: "Жёлтое золото", m_white: "Белое золото", m_rose: "Красное золото", m_silver: "Серебро",
       fMetal: "Металл", forBuyers: "Покупателям", faq: "Вопросы и ответы", aboutNav: "О заводе", newShort: "Новинки", pending: "",
       months: ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"],
@@ -203,7 +203,7 @@
       demo: "Demo for management. Prices, products and orders are examples.",
       p1: "Twist ring", p2: "Drop hoop earrings", p3: "Drop pendant necklace", p4: "Chain bracelet",
       gold: "585 gold", items: "items", sum: "UZS", size: "Size",
-      addFav: "Added to favorites", delFav: "Removed from favorites", addCart: "Added to bag", goCart: "Go to bag",
+      addFav: "Added to favorites", delFav: "Removed from favorites", addCart: "Added to bag", outOfStock: "Out of stock", showMore: (n, left) => `Show ${n} more (${left} left)`, goCart: "Go to bag",
       m_yellow: "Yellow gold", m_white: "White gold", m_rose: "Rose gold", m_silver: "Silver",
       fMetal: "Metal", forBuyers: "Customer info", faq: "FAQ", aboutNav: "About the factory", newShort: "New in", pending: "",
       months: ["January","February","March","April","May","June","July","August","September","October","November","December"],
@@ -291,7 +291,37 @@
   PRODUCTS.forEach((p) => { p.sku = `SZ-${({ rings: "R", earrings: "E", chains: "N", bracelets: "B" })[p.cat]}${String(p.id).padStart(4, "0")}`; });
   const CATS = ["rings", "earrings", "bracelets", "chains"];
   const METALS = ["yellow", "white", "rose", "silver"];
-  const byId = (id) => PRODUCTS.find((p) => p.id === +id);
+
+  /* ---------- Каталог из 1С: data/catalog.js (window.SZ_CATALOG) собирает zargar/api-sync ---------- */
+  // Если файла нет — остаются демо-товары выше. id товара из 1С — GUID (строка).
+  const CATALOG = window.SZ_CATALOG && Array.isArray(window.SZ_CATALOG.products) ? window.SZ_CATALOG : null;
+  if (CATALOG) {
+    const PHOTO = { rings: "gold-ring.webp", earrings: "gold-earrings.webp", chains: "gold-necklace.webp", bracelets: "gold-bracelet.webp" };
+    const LIFE = { rings: "category-rings.webp", earrings: "category-earrings.webp", chains: "category-necklaces.webp", bracelets: "campaign-hands.webp" };
+    const skipped = [];
+    const real = CATALOG.products.filter((c) => (CATS.includes(c.cat) && METALS.includes(c.metal)) || (skipped.push(c), false)).map((c, i) => {
+      const key = "x" + i;
+      // в 1С наименование = вид изделия («Кольцо»), поэтому добавляем артикул, чтобы карточки различались
+      const title = c.name === c.product_type ? `${c.name} ${c.article}` : c.name;
+      for (const lang of Object.keys(T)) { T[lang][key] = title; T[lang]["d_" + key] = ""; }
+      const all = (c.sizes || []).map((s) => ({ v: Number(s.value), stock: s.stock }));
+      const avail = all.filter((s) => s.stock > 0);
+      return {
+        id: c.id, key, name: c.name, cat: c.cat, metal: c.metal, probe: c.probe, w: c.w, price: c.price,
+        unit: c.cat === "chains" || c.cat === "bracelets" ? "cm" : undefined,
+        sizes: all.length ? (avail.length ? avail : all).map((s) => s.v) : undefined,
+        sizeStock: Object.fromEntries(all.map((s) => [s.v, s.stock])),
+        stock: c.stock, inStock: c.inStock, sku: c.article, setId: c.set_id,
+        // assets/img/ + ../../data/img/<id>.jpg → data/img/<id>.jpg; нет фото — нейтральный плейсхолдер категории
+        img: c.image ? "../../" + c.image : PHOTO[c.cat], life: LIFE[c.cat],
+        tabs: [c.isNew && "new", c.isBestseller && "popular"].filter(Boolean),
+        pop: (c.isBestseller ? 100 : 0) + (c.inStock ? 20 : 0) + (c.image ? 10 : 0),
+      };
+    });
+    PRODUCTS.splice(0, PRODUCTS.length, ...real);
+    if (skipped.length) console.warn(`SOFIZAR: ${skipped.length} товаров из 1С не показаны — неизвестная категория или металл`, skipped.map((c) => `${c.article}: ${c.product_type} / ${c.color}`));
+  }
+  const byId = (id) => PRODUCTS.find((p) => String(p.id) === String(id));
 
   /* ---------- Регионы Узбекистана (ISO 3166-2) ---------- */
   const REGIONS = {
@@ -323,6 +353,10 @@
     favs: new Set(store.get("sz-favs", [2, 3])),
     cart: store.get("sz-cart2", [{ id: 1, size: 17, qty: 1 }, { id: 2, qty: 1 }]),
   };
+  if (CATALOG) { // корзина и избранное могли остаться от демо или от товаров, которых больше нет
+    state.cart = state.cart.filter((line) => byId(line.id));
+    state.favs = new Set([...state.favs].filter((id) => byId(id)));
+  }
   state.addedProducts = new Set([...store.get("sz-added-products", []), ...state.cart.map((line) => line.id)]);
   if (!T[state.lang]) state.lang = "uz";
 
@@ -521,14 +555,16 @@
   const defaultSize = (product) => product.sizes?.[Math.floor(product.sizes.length / 2)];
 
   function addToCart(id, size) {
-    const p = byId(id); const s = size ?? defaultSize(p);
+    const p = byId(id); if (!p) return;
+    if (p.inStock === false) return toast(t("outOfStock"));
+    const s = size ?? defaultSize(p);
     const line = state.cart.find((l) => l.id === p.id && l.size === s);
     line ? line.qty++ : state.cart.push({ id: p.id, size: s, qty: 1 });
     state.addedProducts.add(p.id);
     saveCart(); toast(t("addCart"), { label: t("goCart"), href: href("cart") });
   }
   function removeOneFromCart(id, selectedSize) {
-    const product = byId(id);
+    const product = byId(id); if (!product) return;
     const size = selectedSize ?? defaultSize(product);
     let index = state.cart.findIndex((line) => line.id === product.id && line.size === size);
     if (index < 0) index = state.cart.findLastIndex((line) => line.id === product.id);
@@ -540,7 +576,8 @@
     saveCart();
   }
   function toggleFav(id) {
-    const on = !state.favs.has(+id); on ? state.favs.add(+id) : state.favs.delete(+id);
+    const p = byId(id); if (!p) return false;
+    const on = !state.favs.has(p.id); on ? state.favs.add(p.id) : state.favs.delete(p.id);
     store.set("sz-favs", [...state.favs]); syncBadges("favs"); emit(); toast(t(on ? "addFav" : "delFav"));
     return on;
   }
@@ -578,7 +615,7 @@
     <article class="product">
       <div class="p-img">
         <a class="p-link metal-${p.metal}" href="${href("product-" + p.id)}" tabindex="-1" aria-hidden="true"><span class="media-slot"><img src="assets/img/${p.img}" alt="" loading="lazy"></span></a>
-        ${p.old ? `<span class="tag sale">−${Math.round((1 - p.price / p.old) * 100)}%</span>` : opts.noTag ? "" : `<span class="tag">${t("tagNew")}</span>`}
+        ${p.inStock === false ? `<span class="tag out">${t("outOfStock")}</span>` : p.old ? `<span class="tag sale">−${Math.round((1 - p.price / p.old) * 100)}%</span>` : opts.noTag ? "" : `<span class="tag">${t("tagNew")}</span>`}
         <button class="fav" data-fav="${p.id}" aria-pressed="${state.favs.has(p.id)}" aria-label="${esc(t("favs"))}: ${esc(t(p.key))}"><svg class="ico"><use href="#i-heart"/></svg></button>
       </div>
       <div class="p-info">
@@ -588,7 +625,7 @@
           <span class="p-price">${p.old ? `<s>${money(p.old)}</s>` : ""}${money(p.price)}</span>
           <div class="p-cart-actions">
             ${quantity ? `<button type="button" class="bag-minus" data-remove-one="${p.id}" aria-label="${esc(t("removeOne"))}: ${esc(t(p.key))}">−</button>` : ""}
-            <button type="button" class="bag${added ? " added" : ""}" data-add="${p.id}" aria-label="${esc(t("cart"))}: ${esc(t(p.key))}${quantity ? " ×" + quantity : ""}">
+            <button type="button" class="bag${added ? " added" : ""}" data-add="${p.id}" ${p.inStock === false ? `disabled title="${esc(t("outOfStock"))}"` : ""} aria-label="${esc(p.inStock === false ? t("outOfStock") : t("cart"))}: ${esc(t(p.key))}${quantity ? " ×" + quantity : ""}">
               <svg class="ico" aria-hidden="true"><use href="#i-bag"/></svg>${quantity ? '<span class="product-cart-count" aria-hidden="true">' + quantity + '</span>' : ""}
             </button>
           </div>
@@ -1236,7 +1273,7 @@
     syncBadges();
   }
 
-  window.SZ = { SPA, T, t, PRODUCTS, MODELS, CATS, METALS, byId, state, store, money, grams, sizeLabel, spec, catName, date, esc, searchKey, href, pageOf, onRoute, extend, $, $$, toast, fadeSection,
+  window.SZ = { SPA, T, t, CATALOG, PRODUCTS, MODELS, CATS, METALS, byId, state, store, money, grams, sizeLabel, spec, catName, date, esc, searchKey, href, pageOf, onRoute, extend, $, $$, toast, fadeSection,
     addToCart, removeOneFromCart, toggleFav, saveCart, cartCount, syncBadges, productCard, onChange: (fn) => listeners.push(fn), applyLang, route };
 
   mount();

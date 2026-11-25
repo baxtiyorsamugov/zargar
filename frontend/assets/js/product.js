@@ -56,6 +56,8 @@
     const count = $(".product-cart-count", addButton);
     addButton.classList.toggle("added", state.addedProducts.has(p.id));
     count.hidden = quantity === 0;
+    addButton.disabled = p.inStock === false;
+    $("[data-i18n=addToCart]", addButton).textContent = p.inStock === false ? t("outOfStock") : t("addToCart");
     count.textContent = quantity;
     addButton.setAttribute("aria-label", t("addToCart") + (quantity ? " · " + t("cart") + ": " + quantity : ""));
     removeButton.hidden = quantity === 0;
@@ -67,7 +69,7 @@
     // галерея: фото на белом + фото на модели
     const imgs = [p.img, p.life];
     $("#gMain", root).innerHTML = `<div class="g-frame ${local.img === 0 ? "metal-" + p.metal : ""} ${local.img ? "is-life" : ""}"><span class="media-slot"><img src="assets/img/${imgs[local.img]}" alt="${esc(t(p.key))}"></span></div>`
-      + (p.old ? `<span class="tag sale">−${Math.round((1 - p.price / p.old) * 100)}%</span>` : p.tabs.includes("new") ? `<span class="tag">${t("tagNew")}</span>` : "");
+      + (p.inStock === false ? `<span class="tag out">${t("outOfStock")}</span>` : p.old ? `<span class="tag sale">−${Math.round((1 - p.price / p.old) * 100)}%</span>` : p.tabs.includes("new") ? `<span class="tag">${t("tagNew")}</span>` : "");
     $("#gThumbs", root).innerHTML = imgs.map((src, i) => `<button class="g-thumb ${i === 0 ? "metal-" + p.metal : ""}" role="tab" aria-selected="${local.img === i}" data-img="${i}"><span class="media-slot"><img src="assets/img/${src}" alt=""></span></button>`).join("");
 
     $("#pdTags", root).innerHTML = `<span class="pill pill-ready">${t("m_" + p.metal)} ${p.probe}</span>`;
@@ -100,9 +102,9 @@
 
   onRoute((r) => {
     if (!r.startsWith("product-")) return;
-    const id = +r.slice(8);
-    if (id !== local.id) { local.size = null; local.img = 0; }
-    local.id = byId(id) ? id : 1;
+    const found = byId(r.slice(8)) || PRODUCTS[0];
+    if (found.id !== local.id) { local.size = null; local.img = 0; }
+    local.id = found.id;
     $("#pdSizeErr", root).hidden = true;
     render();
   });

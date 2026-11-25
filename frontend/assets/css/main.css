@@ -323,6 +323,8 @@ html[data-tab-focus] .search input:focus { outline: none; }
 .product:hover .p-img img { transform: scale(1.06); }
 .tag { position: absolute; left: 12px; top: 12px; padding: 3px 9px; border-radius: var(--r-pill); background: var(--warm-pill); color: var(--champagne-gold); font-size: var(--fs-xs); font-weight: 700; }
 .tag.sale { background: var(--gold-accent); color: var(--ink); }
+.tag.out { background: var(--ink); color: var(--on-dark); }
+.bag:disabled, .pd-add:disabled { opacity: .45; cursor: not-allowed; }
 .fav { position: absolute; top: 8px; right: 8px; width: 38px; height: 38px; display: grid; place-items: center; border: 0; border-radius: 50%; background: rgba(255,255,255,.9); box-shadow: 0 2px 8px rgba(20,20,20,.08); }
 .fav .ico { width: 19px; height: 19px; }
 .fav[aria-pressed="true"] { color: #C2556E; }
