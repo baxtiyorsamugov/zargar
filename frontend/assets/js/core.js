@@ -266,10 +266,10 @@
   /* ---------- Товары (пример, позже — из 1С) ---------- */
   // model: p1 кольцо, p2 серьги, p3 цепь с подвеской, p4 браслет. Один дизайн в разных металлах — отдельные артикулы.
   const MODELS = {
-    p1: { cat: "rings", img: "gold-ring.webp", life: "category-rings.webp", sizes: [16, 16.5, 17, 17.5, 18, 18.5, 19] },
-    p2: { cat: "earrings", img: "gold-earrings.webp", life: "category-earrings.webp" },
-    p3: { cat: "chains", img: "gold-necklace.webp", life: "category-necklaces.webp", sizes: [40, 45, 50], unit: "cm" },
-    p4: { cat: "bracelets", img: "gold-bracelet.webp", life: "campaign-hands.webp", sizes: [16, 17, 18, 19], unit: "cm" },
+    p1: { cat: "rings", img: "gold-ring.webp", sizes: [16, 16.5, 17, 17.5, 18, 18.5, 19] },
+    p2: { cat: "earrings", img: "gold-earrings.webp" },
+    p3: { cat: "chains", img: "gold-necklace.webp", sizes: [40, 45, 50], unit: "cm" },
+    p4: { cat: "bracelets", img: "gold-bracelet.webp", sizes: [16, 17, 18, 19], unit: "cm" },
   };
   const P = (id, key, metal, w, price, extra = {}) => ({ id, key, metal, probe: metal === "silver" ? 925 : 585, w, price, tabs: [], ...MODELS[key], ...extra });
   const PRODUCTS = [
@@ -297,7 +297,6 @@
   const CATALOG = window.SZ_CATALOG && Array.isArray(window.SZ_CATALOG.products) ? window.SZ_CATALOG : null;
   if (CATALOG) {
     const PHOTO = { rings: "gold-ring.webp", earrings: "gold-earrings.webp", chains: "gold-necklace.webp", bracelets: "gold-bracelet.webp" };
-    const LIFE = { rings: "category-rings.webp", earrings: "category-earrings.webp", chains: "category-necklaces.webp", bracelets: "campaign-hands.webp" };
     const skipped = [];
     const real = CATALOG.products.filter((c) => (CATS.includes(c.cat) && METALS.includes(c.metal)) || (skipped.push(c), false)).map((c, i) => {
       const key = "x" + i;
@@ -313,7 +312,7 @@
         sizeStock: Object.fromEntries(all.map((s) => [s.v, s.stock])),
         stock: c.stock, inStock: c.inStock, sku: c.article, setId: c.set_id,
         // assets/img/ + ../../data/img/<id>.jpg → data/img/<id>.jpg; нет фото — нейтральный плейсхолдер категории
-        img: c.image ? "../../" + c.image : PHOTO[c.cat], life: LIFE[c.cat],
+        img: c.image ? "../../" + c.image : PHOTO[c.cat],
         tabs: [c.isNew && "new", c.isBestseller && "popular"].filter(Boolean),
         pop: (c.isBestseller ? 100 : 0) + (c.inStock ? 20 : 0) + (c.image ? 10 : 0),
       };

@@ -67,7 +67,7 @@
       .map(([h, l]) => `<a href="${h}">${l}</a><svg class="ico"><use href="#i-chev"/></svg>`).join("") + `<span>${t(p.key)}</span>`;
 
     // галерея: фото на белом + фото на модели
-    const imgs = [p.img, p.life];
+    const imgs = [p.img];
     $("#gMain", root).innerHTML = `<div class="g-frame ${local.img === 0 ? "metal-" + p.metal : ""} ${local.img ? "is-life" : ""}"><span class="media-slot"><img src="assets/img/${imgs[local.img]}" alt="${esc(t(p.key))}"></span></div>`
       + (p.inStock === false ? `<span class="tag out">${t("outOfStock")}</span>` : p.old ? `<span class="tag sale">−${Math.round((1 - p.price / p.old) * 100)}%</span>` : p.tabs.includes("new") ? `<span class="tag">${t("tagNew")}</span>` : "");
     $("#gThumbs", root).innerHTML = imgs.map((src, i) => `<button class="g-thumb ${i === 0 ? "metal-" + p.metal : ""}" role="tab" aria-selected="${local.img === i}" data-img="${i}"><span class="media-slot"><img src="assets/img/${src}" alt=""></span></button>`).join("");
