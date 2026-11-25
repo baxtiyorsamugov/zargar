@@ -105,14 +105,44 @@
     const open = $$("#faqList details[open]", info).map((d) => d.dataset.i);
     $("#faqList", info).innerHTML = t("faqs").map(([q, a], i) => `<details class="acc" data-i="${i}" ${open.includes(String(i)) || (!open.length && i === 0) ? "open" : ""}><summary>${q}</summary><p>${a}</p></details>`).join("");
   });
-  $$("#infoNav a", info).forEach((a) => { a.href = href(a.dataset.sec); });
-  const mark = (id) => $$("#infoNav a", info).forEach((a) => a.classList.toggle("is-current", a.dataset.sec === id));
+  const infoNav = $("#infoNav", info);
+  $$("a[data-sec]", infoNav).forEach((a) => { a.href = "#" + a.dataset.sec; });
+  const mark = (id) => $$("a[data-sec]", infoNav).forEach((a) => {
+    const selected = a.dataset.sec === id;
+    a.classList.toggle("is-current", selected);
+    if (selected) a.setAttribute("aria-current", "location");
+    else a.removeAttribute("aria-current");
+  });
+  let scrollingTo = null;
+  let scrollTimer = 0;
+  infoNav.addEventListener("click", (event) => {
+    const link = event.target.closest("a[data-sec]");
+    if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    const target = document.getElementById(link.dataset.sec);
+    if (!target) return;
+    event.preventDefault();
+    scrollingTo = target.id;
+    mark(scrollingTo);
+    target.scrollIntoView({
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+      block: "start",
+    });
+    settleScroll();
+  });
+  function settleScroll() {
+    if (!scrollingTo) return;
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => { scrollingTo = null; }, 180);
+  }
+  addEventListener("scroll", settleScroll, { passive: true });
   onRoute((r) => {
     if (SZ.pageOf(r) !== "info") return;
     const id = r === "info" ? "delivery" : r; mark(id);
   });
   // подсветка раздела при прокрутке
-  const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && mark(e.target.id)), { rootMargin: "-40% 0px -55% 0px" });
+  const io = new IntersectionObserver((es) => {
+    if (!scrollingTo) es.forEach((e) => e.isIntersecting && mark(e.target.id));
+  }, { rootMargin: "-40% 0px -55% 0px" });
   $$(".info-sec", info).forEach((s) => io.observe(s));
   $("#copyPhone", info).addEventListener("click", async () => {
     try { await navigator.clipboard.writeText("+998 55 500-00-00"); toast(t("copied")); } catch (e) { toast("+998 55 500-00-00"); }

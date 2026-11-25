@@ -1066,6 +1066,7 @@ html[data-tab-focus] .price-inputs input:focus { border-color: var(--champagne-g
 /* ===================== О заводе ===================== */
 .about-hero { overflow: hidden; border-radius: var(--r-l); min-height: clamp(360px, 38vw, 520px); display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); background: var(--soft-panel); border: 1px solid var(--champagne-line); }
 .about-hero > .media-slot { grid-column: 2; grid-row: 1; }
+.about-hero > .factory-media { grid-column: 2; grid-row: 1; }
 .about-hero-copy { grid-column: 1; grid-row: 1; align-content: center; display: grid; gap: 16px; padding: clamp(28px, 4vw, 60px); }
 .about-hero h1 { font-size: var(--fs-hero); font-weight: 700; }
 .about-hero p { font-size: var(--fs-l); color: var(--ink-soft); max-width: 40ch; }
@@ -1073,6 +1074,7 @@ html[data-tab-focus] .price-inputs input:focus { border-color: var(--champagne-g
 @media (max-width: 740px) {
   .about-hero { grid-template-columns: minmax(0, 1fr); }
   .about-hero > .media-slot { grid-area: 2 / 1; aspect-ratio: 16 / 10; }
+  .about-hero > .factory-media { grid-area: 2 / 1; margin-bottom: var(--space-4); }
   .about-hero-copy { padding: 26px; }
   .about-hero h1 { font-size: clamp(1.6875rem, 5.5vw, 2.375rem); }
 }
