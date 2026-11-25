@@ -320,7 +320,8 @@
     PRODUCTS.splice(0, PRODUCTS.length, ...real);
     if (skipped.length) console.warn(`SOFIZAR: ${skipped.length} товаров из 1С не показаны — неизвестная категория или металл`, skipped.map((c) => `${c.article}: ${c.product_type} / ${c.color}`));
   }
-  const byId = (id) => PRODUCTS.find((p) => String(p.id) === String(id));
+  const productsById = new Map(PRODUCTS.map((product) => [String(product.id), product]));
+  const byId = (id) => productsById.get(String(id));
 
   /* ---------- Регионы Узбекистана (ISO 3166-2) ---------- */
   const REGIONS = {
@@ -361,7 +362,8 @@
 
   const t = (k, ...a) => { const v = T[state.lang][k]; return typeof v === "function" ? v(...a) : v; };
   const searchKey = (text) => text.toLowerCase().replace(/['‘’ʻʼ\u0060]/g, "'");
-  const money = (n) => Math.round(n).toLocaleString("ru-RU").replace(/\s/g, " ") + " " + t("sum");
+  const priceFormat = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 });
+  const money = (n) => priceFormat.format(Math.round(n)).replace(/\s/g, " ") + " " + t("sum");
   const grams = (n) => n.toFixed(1).replace(".", state.lang === "en" ? "." : ",") + (state.lang === "ru" ? " г" : " g");
   const sizeLabel = (p, s) => (p.unit ? `${s} ${state.lang === "ru" ? "см" : "cm"}` : String(s).replace(".", state.lang === "en" ? "." : ","));
   const spec = (p) => `${t("m_" + p.metal)} ${p.probe}, ${grams(p.w)}`;
@@ -410,7 +412,8 @@
   }
 
   function mountPageArrival() {
-    if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (document.documentElement.hasAttribute("data-page-repeat") ||
+        !("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const blocks = [
       ".section-head > *", "#cats > .cat", ".products > .product", ".more-row",
@@ -611,14 +614,14 @@
     const quantity = cartCount(p.id);
     const added = state.addedProducts.has(p.id);
     return `
-    <article class="product">
+    <article class="product" data-product-id="${esc(p.id)}">
       <div class="p-img">
-        <a class="p-link metal-${p.metal}" href="${href("product-" + p.id)}" tabindex="-1" aria-hidden="true"><span class="media-slot"><img src="assets/img/${p.img}" alt="" loading="lazy"></span></a>
+        <a class="p-link metal-${p.metal}" href="${href("product-" + p.id)}" tabindex="-1" aria-hidden="true"><span class="media-slot"><img src="assets/img/${p.img}" alt="" loading="lazy" decoding="async"></span></a>
         ${p.inStock === false ? `<span class="tag out">${t("outOfStock")}</span>` : p.old ? `<span class="tag sale">−${Math.round((1 - p.price / p.old) * 100)}%</span>` : opts.noTag ? "" : `<span class="tag">${t("tagNew")}</span>`}
         <button class="fav" data-fav="${p.id}" aria-pressed="${state.favs.has(p.id)}" aria-label="${esc(t("favs"))}: ${esc(t(p.key))}"><svg class="ico"><use href="#i-heart"/></svg></button>
       </div>
       <div class="p-info">
-        <a class="p-name" href="${href("product-" + p.id)}">${t(p.key)}</a>
+        <a class="p-name" href="${href("product-" + p.id)}">${esc(t(p.key))}</a>
         <span class="p-meta">${spec(p)}</span>
         <div class="p-row">
           <span class="p-price">${p.old ? `<s>${money(p.old)}</s>` : ""}${money(p.price)}</span>
@@ -632,10 +635,40 @@
       </div>
     </article>`;
   }
+  const productViews = new WeakMap();
+  function renderProductCards(container, products, options = {}) {
+    const previous = productViews.get(container) || new Map();
+    const next = new Map();
+    const template = document.createElement("template");
+    let cursor = container.firstElementChild;
+    for (const product of products) {
+      const id = String(product.id);
+      const html = productCard(product, typeof options === "function" ? options(product) : options);
+      let view = previous.get(id);
+      if (!view || view.html !== html || view.node.parentElement !== container) {
+        template.innerHTML = html.trim();
+        view = { html, node: template.content.firstElementChild };
+      }
+      if (view.node !== cursor) container.insertBefore(view.node, cursor);
+      cursor = view.node.nextElementSibling;
+      next.set(id, view);
+    }
+    while (cursor) {
+      const obsolete = cursor;
+      cursor = cursor.nextElementSibling;
+      obsolete.remove();
+    }
+    productViews.set(container, next);
+  }
   // Делегирование кликов по сердечку и корзине на любой странице
   document.addEventListener("click", (e) => {
     const fav = e.target.closest("[data-fav]");
-    if (fav) { const on = toggleFav(fav.dataset.fav); $$(`[data-fav="${fav.dataset.fav}"]`).forEach((b) => b.setAttribute("aria-pressed", on)); }
+    if (fav) {
+      const restoreFocus = document.activeElement === fav;
+      const on = toggleFav(fav.dataset.fav);
+      $$(`[data-fav="${fav.dataset.fav}"]`).forEach((button) => button.setAttribute("aria-pressed", on));
+      if (restoreFocus && !fav.isConnected) $(`[data-fav="${fav.dataset.fav}"]`)?.focus({ preventScroll: true });
+    }
 
     const cartButton = e.target.closest("[data-add], [data-remove-one]");
     if (!cartButton) return;
@@ -1098,12 +1131,36 @@
     document.addEventListener("focusin", (event) => {
       if (opened && event.target !== opened.button) close();
     });
-    document.addEventListener("change", sync);
-    addEventListener("resize", position);
-    addEventListener("scroll", (event) => { if (event.target !== optionList) position(); }, true);
-    new MutationObserver(sync).observe(document.body, {
-      subtree: true, childList: true, attributes: true,
-      attributeFilter: ["disabled", "selected", "aria-label"],
+    let syncFrame = 0;
+    let positionFrame = 0;
+    const scheduleSync = () => {
+      if (!syncFrame) syncFrame = requestAnimationFrame(() => { syncFrame = 0; sync(); });
+    };
+    const schedulePosition = () => {
+      if ((opened || closing) && !positionFrame) {
+        positionFrame = requestAnimationFrame(() => { positionFrame = 0; position(); });
+      }
+    };
+    const containsSelect = (node) => node.nodeType === 1 &&
+      (node.matches("select, option, optgroup") || node.querySelector("select"));
+    document.addEventListener("change", (event) => {
+      if (event.target.matches("select")) sync();
+    });
+    listeners.push(sync);
+    onRoute(sync);
+    addEventListener("resize", schedulePosition);
+    addEventListener("scroll", (event) => { if (event.target !== optionList) schedulePosition(); }, true);
+    new MutationObserver((records) => {
+      const changed = records.some((record) =>
+        record.target.closest?.("select") ||
+        record.target.parentElement?.closest("select") ||
+        record.type === "attributes" && record.target.matches("fieldset") ||
+        record.type === "childList" && [...record.addedNodes, ...record.removedNodes].some(containsSelect)
+      );
+      if (changed) scheduleSync();
+    }).observe(document.body, {
+      subtree: true, childList: true, characterData: true, attributes: true,
+      attributeFilter: ["disabled", "selected", "label", "aria-label"],
     });
     sync();
   }
@@ -1198,14 +1255,13 @@
 
   /* ---------- Монтирование ---------- */
   function mount() {
-    const isReload = performance.getEntriesByType("navigation")[0]?.type === "reload";
     let isFirstVisit = false;
     try {
       const key = "sz-first-arrival-seen";
       isFirstVisit = !sessionStorage.getItem(key);
       if (isFirstVisit) sessionStorage.setItem(key, "1");
     } catch { /* Page navigation still works without storage. */ }
-    if (isFirstVisit || isReload) document.body.dataset.firstArrival = "";
+    if (isFirstVisit && !document.documentElement.hasAttribute("data-page-repeat")) document.body.dataset.firstArrival = "";
 
     document.body.insertAdjacentHTML("afterbegin", ICONS);
     $("#chrome-top").outerHTML = chromeTop();
@@ -1269,7 +1325,7 @@
   }
 
   window.SZ = { SPA, T, t, CATALOG, PRODUCTS, MODELS, CATS, METALS, byId, state, store, money, grams, sizeLabel, spec, catName, date, esc, searchKey, href, pageOf, onRoute, extend, $, $$, toast, fadeSection,
-    addToCart, removeOneFromCart, toggleFav, saveCart, cartCount, syncBadges, productCard, onChange: (fn) => listeners.push(fn), applyLang, route };
+    addToCart, removeOneFromCart, toggleFav, saveCart, cartCount, syncBadges, productCard, renderProductCards, onChange: (fn) => listeners.push(fn), applyLang, route };
 
   mount();
   function updateRoute() {
@@ -1307,7 +1363,9 @@
   });
   addEventListener("pagehide", () => { delete document.body.dataset.firstArrival; });
   addEventListener("pageshow", (event) => {
-    if (event.persisted) fadeSection($("main[data-page]:not([hidden])"), 520);
+    if (!event.persisted) return;
+    document.documentElement.dataset.pageRepeat = "";
+    $$('[data-arrival="pending"]').forEach((element) => { delete element.dataset.arrival; });
   });
   // страницы подключаются после core.js и вызывают SZ.applyLang() сами (см. SZ.start)
   window.SZ.start = async () => {

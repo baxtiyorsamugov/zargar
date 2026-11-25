@@ -7,8 +7,8 @@
   <meta name="description" content="SOFIZAR zargarlik zavodi: eskizdan vitrinagacha, proba nazorati va qoʻl mehnati.">
   <link rel="icon" href="assets/img/sofizar/favicon.png" type="image/png">
   <link rel="preload" href="assets/fonts/ManropeVariable.woff2" as="font" type="font/woff2" crossorigin>
-  <script src="assets/js/boot.js?v=stable-layout"></script>
-  <link rel="stylesheet" href="assets/css/main.css?v=shared-factory">
+  <script src="assets/js/boot.js?v=fast-repeat"></script>
+  <link rel="stylesheet" href="assets/css/main.css?v=borderless-cards">
 </head>
 <body data-page="about">
 <!--BODY-->
@@ -20,12 +20,23 @@
         <video id="factoryVideo" poster="assets/img/sofizar/factory-poster.webp" muted playsinline loop preload="none" data-src="assets/video/sofizar-factory.mp4"></video>
         <span class="factory-status" id="factoryStatus" role="status" hidden></span>
         <div class="factory-controls">
+          <div class="factory-seek-row">
+            <input id="factorySeek" type="range" min="0" max="0" step="0.1" value="0" aria-controls="factoryVideo" disabled>
+            <span class="factory-time" id="factoryTime" aria-hidden="true">0:00</span>
+          </div>
           <div class="factory-control-row">
+            <button type="button" class="factory-control factory-skip" id="factoryBack" aria-controls="factoryVideo" disabled>
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9a8 8 0 1 1-1 6M4 4v5h5"/></svg>
+              <span aria-hidden="true">10</span>
+            </button>
             <button type="button" class="factory-control" id="factoryPlay" aria-controls="factoryVideo">
               <svg class="ico factory-play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7Z"/></svg>
               <svg class="ico factory-pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg>
             </button>
-            <span class="factory-time" id="factoryTime" aria-hidden="true">0:00</span>
+            <button type="button" class="factory-control factory-skip" id="factoryForward" aria-controls="factoryVideo" disabled>
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 9a8 8 0 1 0 1 6M20 4v5h-5"/></svg>
+              <span aria-hidden="true">10</span>
+            </button>
             <div class="factory-volume">
               <button type="button" class="factory-control" id="factoryMute" aria-controls="factoryVideo">
                 <svg class="ico factory-sound-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4ZM15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg>
@@ -97,9 +108,9 @@
 <div id="chrome-bottom"></div>
 <!--/BODY-->
 <script src="data/catalog.js"></script>
-<script src="assets/js/core.js?v=product-photos"></script>
+<script src="assets/js/core.js?v=fast-repeat"></script>
 <script src="assets/js/pages.js?v=scroll-navigation"></script>
-<script src="assets/js/factory-video.js?v=shared-factory"></script>
+<script src="assets/js/factory-video.js?v=video-seek"></script>
 <script>SZ.start()</script>
 </body>
 </html>

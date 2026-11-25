@@ -1,6 +1,6 @@
 // SOFIZAR — главная страница.
 (() => {
-  const { t, PRODUCTS, productCard, href, $, $$, onChange } = SZ;
+  const { t, PRODUCTS, renderProductCards, href, $, $$, onChange } = SZ;
   const root = $('main[data-page="home"]'); if (!root) return;
 
   const CATS = [
@@ -166,7 +166,7 @@
   }
   function renderProducts() {
     const list = PRODUCTS.filter((p) => p.tabs.includes(state.tab)).sort((x, y) => y.pop - x.pop).slice(0, 4);
-    $("#products", root).innerHTML = list.map((p) => productCard(p)).join("");
+    renderProductCards($("#products", root), list);
     $$("[data-count]", root).forEach((el) => { el.textContent = PRODUCTS.filter((p) => p.tabs.includes(el.dataset.count)).length; });
     $("#tabsMore", root).href = href("catalog-" + state.tab);
   }
@@ -175,9 +175,13 @@
       <div class="benefit"><span class="benefit-ico"><svg class="ico"><use href="#${BENEFIT_ICONS[i]}"/></svg></span>
       <span><b>${title}</b><small>${sub}</small></span></div>`).join("");
   }
+  let renderedLanguage;
   function render() {
-    renderFilmLabels(); renderSeason();
-    renderCats(); renderProducts(); renderBenefits();
+    if (renderedLanguage !== SZ.state.lang) {
+      renderFilmLabels(); renderSeason(); renderCats(); renderBenefits();
+      renderedLanguage = SZ.state.lang;
+    }
+    renderProducts();
   }
 
   $("#tabs", root).addEventListener("click", (e) => {

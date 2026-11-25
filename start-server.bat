@@ -11,8 +11,8 @@ echo.
 
 start "" "http://localhost:%PORT%"
 
-where py >nul 2>nul && (py -m http.server %PORT% & goto :eof)
-where python >nul 2>nul && (python -m http.server %PORT% & goto :eof)
+where py >nul 2>nul && (py ..\scripts\serve.py %PORT% & goto :eof)
+where python >nul 2>nul && (python ..\scripts\serve.py %PORT% & goto :eof)
 
 echo   Python не найден. Установите его с https://www.python.org/downloads/
 echo   (при установке отметьте "Add python.exe to PATH") и запустите этот файл снова.

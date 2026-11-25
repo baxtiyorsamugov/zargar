@@ -1,3 +1,7 @@
 # В репозиторий входит только шрифт Manrope с открытой лицензией.
 frontend/assets/fonts/*.woff2
 !frontend/assets/fonts/ManropeVariable.woff2
+
+# Local Python preview and test caches.
+__pycache__/
+*.py[cod]

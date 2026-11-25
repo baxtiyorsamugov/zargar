@@ -1,6 +1,6 @@
 // SOFIZAR — корзина. Оформление сохраняет заказ в браузере (демо); позже — POST в API → 1С/Битрикс.
 (() => {
-  const { t, PRODUCTS, byId, state, store, money, grams, sizeLabel, spec, href, esc, $, $$, toast, saveCart, cartCount, productCard, onChange } = SZ;
+  const { t, PRODUCTS, byId, state, store, money, grams, sizeLabel, spec, href, esc, $, $$, toast, saveCart, cartCount, renderProductCards, onChange } = SZ;
   const root = $('main[data-page="cart"]'); if (!root) return;
 
   const COURIER_FEE = 30000;
@@ -68,7 +68,7 @@
     const inCart = new Set(state.cart.map((l) => l.id));
     const recs = PRODUCTS.filter((p) => !inCart.has(p.id)).sort((a, b) => b.pop - a.pop);
     $(".recs", root).hidden = recs.length === 0;
-    $("#recs", root).innerHTML = recs.slice(0, 3).map((p) => productCard(p, { noTag: true })).join("");
+    renderProductCards($("#recs", root), recs.slice(0, 3), { noTag: true });
   }
 
   // Количество, размер, удаление

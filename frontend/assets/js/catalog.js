@@ -1,6 +1,6 @@
 // SOFIZAR — каталог: фильтры, сортировка, поиск. Данные — SZ.PRODUCTS (позже — API каталога из 1С).
 (() => {
-  const { t, PRODUCTS, CATS, METALS, money, productCard, href, esc, searchKey, extend, onRoute, $, $$, onChange } = SZ;
+  const { t, PRODUCTS, CATS, METALS, state, money, renderProductCards, href, esc, searchKey, extend, onRoute, $, $$, onChange } = SZ;
   const root = $('main[data-page="catalog"]'); if (!root) return;
 
   extend({
@@ -35,6 +35,12 @@
   const f = { cat: null, metals: new Set(), min: 0, max: 0, sale: false, isNew: false, sort: "pop", q: "", mode: null };
   const num = (s) => +String(s).replace(/\D/g, "") || 0;
   const fmt = (n) => n ? n.toLocaleString("ru-RU").replace(/\s/g, " ") : "";
+  let searchLanguage;
+  let searchFields = new Map();
+  let query = "";
+  let resultsKey;
+  let results;
+  let renderFrame = 0;
 
   function match(p, skip) {
     if (skip !== "cat" && f.cat && p.cat !== f.cat) return false;
@@ -44,11 +50,7 @@
     if (f.sale && !p.old) return false;
     if (f.isNew && !p.tabs.includes("new")) return false;
     if (f.mode === "popular" && !p.tabs.includes("popular")) return false;
-    if (f.q) {
-      const query = searchKey(f.q);
-      const fields = [t(p.key), t("c_" + p.cat), t("m_" + p.metal), p.sku];
-      return fields.some((field) => searchKey(field).includes(query));
-    }
+    if (query) return searchFields.get(p.id).some((field) => field.includes(query));
     return true;
   }
   function sorted(list) {
@@ -58,12 +60,50 @@
   }
   const activeCount = () => (f.cat ? 1 : 0) + f.metals.size + (f.min || f.max ? 1 : 0) + (f.sale ? 1 : 0) + (f.isNew ? 1 : 0) + (f.q ? 1 : 0);
 
+  function readResults() {
+    if (searchLanguage !== state.lang) {
+      searchFields = new Map(PRODUCTS.map((p) => [
+        p.id, [t(p.key), t("c_" + p.cat), t("m_" + p.metal), p.sku].map(searchKey),
+      ]));
+      searchLanguage = state.lang;
+    }
+    query = searchKey(f.q);
+    const key = JSON.stringify([state.lang, f.cat, [...f.metals].sort(), f.min, f.max, f.sale, f.isNew, f.mode, query, f.sort]);
+    if (key !== resultsKey) {
+      const categories = new Map([[null, 0], ...CATS.map((c) => [c, 0])]);
+      const metals = new Map(METALS.map((m) => [m, 0]));
+      for (const product of PRODUCTS) {
+        if (match(product, "cat")) {
+          categories.set(null, categories.get(null) + 1);
+          categories.set(product.cat, categories.get(product.cat) + 1);
+        }
+        if (match(product, "metal")) metals.set(product.metal, metals.get(product.metal) + 1);
+      }
+      results = { list: sorted(PRODUCTS.filter((p) => match(p))), categories, metals };
+      resultsKey = key;
+    }
+    return results;
+  }
+
+  // Keep filter controls mounted so keyboard focus survives count updates.
+  $("#fCat", root).innerHTML = [null, ...CATS].map((c) =>
+    `<label class="f-opt"><input type="radio" name="fcat" value="${c || ""}"><span class="f-radio"></span><span data-filter-label></span><small></small></label>`
+  ).join("");
+  $("#fMetal", root).innerHTML = METALS.map((m) =>
+    `<label class="f-opt"><input type="checkbox" value="${m}"><span class="f-check"><svg class="ico"><use href="#i-check"/></svg></span><span class="swatch" style="--sw:${SWATCH[m]}"></span><span data-filter-label></span><small></small></label>`
+  ).join("");
+  $("#fPricePresets", root).innerHTML = PRESETS.map(([, a, b]) =>
+    `<button class="chip-btn" data-min="${a}" data-max="${b}"></button>`
+  ).join("");
+
   const PAGE = 24;
   let shown = PAGE, shownKey = "";
   root.addEventListener("click", (e) => { if (e.target.closest("#catMore button")) { shown += PAGE; render(); } });
 
   function render() {
-    const list = sorted(PRODUCTS.filter((p) => match(p)));
+    cancelAnimationFrame(renderFrame);
+    renderFrame = 0;
+    const { list, categories, metals } = readResults();
     // заголовок
     const title = f.q ? t("searchTitle", f.q) : f.cat ? t("c_" + f.cat) : f.sale ? t("saleTitle") : f.isNew ? t("newTitle") : f.mode === "popular" ? t("popTitle") : t("catalog");
     $("#catTitle", root).textContent = title;
@@ -72,15 +112,23 @@
       + (f.cat ? `<a href="${href("catalog")}">${t("catalog")}</a><svg class="ico"><use href="#i-chev"/></svg><span>${t("c_" + f.cat)}</span>` : `<span>${t("catalog")}</span>`);
 
     // фильтры
-    $("#fCat", root).innerHTML = [null, ...CATS].map((c) => {
-      const n = PRODUCTS.filter((p) => (!c || p.cat === c) && match(p, "cat")).length;
-      return `<label class="f-opt"><input type="radio" name="fcat" value="${c || ""}" ${f.cat === c ? "checked" : ""}><span class="f-radio"></span><span>${c ? t("c_" + c) : t("all")}</span><small>${n}</small></label>`;
-    }).join("");
-    $("#fMetal", root).innerHTML = METALS.map((m) => {
-      const n = PRODUCTS.filter((p) => p.metal === m && match(p, "metal")).length;
-      return `<label class="f-opt"><input type="checkbox" value="${m}" ${f.metals.has(m) ? "checked" : ""}><span class="f-check"><svg class="ico"><use href="#i-check"/></svg></span><span class="swatch" style="--sw:${SWATCH[m]}"></span><span>${t("m_" + m)} ${m === "silver" ? 925 : 585}</span><small>${n}</small></label>`;
-    }).join("");
-    $("#fPricePresets", root).innerHTML = PRESETS.map(([k, a, b]) => `<button class="chip-btn ${f.min === a && f.max === b ? "is-on" : ""}" data-min="${a}" data-max="${b}">${t(k)}</button>`).join("");
+    $$("#fCat .f-opt", root).forEach((label) => {
+      const input = $("input", label), category = input.value || null;
+      input.checked = f.cat === category;
+      $("[data-filter-label]", label).textContent = category ? t("c_" + category) : t("all");
+      $("small", label).textContent = categories.get(category);
+    });
+    $$("#fMetal .f-opt", root).forEach((label) => {
+      const input = $("input", label), metal = input.value;
+      input.checked = f.metals.has(metal);
+      $("[data-filter-label]", label).textContent = t("m_" + metal) + " " + (metal === "silver" ? 925 : 585);
+      $("small", label).textContent = metals.get(metal);
+    });
+    $$("#fPricePresets button", root).forEach((button, index) => {
+      const [key, min, max] = PRESETS[index];
+      button.textContent = t(key);
+      button.classList.toggle("is-on", f.min === min && f.max === max);
+    });
     if (document.activeElement !== $("#fMin", root)) $("#fMin", root).value = fmt(f.min);
     if (document.activeElement !== $("#fMax", root)) $("#fMax", root).value = fmt(f.max);
     $("#fSale", root).checked = f.sale; $("#fNew", root).checked = f.isNew;
@@ -106,12 +154,15 @@
     // в каталоге из 1С сотни товаров — показываем порциями, остальное по кнопке
     const key = JSON.stringify([f.cat, [...f.metals], f.min, f.max, f.sale, f.isNew, f.mode, f.q, f.sort]);
     if (key !== shownKey) { shownKey = key; shown = PAGE; }
-    $("#catGrid", root).innerHTML = list.slice(0, shown).map((p) => productCard(p, { noTag: !p.tabs.includes("new") })).join("");
+    renderProductCards($("#catGrid", root), list.slice(0, shown), (p) => ({ noTag: !p.tabs.includes("new") }));
     $("#catGrid", root).hidden = !list.length;
     const more = $("#catMore", root);
     more.hidden = list.length <= shown;
     $("button", more).textContent = t("showMore", Math.min(PAGE, list.length - shown), list.length - shown);
     $("#catEmpty", root).hidden = !!list.length;
+  }
+  function scheduleRender() {
+    if (!renderFrame) renderFrame = requestAnimationFrame(render);
   }
 
   function resetAll(keepQ) { Object.assign(f, { cat: null, min: 0, max: 0, sale: false, isNew: false, mode: null, q: keepQ ? f.q : "" }); f.metals.clear(); }
@@ -160,7 +211,7 @@
   });
   ["fMin", "fMax"].forEach((id) => $("#" + id, root).addEventListener("input", (e) => {
     const v = num(e.target.value); e.target.value = fmt(v);
-    id === "fMin" ? (f.min = v) : (f.max = v); render();
+    id === "fMin" ? (f.min = v) : (f.max = v); scheduleRender();
   }));
   root.addEventListener("click", (e) => {
     const pr = e.target.closest("[data-min]"), un = e.target.closest("[data-unset]");
@@ -180,7 +231,7 @@
 
   // Поиск в шапке фильтрует каталог на лету
   const search = $("#search");
-  search.addEventListener("input", () => { if (document.body.dataset.page === "catalog") { f.q = search.value.trim(); render(); } });
+  search.addEventListener("input", () => { if (document.body.dataset.page === "catalog") { f.q = search.value.trim(); scheduleRender(); } });
 
   // Мобильная панель фильтров
   const panel = $("#filters", root), back = $("#fBackdrop", root);

@@ -1,6 +1,6 @@
 // SOFIZAR — карточка товара: галерея, металл, размер, характеристики, похожие товары.
 (() => {
-  const { t, PRODUCTS, byId, state, money, grams, sizeLabel, spec, href, esc, extend, onRoute, productCard, addToCart, removeOneFromCart, $, $$, onChange } = SZ;
+  const { t, PRODUCTS, byId, state, money, grams, sizeLabel, spec, href, esc, extend, onRoute, renderProductCards, addToCart, removeOneFromCart, $, $$, onChange } = SZ;
   const root = $('main[data-page="product"]'); if (!root) return;
 
   extend({
@@ -45,7 +45,9 @@
       d_p4: "Paperclip chain bracelet with rectangular links. Easy to stack with other bracelets." },
   });
 
-  const local = { id: 1, size: null, img: 0 };
+  const local = { id: 1, size: null };
+  let renderedGallery;
+  let renderedSizes;
   const cur = () => byId(local.id) || PRODUCTS[0];
   const addButton = $("#pdAdd", root);
   const removeButton = $("#pdRemove", root);
@@ -64,13 +66,16 @@
     removeButton.setAttribute("aria-label", t("removeOne") + ": " + t(p.key));
     document.title = `${t(p.key)} — SOFIZAR`;
     $("#pCrumbs", root).innerHTML = [[href("home"), t("home") || "Home"], [href("catalog"), t("catalog")], [href("catalog-" + p.cat), t("c_" + p.cat)]]
-      .map(([h, l]) => `<a href="${h}">${l}</a><svg class="ico"><use href="#i-chev"/></svg>`).join("") + `<span>${t(p.key)}</span>`;
+      .map(([h, l]) => `<a href="${h}">${esc(l)}</a><svg class="ico"><use href="#i-chev"/></svg>`).join("") + `<span>${esc(t(p.key))}</span>`;
 
-    // галерея: фото на белом + фото на модели
-    const imgs = [p.img];
-    $("#gMain", root).innerHTML = `<div class="g-frame ${local.img === 0 ? "metal-" + p.metal : ""} ${local.img ? "is-life" : ""}"><span class="media-slot"><img src="assets/img/${imgs[local.img]}" alt="${esc(t(p.key))}"></span></div>`
-      + (p.inStock === false ? `<span class="tag out">${t("outOfStock")}</span>` : p.old ? `<span class="tag sale">−${Math.round((1 - p.price / p.old) * 100)}%</span>` : p.tabs.includes("new") ? `<span class="tag">${t("tagNew")}</span>` : "");
-    $("#gThumbs", root).innerHTML = imgs.map((src, i) => `<button class="g-thumb ${i === 0 ? "metal-" + p.metal : ""}" role="tab" aria-selected="${local.img === i}" data-img="${i}"><span class="media-slot"><img src="assets/img/${src}" alt=""></span></button>`).join("");
+    // Cart, favorites and size updates must not reload the product photograph.
+    const galleryKey = p.id + ":" + state.lang;
+    if (renderedGallery !== galleryKey) {
+      $("#gMain", root).innerHTML = `<div class="g-frame metal-${p.metal}"><span class="media-slot"><img src="assets/img/${p.img}" alt="${esc(t(p.key))}" decoding="async"></span></div>`
+        + (p.inStock === false ? `<span class="tag out">${t("outOfStock")}</span>` : p.old ? `<span class="tag sale">−${Math.round((1 - p.price / p.old) * 100)}%</span>` : p.tabs.includes("new") ? `<span class="tag">${t("tagNew")}</span>` : "");
+      $("#gThumbs", root).innerHTML = `<button class="g-thumb metal-${p.metal}" role="tab" aria-selected="true" aria-label="${esc(t(p.key))}"><span class="media-slot"><img src="assets/img/${p.img}" alt="" decoding="async"></span></button>`;
+      renderedGallery = galleryKey;
+    }
 
     $("#pdTags", root).innerHTML = `<span class="pill pill-ready">${t("m_" + p.metal)} ${p.probe}</span>`;
     $("#pdName", root).textContent = t(p.key);
@@ -85,7 +90,14 @@
     $("#pdSizeBlock", root).hidden = !hasSizes;
     if (hasSizes) {
       $("#pdSizeLabel", root).textContent = p.unit ? t("sizeLen") : t("sizeRing");
-      $("#pdSizes", root).innerHTML = p.sizes.map((s) => `<button class="size-chip" role="radio" aria-checked="${local.size === s}" data-size="${s}">${sizeLabel(p, s)}</button>`).join("");
+      if (renderedSizes !== galleryKey) {
+        $("#pdSizes", root).innerHTML = p.sizes.map((s) => `<button class="size-chip" role="radio" aria-checked="${local.size === s}" data-size="${s}">${sizeLabel(p, s)}</button>`).join("");
+        renderedSizes = galleryKey;
+      } else {
+        $$("#pdSizes .size-chip", root).forEach((button) => {
+          button.setAttribute("aria-checked", local.size === Number(button.dataset.size));
+        });
+      }
     }
     const fav = $("#pdFav", root); fav.dataset.fav = p.id; fav.setAttribute("aria-pressed", state.favs.has(p.id));
     $("#pdBonus", root).textContent = t("bonusFor", Math.round(p.price * 0.01).toLocaleString("ru-RU").replace(/\s/g, " "));
@@ -93,25 +105,24 @@
     $("#pdDesc", root).textContent = t("d_" + p.key);
     const rows = [[t("spCat"), t("c_" + p.cat)], [t("spMetal"), t("m_" + p.metal)], [t("spProbe"), p.probe], [t("spWeight"), "≈ " + grams(p.w)],
       ...(hasSizes ? [[t("spSizes"), p.sizes.map((s) => sizeLabel(p, s)).join(", ")]] : []), [t("sku"), p.sku], [t("spMaker"), t("maker")]];
-    $("#pdSpec", root).innerHTML = rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+    $("#pdSpec", root).innerHTML = rows.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
 
     const rel = PRODUCTS.filter((x) => x.id !== p.id && (x.metal === p.metal || x.key === p.key)).sort((a, b) => (b.metal === p.metal) - (a.metal === p.metal) || b.pop - a.pop).slice(0, 4);
-    $("#pdRelated", root).innerHTML = rel.map((x) => productCard(x, { noTag: true })).join("");
+    renderProductCards($("#pdRelated", root), rel, { noTag: true });
     $("#relMore", root).href = href("catalog-" + p.cat);
   }
 
   onRoute((r) => {
     if (!r.startsWith("product-")) return;
     const found = byId(r.slice(8)) || PRODUCTS[0];
-    if (found.id !== local.id) { local.size = null; local.img = 0; }
+    if (found.id !== local.id) local.size = null;
     local.id = found.id;
     $("#pdSizeErr", root).hidden = true;
     render();
   });
 
   root.addEventListener("click", (e) => {
-    const th = e.target.closest("[data-img]"), sz = e.target.closest(".size-chip");
-    if (th) { local.img = +th.dataset.img; render(); }
+    const sz = e.target.closest(".size-chip");
     if (sz) { local.size = +sz.dataset.size; $("#pdSizeErr", root).hidden = true; render(); }
   });
   addButton.addEventListener("click", () => {

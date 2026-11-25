@@ -1,6 +1,6 @@
 // SOFIZAR — личный кабинет. Пользователь и заказы — пример; позже — из API (1С/Битрикс).
 (() => {
-  const { t, PRODUCTS, byId, state, store, money, sizeLabel, date, esc, href, $, $$, toast, productCard, onChange, onRoute, applyLang } = SZ;
+  const { t, PRODUCTS, byId, state, store, money, sizeLabel, date, esc, href, $, $$, toast, renderProductCards, onChange, onRoute, applyLang } = SZ;
   const root = $('main[data-page="account"]'); if (!root) return;
 
   const SEED_ORDERS = [
@@ -74,8 +74,8 @@
   /* ---------- Избранное ---------- */
   function renderFavs() {
     const favs = PRODUCTS.filter((p) => state.favs.has(p.id));
-    $("#favList", root).innerHTML = favs.length ? favs.map((p) => productCard(p, { noTag: true })).join("")
-      : `<p class="muted-empty">${t("favEmpty")}</p>`;
+    renderProductCards($("#favList", root), favs, { noTag: true });
+    if (!favs.length) $("#favList", root).innerHTML = `<p class="muted-empty">${t("favEmpty")}</p>`;
     $("#nFavs", root).textContent = favs.length || ""; $("#stFavs", root).textContent = favs.length;
   }
 

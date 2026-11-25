@@ -10,18 +10,21 @@
       factoryVideo: "SOFIZAR zavodi haqida video", videoVolume: "Ovoz balandligi",
       videoUnmute: "Ovozni yoqish", videoMute: "Ovozni oʻchirish",
       videoFullscreen: "Toʻliq ekran", videoExitFullscreen: "Toʻliq ekrandan chiqish",
+      videoSeek: "Videoni oʻtkazish", videoBack: "10 soniya orqaga", videoForward: "10 soniya oldinga",
       videoError: "Videoni yuklab boʻlmadi. Qayta urinib koʻring.",
     },
     ru: {
       factoryVideo: "Видео о заводе SOFIZAR", videoVolume: "Громкость",
       videoUnmute: "Включить звук", videoMute: "Выключить звук",
       videoFullscreen: "На весь экран", videoExitFullscreen: "Выйти из полноэкранного режима",
+      videoSeek: "Позиция воспроизведения", videoBack: "Назад на 10 секунд", videoForward: "Вперёд на 10 секунд",
       videoError: "Не удалось загрузить видео. Попробуйте ещё раз.",
     },
     en: {
       factoryVideo: "About the SOFIZAR factory", videoVolume: "Volume",
       videoUnmute: "Unmute", videoMute: "Mute",
       videoFullscreen: "Fullscreen", videoExitFullscreen: "Exit fullscreen",
+      videoSeek: "Playback position", videoBack: "Back 10 seconds", videoForward: "Forward 10 seconds",
       videoError: "The video could not load. Please try again.",
     },
   });
@@ -32,11 +35,15 @@
   const factoryVolume = $("#factoryVolume", root);
   const factoryFullscreen = $("#factoryFullscreen", root);
   const factoryTime = $("#factoryTime", root);
+  const factorySeek = $("#factorySeek", root);
+  const factoryBack = $("#factoryBack", root);
+  const factoryForward = $("#factoryForward", root);
   const factoryStatus = $("#factoryStatus", root);
   const factoryDialog = $("#factoryDialog");
   const factorySlot = document.createComment("Factory video position");
   let factoryInView = false;
   let factoryWantsPlay = !reducedMotion.matches;
+  let scrubbing = false;
   factoryVideo.volume = .65;
 
   function renderFactoryLabels() {
@@ -48,6 +55,11 @@
     factoryPlay.setAttribute("aria-label", t(factoryVideo.paused ? "playFilm" : "pauseFilm"));
     factoryMute.setAttribute("aria-label", t(muted ? "videoUnmute" : "videoMute"));
     factoryVolume.setAttribute("aria-label", t("videoVolume"));
+    factorySeek.setAttribute("aria-label", t("videoSeek"));
+    [[factoryBack, "videoBack"], [factoryForward, "videoForward"]].forEach(([button, key]) => {
+      button.setAttribute("aria-label", t(key));
+      button.title = t(key);
+    });
     factoryVolume.value = muted ? "0" : String(factoryVideo.volume);
     factoryVolume.style.setProperty("--video-progress", Number(factoryVolume.value) * 100 + "%");
     factoryFullscreen.setAttribute("aria-label", t(document.fullscreenElement === factoryPlayer || factoryDialog.open ? "videoExitFullscreen" : "videoFullscreen"));
@@ -90,9 +102,32 @@
   };
   const updateFactoryTime = () => {
     const duration = factoryVideo.duration;
-    factoryTime.textContent = videoTime(factoryVideo.currentTime) +
-      (Number.isFinite(duration) ? " / " + videoTime(duration) : "");
+    const ready = Number.isFinite(duration) && duration > 0;
+    const current = scrubbing ? Number(factorySeek.value) : factoryVideo.currentTime;
+    const time = videoTime(current) + (ready ? " / " + videoTime(duration) : "");
+    factoryTime.textContent = time;
+    factorySeek.disabled = factoryBack.disabled = factoryForward.disabled = !ready;
+    factorySeek.max = ready ? String(duration) : "0";
+    if (!scrubbing) factorySeek.value = String(current);
+    factorySeek.style.setProperty("--video-progress", (ready ? current / duration * 100 : 0) + "%");
+    factorySeek.setAttribute("aria-valuetext", time);
   };
+  function seekFactory(seconds) {
+    if (!Number.isFinite(factoryVideo.duration) || factoryVideo.duration <= 0) return;
+    factoryVideo.currentTime = Math.max(0, Math.min(factoryVideo.duration, seconds));
+    updateFactoryTime();
+  }
+  factoryBack.addEventListener("click", () => seekFactory(factoryVideo.currentTime - 10));
+  factoryForward.addEventListener("click", () => seekFactory(factoryVideo.currentTime + 10));
+  factorySeek.addEventListener("pointerdown", () => { scrubbing = true; });
+  factorySeek.addEventListener("input", () => seekFactory(Number(factorySeek.value)));
+  const finishScrubbing = () => { scrubbing = false; updateFactoryTime(); };
+  ["change", "pointerup", "pointercancel", "blur"].forEach((event) => factorySeek.addEventListener(event, finishScrubbing));
+  factoryPlayer.addEventListener("keydown", (event) => {
+    if (event.target !== factoryPlayer || !["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+    event.preventDefault();
+    seekFactory(factoryVideo.currentTime + (event.key === "ArrowLeft" ? -10 : 10));
+  });
   factoryFullscreen.addEventListener("click", async () => {
     if (factoryDialog.open) {
       factoryDialog.close();

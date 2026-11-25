@@ -90,7 +90,7 @@ try {
   const json = JSON.stringify(catalog, null, 1);
   writeAtomic(join(cfg.outDir, "catalog.json"), json);
   // Для статического фронтенда без сборки: <script src="data/catalog.js"> перед core.js
-  writeAtomic(join(cfg.outDir, "catalog.js"), `window.SZ_CATALOG = ${json};\n`);
+  writeAtomic(join(cfg.outDir, "catalog.js"), `window.SZ_CATALOG = ${JSON.stringify(catalog)};\n`);
 
   log(`каталог: ${catalog.counts.products} товаров (в наличии ${catalog.counts.inStock}), скрыто: снято с сайта ${catalog.counts.hiddenInactive}, без цены ${catalog.counts.hiddenNoPrice}`);
   if (catalog.warnings.length) {
