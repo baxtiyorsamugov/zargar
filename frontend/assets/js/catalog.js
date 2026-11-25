@@ -2,6 +2,7 @@
 (() => {
   const { t, PRODUCTS, CATS, METALS, state, money, renderProductCards, href, esc, searchKey, extend, onRoute, $, $$, onChange } = SZ;
   const root = $('main[data-page="catalog"]'); if (!root) return;
+  const arrivalTargets = $$(".page-top, .catalog-main, .filters", root);
 
   extend({
     uz: { filters: "Filtrlar", reset: "Tozalash", fCategory: "Toifa", fMetal: "Metall", fPrice: "Narx, soʻm", from: "dan", to: "gacha",
@@ -170,13 +171,23 @@
     const r = f.cat ? "catalog-" + f.cat : "catalog";
     try {
       history.replaceState(null, "", href(r));
-      catalogRoute = r;
     } catch (e) {}
     $$("[data-route]").forEach((a) => a.classList.toggle("is-current", a.dataset.route === r));
+    revealCategory(r);
   }
 
   // Маршрут: catalog, catalog-rings, catalog-new, catalog-sale, catalog-popular
   let catalogRoute;
+  const visitedCategories = new Set();
+  function revealCategory(route) {
+    if (catalogRoute === route) return;
+    if (catalogRoute !== undefined) {
+      const firstVisit = SZ.SPA ? !visitedCategories.has(route) : window.szNavigation?.visit() ?? !visitedCategories.has(route);
+      arrivalTargets.forEach((element) => SZ.fadeSection(element, firstVisit ? 520 : 0, 6));
+    }
+    visitedCategories.add(route);
+    catalogRoute = route;
+  }
   onRoute((r) => {
     if (!r.startsWith("catalog")) return;
     const key = r.slice(8);
@@ -188,14 +199,8 @@
     const q = sessionStorage.getItem("sz-q");
     if (q != null) { sessionStorage.removeItem("sz-q"); f.q = q.trim(); $("#search").value = f.q; }
     render();
-    if (catalogRoute !== undefined && catalogRoute !== r) fadeResults();
-    catalogRoute = r;
+    revealCategory(r);
   });
-
-  function fadeResults() {
-    const grid = $("#catGrid", root);
-    SZ.fadeSection(grid.hidden ? $("#catEmpty", root) : grid);
-  }
 
   // События фильтров
   root.addEventListener("change", (e) => {
@@ -207,7 +212,6 @@
     else if (el.id === "sortSel") f.sort = el.value;
     else return;
     render();
-    if (el.name === "fcat") fadeResults();
   });
   ["fMin", "fMax"].forEach((id) => $("#" + id, root).addEventListener("input", (e) => {
     const v = num(e.target.value); e.target.value = fmt(v);
@@ -222,7 +226,6 @@
       else if (k.startsWith("metal:")) f.metals.delete(k.slice(6)); else if (k === "price") { f.min = f.max = 0; }
       else if (k === "sale") f.sale = false; else if (k === "new") f.isNew = false;
       render();
-      if (k === "cat") fadeResults();
     }
   });
   const resetBtn = () => { resetAll(); $("#search").value = ""; syncHash(); render(); };

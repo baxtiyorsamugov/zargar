@@ -402,11 +402,17 @@
     return h || page;
   }
   const sectionFades = new WeakMap();
-  function fadeSection(element, duration = 420) {
-    if (!element?.animate || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  function fadeSection(element, duration = 420, blur = 0) {
+    if (!element?.animate) return;
     sectionFades.get(element)?.cancel();
+    if (duration <= 0 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const frames = [{ opacity: 0 }, { opacity: 1 }];
+    if (blur > 0) {
+      frames[0].filter = `blur(${blur}px)`;
+      frames[1].filter = "blur(0px)";
+    }
     sectionFades.set(element, element.animate(
-      [{ opacity: 0 }, { opacity: 1 }],
+      frames,
       { duration, easing: "ease-out" }
     ));
   }
@@ -1261,7 +1267,8 @@
       isFirstVisit = !sessionStorage.getItem(key);
       if (isFirstVisit) sessionStorage.setItem(key, "1");
     } catch { /* Page navigation still works without storage. */ }
-    if (isFirstVisit && !document.documentElement.hasAttribute("data-page-repeat")) document.body.dataset.firstArrival = "";
+    if ((isFirstVisit || document.documentElement.hasAttribute("data-page-reload")) &&
+        !document.documentElement.hasAttribute("data-page-repeat")) document.body.dataset.firstArrival = "";
 
     document.body.insertAdjacentHTML("afterbegin", ICONS);
     $("#chrome-top").outerHTML = chromeTop();
@@ -1354,11 +1361,14 @@
         event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ||
         link.hasAttribute("download") || link.target && link.target !== "_self") return;
     const target = new URL(link.href);
-    if (target.origin !== location.origin || target.pathname !== location.pathname ||
+    const samePage = window.szNavigation?.samePage(target.pathname) ?? target.pathname === location.pathname;
+    if (target.origin !== location.origin || !samePage ||
         target.search !== location.search) return;
     event.preventDefault();
-    if (target.href === location.href) return;
-    history.pushState(null, "", target.href);
+    if (target.hash === location.hash) return;
+    const next = new URL(location.href);
+    next.hash = target.hash;
+    history.pushState(null, "", next.href);
     updateRoute();
   });
   addEventListener("pagehide", () => { delete document.body.dataset.firstArrival; });
