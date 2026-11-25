@@ -1,6 +1,6 @@
 // SOFIZAR — личный кабинет. Пользователь и заказы — пример; позже — из API (1С/Битрикс).
 (() => {
-  const { t, PRODUCTS, byId, state, store, money, sizeLabel, date, esc, href, $, $$, toast, productCard, onChange, applyLang } = SZ;
+  const { t, PRODUCTS, byId, state, store, money, sizeLabel, date, esc, href, $, $$, toast, productCard, onChange, onRoute, applyLang } = SZ;
   const root = $('main[data-page="account"]'); if (!root) return;
 
   const SEED_ORDERS = [
@@ -151,8 +151,9 @@
   }
   $$("#accMenu a", root).forEach((a) => { a.href = href(a.dataset.tab); });
   $$("[data-href]", root).forEach((a) => { a.href = href(a.dataset.href); });
-  if (SZ.SPA) addEventListener("sz:route", (e) => showTab(e.detail));
-  else { addEventListener("hashchange", () => showTab(location.hash.slice(1))); showTab(location.hash.slice(1)); }
+  onRoute((route) => {
+    if (SZ.pageOf(route) === "account") showTab(route);
+  });
 
   function render() { renderHead(); renderOrders(); renderFavs(); renderBonus(); renderAddr(); $("#pLang", root).value = state.lang; }
   fillProfile();

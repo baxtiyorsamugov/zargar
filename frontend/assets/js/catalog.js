@@ -137,7 +137,7 @@
     const q = sessionStorage.getItem("sz-q");
     if (q != null) { sessionStorage.removeItem("sz-q"); f.q = q.trim(); $("#search").value = f.q; }
     render();
-    if (catalogRoute !== undefined && catalogRoute !== r) SZ.fadeSection(root);
+    if (catalogRoute !== undefined && catalogRoute !== r) fadeResults();
     catalogRoute = r;
   });
 

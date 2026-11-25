@@ -497,9 +497,9 @@
           <input id="search" type="search" data-i18n-ph="searchPh" autocomplete="off"><span class="kbd">Ctrl K</span>
         </label>
         <nav class="actions">
-          <a class="action" data-nav="account" href="${href("account")}"><svg class="ico"><use href="#i-user"/></svg><span data-i18n="account"></span></a>
-          <a class="action" data-nav="favorites" href="${href("favorites")}"><svg class="ico"><use href="#i-heart"/></svg><span data-i18n="favs"></span><span class="count" data-badge="favs" hidden></span></a>
-          <a class="action" data-nav="cart" href="${href("cart")}"><svg class="ico"><use href="#i-bag"/></svg><span data-i18n="cart"></span><span class="count" data-badge="cart" hidden></span></a>
+          <a class="action" data-nav="account" href="${href("account")}"><svg class="ico" aria-hidden="true"><use href="#i-user"/></svg><span class="action-tooltip" data-i18n="account" aria-hidden="true"></span></a>
+          <a class="action" data-nav="favorites" href="${href("favorites")}"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg><span class="action-tooltip" data-i18n="favs" aria-hidden="true"></span><span class="count" data-badge="favs" hidden></span></a>
+          <a class="action" data-nav="cart" href="${href("cart")}"><svg class="ico" aria-hidden="true"><use href="#i-bag"/></svg><span class="action-tooltip" data-i18n="cart" aria-hidden="true"></span><span class="count" data-badge="cart" hidden></span></a>
         </nav>
       </div>
       <nav class="catnav" aria-label="Catalog"><div class="wrap">
@@ -718,6 +718,9 @@
     renderRegion();
     $$("[data-i18n]").forEach((el) => { const v = T[state.lang][el.dataset.i18n]; if (typeof v === "string") el.textContent = v; });
     $$("[data-i18n-ph]").forEach((el) => { el.placeholder = t(el.dataset.i18nPh); });
+    $$(".actions .action").forEach((link) => {
+      link.setAttribute("aria-label", $(".action-tooltip", link).textContent);
+    });
     $$(".lang button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.lang === state.lang));
     emit();
   }
@@ -1208,13 +1211,6 @@
     document.body.insertAdjacentHTML("afterbegin", ICONS);
     $("#chrome-top").outerHTML = chromeTop();
     $("#chrome-bottom").outerHTML = chromeBottom();
-    $(".catalog-btn").addEventListener("click", (event) => {
-      if (document.body.dataset.page === "catalog" && event.button === 0 &&
-          !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) {
-        event.preventDefault();
-        if (currentRoute() !== "catalog") location.hash = SPA ? "catalog" : "";
-      }
-    });
     $$("[data-href]").forEach((el) => { el.href = href(el.dataset.href); });
 
     $("#regionSelect").addEventListener("change", (event) => {
@@ -1277,23 +1273,63 @@
     addToCart, removeOneFromCart, toggleFav, saveCart, cartCount, syncBadges, productCard, onChange: (fn) => listeners.push(fn), applyLang, route };
 
   mount();
-  addEventListener("hashchange", () => {
+  function updateRoute() {
+    cancelAnimationFrame(routeFrame);
+    routeFrame = 0;
     if (SPA) delete document.body.dataset.firstArrival;
     SPA ? route() : runRoute();
+    if (!SPA && (page === "info" || page === "home")) {
+      const id = decodeURIComponent(location.hash.slice(1));
+      document.getElementById(id)?.scrollIntoView({
+        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+        block: "start",
+      });
+    }
+  }
+  let routeFrame = 0;
+  const scheduleRoute = () => {
+    cancelAnimationFrame(routeFrame);
+    routeFrame = requestAnimationFrame(updateRoute);
+  };
+  addEventListener("hashchange", scheduleRoute);
+  addEventListener("popstate", scheduleRoute);
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest("a[href]");
+    if (!link || event.defaultPrevented || event.button !== 0 ||
+        event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ||
+        link.hasAttribute("download") || link.target && link.target !== "_self") return;
+    const target = new URL(link.href);
+    if (target.origin !== location.origin || target.pathname !== location.pathname ||
+        target.search !== location.search) return;
+    event.preventDefault();
+    if (target.href === location.href) return;
+    history.pushState(null, "", target.href);
+    updateRoute();
   });
   addEventListener("pagehide", () => { delete document.body.dataset.firstArrival; });
   addEventListener("pageshow", (event) => {
     if (event.persisted) fadeSection($("main[data-page]:not([hidden])"), 520);
   });
   // страницы подключаются после core.js и вызывают SZ.applyLang() сами (см. SZ.start)
-  window.SZ.start = () => {
-    applyLang();
-    SPA ? route() : runRoute();
-    trackTabFocus();
-    mountDropdowns();
-    mountSelectionHighlights();
-    mountMediaLoading();
-    mountAccordions();
-    mountPageArrival();
+  window.SZ.start = async () => {
+    try {
+      applyLang();
+      SPA ? route() : runRoute();
+      trackTabFocus();
+      mountDropdowns();
+      mountMediaLoading();
+      mountAccordions();
+      // Measure and reveal with the final font, translations and custom controls.
+      if (document.fonts) {
+        await document.fonts.load('400 15px "Manrope"');
+        await document.fonts.ready;
+      }
+    } finally {
+      mountSelectionHighlights();
+      mountPageArrival();
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        window.szRevealPage?.();
+      }));
+    }
   };
 })();
