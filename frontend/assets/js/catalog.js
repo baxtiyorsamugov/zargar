@@ -58,6 +58,10 @@
   }
   const activeCount = () => (f.cat ? 1 : 0) + f.metals.size + (f.min || f.max ? 1 : 0) + (f.sale ? 1 : 0) + (f.isNew ? 1 : 0) + (f.q ? 1 : 0);
 
+  const PAGE = 24;
+  let shown = PAGE, shownKey = "";
+  root.addEventListener("click", (e) => { if (e.target.closest("#catMore button")) { shown += PAGE; render(); } });
+
   function render() {
     const list = sorted(PRODUCTS.filter((p) => match(p)));
     // заголовок
@@ -99,8 +103,14 @@
     $("#activeChips", root).hidden = !chips.length;
 
     // сетка
-    $("#catGrid", root).innerHTML = list.map((p) => productCard(p, { noTag: !p.tabs.includes("new") })).join("");
+    // в каталоге из 1С сотни товаров — показываем порциями, остальное по кнопке
+    const key = JSON.stringify([f.cat, [...f.metals], f.min, f.max, f.sale, f.isNew, f.mode, f.q, f.sort]);
+    if (key !== shownKey) { shownKey = key; shown = PAGE; }
+    $("#catGrid", root).innerHTML = list.slice(0, shown).map((p) => productCard(p, { noTag: !p.tabs.includes("new") })).join("");
     $("#catGrid", root).hidden = !list.length;
+    const more = $("#catMore", root);
+    more.hidden = list.length <= shown;
+    $("button", more).textContent = t("showMore", Math.min(PAGE, list.length - shown), list.length - shown);
     $("#catEmpty", root).hidden = !!list.length;
   }
 

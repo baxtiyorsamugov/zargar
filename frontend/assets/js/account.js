@@ -23,7 +23,8 @@
   const homeAddress = "Toshkent, Chilonzor tumani, Bunyodkor koʻchasi 12, 45-xonadon";
   const addresses = store.get("sz-addr", null) || [{ titleKey: "home", text: homeAddress, main: true }];
 
-  const orders = () => [...store.get("sz-orders", []), ...SEED_ORDERS];
+  const orders = () => [...store.get("sz-orders", []), ...SEED_ORDERS]
+    .map((o) => ({ ...o, items: o.items.filter((l) => byId(l.id)) })).filter((o) => o.items.length);
   const ledger = () => [...store.get("sz-bonus-extra", []).map((b) => ({ kind: "earn", id: b.id, pts: b.pts, date: b.date })), ...SEED_LEDGER];
   const points = () => BASE_POINTS + store.get("sz-bonus-extra", []).reduce((s, b) => s + b.pts, 0);
   const num = (n) => n.toLocaleString("ru-RU").replace(/\s/g, " ");
